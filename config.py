@@ -163,7 +163,7 @@ HELP = [
         "listserver": "List your server as a public Chess server!",
         "prefix [prefix]": "Change the bot prefix for your server!",
         "help": "You're reading it... buddy...",
-        "suggestion [suggestion]": "Offer up a suggestion to the oh great qwerty",
+        "suggestion [suggestion]": "Offer up a suggestion to the oh great qwerty.",
         "donate": "I need the money to keep ChessBot up, so please. Pay up.",
     }
 ]
