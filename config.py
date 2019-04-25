@@ -146,7 +146,7 @@ HELP = [
         "leaderboard": "View the global elo leaderboard!",
         "ping": "View the latency of the bot!",
         "fen (mention)": "Get the FEN of a game!",
-        "pgn": "View a game's PGN!",
+        "pgn": "This command has been removed. use {prefix}game instead.",
         "hasbeat [mention 1] [mention 2]": "Check if one user has beat another!",
         "coinflip": "Flip a coin!",
     },
