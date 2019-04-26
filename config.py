@@ -131,7 +131,7 @@ ELO_ROLES = {
 
 HELP = [
     {
-        "newgame [mention]": "Start a new game against someone!",
+        "newgame [mention]": "Start a new game against someone!\nSupported varients: atomic, koth, antichess, crazyhouse, horde, and racingkings.",
         "board": "View the board!",
         "move [LAN]": "Make a move using Long Notation, aka a2a3 to move the piece at a2 to a3. Promoting: a7a8q",
         "go [SAN]": "Make a move using Standard Notation, more complicated. If you don't know this, use {prefix}move",
