@@ -45,6 +45,7 @@ USER_FLAG_BLACKLISTED = 1
 USER_FLAG_TOURNAMENT_1ST = 2
 USER_FLAG_TOURNAMENT_2ND = 4
 USER_FLAG_PATRON = 8
+USER_FLAG_MASTER = 16
 
 ELO_K = 75
 
@@ -93,7 +94,7 @@ BADGES = {
     "\U0001f5e1",
     "novice": "\U0001f4a1",
     "addicted": "\U0001f48a",
-    "international-master": "\U0001f3c6",
+    "master": "\U0001f3c6",
     "patron": "\U0001f4b3",
     "chess-bot-master": "\U0001f3f3",
     "blacklisted": "\U0001f6ab"
