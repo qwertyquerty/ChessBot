@@ -131,7 +131,7 @@ ELO_ROLES = {
 
 HELP = [
     {
-        "newgame [mention]": "Start a new game against someone!",
+        "newgame [mention]": "Start a new game against someone!\nSupported varients: atomic, koth, antichess, crazyhouse, horde, and racingkings.",
         "board": "View the board!",
         "move [LAN]": "Make a move using Long Notation, aka a2a3 to move the piece at a2 to a3. Promoting: a7a8q",
         "go [SAN]": "Make a move using Standard Notation, more complicated. If you don't know this, use {prefix}move",
@@ -146,7 +146,7 @@ HELP = [
         "leaderboard": "View the global elo leaderboard!",
         "ping": "View the latency of the bot!",
         "fen (mention)": "Get the FEN of a game!",
-        "pgn": "View a game's PGN!",
+        "pgn": "This command has been removed. use {prefix}game instead.",
         "hasbeat [mention 1] [mention 2]": "Check if one user has beat another!",
         "coinflip": "Flip a coin!",
     },
@@ -163,7 +163,7 @@ HELP = [
         "listserver": "List your server as a public Chess server!",
         "prefix [prefix]": "Change the bot prefix for your server!",
         "help": "You're reading it... buddy...",
-        "suggestion [suggestion]": "Offer up a suggestion to the oh great qwerty",
+        "suggestion [suggestion]": "Offer up a suggestion to the oh great qwerty.",
         "donate": "I need the money to keep ChessBot up, so please. Pay up.",
     }
 ]
