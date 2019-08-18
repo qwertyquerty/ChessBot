@@ -5,7 +5,7 @@ from config import *
 from util import *
 from commands import *
 
-command_list = [about.command, badge.command, bio.command, board.command, coinflip.command, debug.command, donate.command, draw.command, exit.command, fen.command, game.command, games.command, help.command, invite.command, leaderboard.command, listserver.command, move.command, newgame.command, ping.command, ping.command, prefix.command, profile.command, resign.command, restart.command, server.command, setstatus.command, stats.command, suggestion.command, takeback.command, vote.command, blacklist.command, unblacklist.command, pocket.command]
+command_list = [about.command, badge.command, bio.command, board.command, coinflip.command, debug.command, donate.command, draw.command, exit.command, fen.command, game.command, games.command, help.command, invite.command, leaderboard.command, listserver.command, move.command, newgame.command, ping.command, ping.command, prefix.command, profile.command, resign.command, restart.command, server.command, setstatus.command, stats.command, suggestion.command, takeback.command, vote.command, blacklist.command, unblacklist.command, pocket.command,reset.command]
 
 bot = discord.AutoShardedClient()
 stats = Stats(bot)

@@ -1,0 +1,6 @@
+tok
+pymongo
+discord
+python-chess
+cairosvg
+psutil
