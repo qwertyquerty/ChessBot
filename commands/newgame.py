@@ -34,18 +34,17 @@ class C_Newgame(Command):
 						if variant == VARIANT_CUSTOMFEN and len(ctx.args) < 1:
 							await ctx.ch.send("Please provide a FEN to start from.")
 
-						hasFEN = None
+						has_fen = None
 
 						if variant == VARIANT_CUSTOMFEN:
 							try:
 								board = chess.Board()
-								joinedArgs = " ".join(ctx.args)
-								joinedArgs = joinedArgs.replace("<@" + str(ctx.mentions[0].id) + ">", "")				
-								board.set_fen(joinedArgs)
-								hasFEN = board.fen()
+								joined_args = " ".join(ctx.args).replace(ctx.mentions[0].mention, "")
+								board.set_fen(joined_args)
+								has_fen = board.fen()
 							except ValueError as E:
 								return await ctx.ch.send("Invalid FEN! Make sure to only mention the user along with the FEN.")
-							m = await ctx.ch.send("{u1}, you are being challenged to a **{rated}** **{game}** game by {u2}!\n**{turn}** to move\n".format(u1=ctx.mentions[0].mention, rated=RATED_NAMES[rated], game=VARIANT_NAMES[variant], u2=ctx.mem.mention, turn=COLOR_NAMES[board.turn]), file=makeboard(board))
+							m = await ctx.ch.send("{u1}, you are being challenged to a **{rated} {game}** game by {u2}!\n**{turn}** to move\n".format(u1=ctx.mentions[0].mention, rated=RATED_NAMES[rated], game=VARIANT_NAMES[variant], u2=ctx.mem.mention, turn=COLOR_NAMES[board.turn]), file=makeboard(board))
 						else:
 							m = await ctx.ch.send("{u1}, you are being challenged to a **{rated}** game of **{game}** by {u2}!".format(u1=ctx.mentions[0].mention,rated=RATED_NAMES[rated],game=VARIANT_NAMES[variant],u2=ctx.mem.mention))
 													
@@ -62,7 +61,7 @@ class C_Newgame(Command):
 								u1 = db.User.from_mem(ctx.mem)
 								u2 = db.User.from_mem(ctx.mentions[0])
 								if not db.Game.from_user_id(ctx.mem.id) and not db.Game.from_user_id(ctx.mentions[0].id):
-									db.Game.new(u1.id, u2.id, variant=variant, rated=rated, fen=hasFEN)
+									db.Game.new(u1.id, u2.id, variant=variant, rated=rated, fen=has_fen)
 
 									if ctx.dbguild != None:
 										ctx.dbguild.inc("games", 1)

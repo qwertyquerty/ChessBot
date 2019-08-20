@@ -71,8 +71,8 @@ class Game():
 			elif variant == VARIANT_HORDE:fen = chess.variant.HordeBoard().fen()
 			elif variant == VARIANT_960:
 				holder = chess.Board(chess960=True)
-				boardNum = random.randint(0,960)
-				holder.set_chess960_pos(boardNum)
+				boar_num = random.randint(0,960)
+				holder.set_chess960_pos(boar_num)
 				fen = holder.fen()
 			elif variant == VARIANT_CUSTOMFEN:
 				fen = fen
