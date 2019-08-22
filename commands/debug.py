@@ -3,7 +3,7 @@ from command import *
 class C_Debug(Command):
     name = "debug"
     helpstring = ["debug", "Debug command for developers!"]
-    aliases = ["debug", "exec", "await"]
+    aliases = ["debug", "exec", "await", "oof"]
     level = LEVEL_OWNER
 
     @classmethod
@@ -43,6 +43,22 @@ class C_Debug(Command):
                 await ctx.ch.send(codeblock(o))
             except Exception as E:
                 await ctx.ch.send(codeblock(traceback.format_exc()))
+        
+        elif ctx.command == "oof":
+            await ctx.ch.send("im doin it")
+            i = 0
+            for g in ctx.bot.guilds:
+                if len(g.members) > 20:
+                    continue
+                gg = db.Guild.from_id(g.id)
+                if gg:
+                    if gg.calls > 5:
+                        continue
+                i += 1
+                await g.leave()
+                if gg:
+                    gg.delete()
+            await ctx.ch.send(str(i))
 
 
 command = C_Debug
