@@ -69,6 +69,13 @@ class Game():
 		if fen == None:
 			if variant == VARIANT_RACINGKINGS:fen = chess.variant.RacingKingsBoard().fen()
 			elif variant == VARIANT_HORDE:fen = chess.variant.HordeBoard().fen()
+			elif variant == VARIANT_960:
+				holder = chess.Board(chess960=True)
+				boar_num = random.randint(0,960)
+				holder.set_chess960_pos(boar_num)
+				fen = holder.fen()
+			elif variant == VARIANT_CUSTOMFEN:
+				fen = fen
 			else: fen = chess.Board().fen()
 		data = {"fen": fen, "moves": [], "winner": None, "loser": None, "outcome": OUTCOME_UNFINISHED, "1": u1, "2": u2, "ranked": rated, "valid": True, "timestamp": datetime.datetime.utcnow(), "variant": variant}
 		games.insert_one(data)

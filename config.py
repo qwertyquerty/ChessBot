@@ -23,7 +23,10 @@ VARIANT_KOTH = 4
 VARIANT_ANTICHESS = 5
 VARIANT_RACINGKINGS = 6
 VARIANT_HORDE = 7
-VARIANT_NAMES = ["Chess", "Suicide", "Crazyhouse", "Atomic", "King of the Hill", "Antichess", "Racing Kings", "Horde"]
+VARIANT_960 = 8
+VARIANT_CUSTOMFEN = 9
+VARIANT_NAMES = ["Chess", "Suicide", "Crazyhouse", "Atomic",
+                 "King of the Hill", "Antichess", "Racing Kings", "Horde", "Chess960", "Custom FEN"]
 
 RATED = True
 CASUAL = False

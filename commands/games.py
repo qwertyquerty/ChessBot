@@ -6,10 +6,17 @@ class C_Games(Command):
 
 
     @classmethod
-    async def run(self,ctx):
+    async def run(self, ctx):
         page = 0
-        if ctx.mentions:
-            u = db.User.from_mem(ctx.mentions[0])
+        a = -1 # Not found
+        if len(ctx.args) > 0:
+            if (len(ctx.mentions) == 0):
+                a = int(ctx.args[0])
+            else:
+                a = int(ctx.mentions[0].id)
+				
+        if a != -1 and len(str(a)) > 16 and len(str(a)) < 20:
+            u = db.User.from_id(int(a))
             if len(ctx.args) >= 2:
                 try:
                     page = int(ctx.args[1])-1
@@ -41,7 +48,7 @@ class C_Games(Command):
 
         gs = gs[page*PAGELENGTH:(page+1)*PAGELENGTH]
         for g in gs:
-            em.add_field(name=str(g._id),value="{} vs {} ({})".format(db.User.from_id(g.white).name, db.User.from_id(g.black).name, OUTCOME_NAMES[g.outcome]), inline=False)
+            em.add_field(name="{}".format(g._id), value="{} vs {} ({}) — {} Moves".format(db.User.from_id(g.white).name, db.User.from_id(g.black).name, OUTCOME_NAMES[g.outcome], math.ceil(len(db.Game.from_id(g._id).moves) / 2)), inline=False)
 
         await ctx.ch.send(embed=em)
 
