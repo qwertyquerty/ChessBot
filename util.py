@@ -1,3 +1,4 @@
+import aiohttp
 import math
 from config import *
 import db
@@ -30,7 +31,7 @@ async def send_dbl_stats(bot):
         async with aiohttp.ClientSession() as aioclient:
             await aioclient.post(DBLURL, data=payload, headers=DBLHEADERS)
     except:
-        pass
+        await log_lone_error(bot,"DBL STATS API",traceback.format_exc())
 
 def makeboard(board):
     if len(board.move_stack)>0:
@@ -119,6 +120,11 @@ async def log_error(bot, msg, error):
     data = data.format(msg.author, msg.author.id, msg.guild, msg.guild.id, msg.channel, msg.channel.id, msg.content, msg.id,error)
     await bot.get_channel(ERRORCHANNEL).send(data)
 
+async def log_lone_error(bot, event, error):
+    data = "```ERROR IN: {}\nTRACEBACK:\n\n{}```"
+    data = data.format(event, error)
+    await bot.get_channel(ERRORCHANNEL).send(data)
+
 
 async def reward_game(winner,loser,outcome, game, channel, bot):
     winner = db.User.from_id(winner)
@@ -135,6 +141,10 @@ async def reward_game(winner,loser,outcome, game, channel, bot):
             await channel.send(random.choice(WINMESSAGES).format(winner=ment(winner.id), loser=ment(loser.id))+"! Checkmate! ({}/{})".format(new_elo[0]-winner.elo,new_elo[1]-loser.elo))
         else:
             await channel.send(random.choice(WINMESSAGES).format(winner=ment(winner.id), loser=ment(loser.id))+"! Checkmate!")
+        
+        await bot.get_channel(LOGCHANNEL).send("Sending ad in {}: {}".format(channel.guild.name, channel.name))
+        await channel.send("Check out the rising Chess YouTube Channel `Chess Meal!` \U0001F354 \u265F\n\nThey do chess analysis videos, animation/comedy sketches, player interviews, funny compilations and much more!\nhttps://youtu.be/FeD_xKLvhg8")
+
         game.end(winner.id, loser.id, OUTCOME_CHECKMATE)
 
     if outcome == OUTCOME_RESIGN:

@@ -64,9 +64,9 @@ EMBED_COLOR = 4623620
 ID_REGEX = re.compile("[0-9]+")
 USERNAME_REGEX = re.compile(".+#[0-9][0-9][0-9][0-9]")
 
-DBLURL = "https://discordbots.org/api/bots/366770566331629579/stats"
-DISCURL = "https://discordapp.com/api"
-VOTEURL = "https://discordbots.org/bot/366770566331629579/vote"
+DBLURL = "https://top.gg/api/bots/366770566331629579/stats"
+DISCURL = "https://top.gg/api"
+VOTEURL = "https://top.gg/bot/366770566331629579/vote"
 
 DBLHEADERS = {"Authorization" : DBLTOKEN}
 DISCHEADERS = {"Authorization" : "Bot "+BOTTOKEN}

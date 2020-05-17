@@ -8,11 +8,11 @@ class C_Profile(Command):
 	@classmethod
 	async def run(self,ctx):
 		if ctx.mentions:
-			member = await ctx.bot.get_user_info(ctx.mentions[0].id)
+			member = await ctx.bot.fetch_user(ctx.mentions[0].id)
 			user = db.User.from_mem(ctx.mentions[0])
 
 		else:
-			member = await ctx.bot.get_user_info(ctx.mem.id)
+			member = await ctx.bot.fetch_user(ctx.mem.id)
 			user = ctx.user
 
 
