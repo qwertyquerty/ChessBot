@@ -51,3 +51,49 @@ class CommandStats(Command):
         em.add_field(name="Games",value="{} {}/d {}".format(v[0], v[1], emotes[bool(v[0])]))
 
         await ctx.ch.send(embed=em)
+
+
+class CommandAnalytics(Command):
+    name = "analytics"
+    helpstring = ["analytics", "View the bot analytics."]
+    level = LEVEL_MOD
+
+    @classmethod
+    async def run(self,ctx):
+        em = discord.Embed()
+        
+        em.colour = discord.Colour(config.COLOR)
+        em.type = "rich"
+
+        days_ago = 30
+
+        if len(ctx.args) > 0:
+            try:
+                days_ago = int(ctx.args[0])
+            except:
+                pass
+
+        em.title = "ChessBot Analytics (Past {} Days)".format(days_ago)
+
+        games = db.games.find({"timestamp": {"$gte": datetime.datetime.now() - datetime.timedelta(days_ago)}})
+        num_games = games.count()
+
+        em.add_field(name="Games", value="{} ({}/d)".format(num_games, int(round(num_games/days_ago, 0))))
+
+        
+        total_moves = 0
+
+        active_users = []
+
+        for game in games:
+            if game["1"] != active_users: active_users.append(game["1"])
+            if game["2"] != active_users: active_users.append(game["2"])
+
+            total_moves += len(game["moves"])
+
+        em.add_field(name="Active Users", value="{}".format(len(active_users)))
+
+        em.add_field(name="Total Moves", value="{} ({}/d {}/g)".format(total_moves, int(round(total_moves/days_ago, 0)), int(round(total_moves/num_games, 0))))
+
+
+        await ctx.ch.send(embed=em)
