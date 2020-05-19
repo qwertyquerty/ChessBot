@@ -171,7 +171,6 @@ class User(DBObject):
 		self.votes = d["votes"]
 		self.bio = d["bio"]
 		self.flags = d["flags"]
-		self.color = d["color"]
 		self.elo = d["elo"]
 		self.level = d["level"]
 
@@ -200,7 +199,7 @@ class User(DBObject):
 
 	@classmethod
 	def new(cls,userid,name):
-		data = {"name":name,"id":userid, "flags": 0,"unique":[],"votes": 0, "inv": [], "bio": None, "color": config.COLOR, "elo": config.STARTING_ELO, "level": 0}
+		data = {"name": name, "id": userid, "flags": 0, "votes": 0, "bio": None, "elo": config.STARTING_ELO, "level": 0}
 		users.insert_one(data)
 		return User.from_user_id(userid)
 

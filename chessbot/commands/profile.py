@@ -19,7 +19,7 @@ class CommandProfile(Command):
 		em = discord.Embed()
 		em.title=member.name
 		em.set_thumbnail(url=member.avatar_url)
-		em.colour = discord.Colour(user.color)
+		em.colour = discord.Colour(EMBED_COLOR)
 		em.type = "rich"
 		if user.bio !=None:
 			em.description = user.bio
