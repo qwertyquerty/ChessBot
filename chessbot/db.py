@@ -239,6 +239,16 @@ class User(DBObject):
 		self.set('flags', self.flags&~USER_FLAG_BLACKLISTED)
 		elo_sync()
 		return self
+	
+	def get_rank(self):
+		rank_cur = db.users.find().sort("elo", -1)
+		i = 0
+
+		for user in rank_cur:
+			if user["id"] == self.id:
+				return i
+		
+			i += 1
 
 
 class Guild(DBObject):
