@@ -1,4 +1,4 @@
 from chessbot.config import *
-from chessbot import bot
+from chessbot.bot import bot
 
 bot.run(BOTTOKEN)

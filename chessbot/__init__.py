@@ -1,1 +1,0 @@
-from chessbot.bot import bot
