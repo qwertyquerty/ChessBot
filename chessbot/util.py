@@ -62,11 +62,11 @@ def elo_rating(ra, rb, K, draw=False):
     pa = elo_probability(rb, ra)
 
     if not draw:
-        ra = int(round(ra + K * (1 - pa), 0))
-        rb = int(round(rb + K * (0 - pb), 0))
+        ra = ra + K * (1 - pa)
+        rb = rb + K * (0 - pb)
     else:
-        ra = int(round(ra + K * (0.5 - pa), 0))
-        rb = int(round(rb + K * (0.5 - pb), 0))
+        ra = ra + K * (0.5 - pa)
+        rb = rb + K * (0.5 - pb)
 
     return (ra,rb)
 
@@ -151,7 +151,7 @@ async def reward_game(winner,loser,outcome, game, channel, bot):
 
     if outcome == OUTCOME_CHECKMATE:
         if game.ranked:
-            await channel.send(random.choice(WINMESSAGES).format(winner=ment(winner.id), loser=ment(loser.id))+"! Checkmate! ({}/{})".format(new_elo[0]-winner.elo,new_elo[1]-loser.elo))
+            await channel.send(random.choice(WINMESSAGES).format(winner=ment(winner.id), loser=ment(loser.id))+"! Checkmate! ({}/{})".format(int(round(new_elo[0]-winner.elo, 0)),int(round(new_elo[1]-loser.elo, 0))))
         else:
             await channel.send(random.choice(WINMESSAGES).format(winner=ment(winner.id), loser=ment(loser.id))+"! Checkmate!")
         
@@ -160,7 +160,7 @@ async def reward_game(winner,loser,outcome, game, channel, bot):
     if outcome == OUTCOME_RESIGN:
         if len(game.moves) > 2:
             if game.ranked:
-                await channel.send("You have resigned! <@!"+str(winner.id)+"> wins! ({}/{})".format(new_elo[0]-winner.elo,new_elo[1]-loser.elo))
+                await channel.send("You have resigned! <@!"+str(winner.id)+"> wins! ({}/{})".format(int(round(new_elo[0]-winner.elo, 0)),int(round(new_elo[1]-loser.elo, 0))))
             else:
                 await channel.send("You have resigned! <@!"+str(winner.id)+"> wins!")
             game.end(winner.id, loser.id, OUTCOME_RESIGN)
@@ -174,7 +174,7 @@ async def reward_game(winner,loser,outcome, game, channel, bot):
                 new_elo = elo_rating(winner.elo, loser.elo, ELO_K, draw=True)
                 winner.set("elo", new_elo[0])
                 loser.set("elo", new_elo[1])
-                await channel.send("The game is a draw! Game over! ({}/{})".format(new_elo[0]-winner.elo,new_elo[1]-loser.elo))
+                await channel.send("The game is a draw! Game over! ({}/{})".format(int(round(new_elo[0]-winner.elo, 0)),int(round(new_elo[1]-loser.elo, 0))))
 
             else:
                 await channel.send("The game is a draw! Game over!")

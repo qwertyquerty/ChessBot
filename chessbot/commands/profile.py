@@ -23,7 +23,7 @@ class CommandProfile(Command):
 		em.type = "rich"
 		if user.bio !=None:
 			em.description = user.bio
-		em.add_field(name="Elo", value=user.elo, inline=True)
+		em.add_field(name="Elo", value=int(round(user.elo, 0)), inline=True)
 		em.add_field(name="Rank", value="#{}".format(user.get_rank()+1), inline=True)
 		em.add_field(name="Wins", value=user.wins, inline=True)
 		em.add_field(name="Losses", value=user.loss, inline=True)
