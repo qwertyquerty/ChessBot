@@ -1,4 +1,4 @@
-from chessbot.bot import prefix_cache
+import chessbot.bot as cb
 from chessbot.command import *
 
 class CommandPrefix(Command):
@@ -10,7 +10,7 @@ class CommandPrefix(Command):
 	async def run(self,ctx):
 		if len(ctx.args) > 0:
 			if len(ctx.args[0]) < 3:
-				del prefix_cache[ctx.guild.id]
+				del cb.prefix_cache[ctx.guild.id]
 				ctx.dbguild.set("prefix", ctx.args[0])
 				await ctx.ch.send("Prefix set!")
 			else:
