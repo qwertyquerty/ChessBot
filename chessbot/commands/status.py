@@ -86,8 +86,8 @@ class CommandAnalytics(Command):
         active_users = []
 
         for game in games:
-            if game["1"] != active_users: active_users.append(game["1"])
-            if game["2"] != active_users: active_users.append(game["2"])
+            if game["1"] not in active_users: active_users.append(game["1"])
+            if game["2"] not in active_users: active_users.append(game["2"])
 
             total_moves += len(game["moves"])
 
