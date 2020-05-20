@@ -22,6 +22,6 @@ class CommandLeaderboard(Command):
 
 		em.title = title.title()
 		for i,ii in zip(lead,range(len(lead))):
-			em.add_field(name=str(ii+1),value=i["name"]+": "+str(i[unit]),inline=False)
+			em.add_field(name=str(ii+1),value=i["name"]+": "+str(int(round(i[unit], 0))),inline=False)
 
 		await ctx.ch.send(embed=em)
