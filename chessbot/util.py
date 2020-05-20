@@ -155,9 +155,6 @@ async def reward_game(winner,loser,outcome, game, channel, bot):
         else:
             await channel.send(random.choice(WINMESSAGES).format(winner=ment(winner.id), loser=ment(loser.id))+"! Checkmate!")
         
-        await bot.get_channel(LOGCHANNEL).send("Sending ad in {}: {}".format(channel.guild.name, channel.name))
-        await channel.send("Check out the rising Chess YouTube Channel `Chess Meal!` \U0001F354 \u265F\n\nThey do chess analysis videos, animation/comedy sketches, player interviews, funny compilations and much more!\nhttps://youtu.be/FeD_xKLvhg8")
-
         game.end(winner.id, loser.id, OUTCOME_CHECKMATE)
 
     if outcome == OUTCOME_RESIGN:
