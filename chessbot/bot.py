@@ -9,6 +9,9 @@ import traceback
 
 command_list = Command.__subclasses__()
 
+prefix_cache = {}
+
+
 bot = discord.AutoShardedClient()
 stats = Stats(bot)
 
@@ -56,13 +59,23 @@ async def on_message(message):
 	try:
 		ctx.guild = ctx.msg.guild
 		ctx.mentions = ctx.msg.mentions
-		ctx.dbguild = db.Guild.from_guild(ctx.guild)
 
-		if ctx.guild.name != ctx.dbguild.name: ctx.dbguild.set("name", ctx.guild.name)
+		ctx.dbguild = None
 
-		ctx.prefix = ctx.dbguild.prefix
+		if ctx.guild.id in prefix_cache:
+			ctx.prefix = prefix_cache[ctx.guild.id]
+		else:
+			ctx.dbguild = db.Guild.from_guild(ctx.guild)
+			ctx.prefix = ctx.dbguild.prefix
+			prefix_cache[ctx.guild.id] = ctx.dbguild.prefix
 
 		if ctx.mem.id != BOT_ID and not ctx.mem.bot and ctx.content.startswith(ctx.prefix):
+
+			if ctx.dbguild == None:
+				ctx.dbguild = db.Guild.from_guild(ctx.guild)
+
+			if ctx.guild.name != ctx.dbguild.name: ctx.dbguild.set("name", ctx.guild.name)
+
 			ctx.user = db.User.from_mem(ctx.mem)
 
 			if ctx.user.name != str(ctx.mem): ctx.user.set("name", str(ctx.mem))
