@@ -69,7 +69,7 @@ class CommandGame(Command):
         else:
             if len(ctx.args) > 0:
                 try:
-                    g = db.Game.from_guild_id(ctx.args[0])
+                    g = db.Game.from_id(ctx.args[0])
                     if not g:
                         await ctx.ch.send("Game not found!")
                         return
