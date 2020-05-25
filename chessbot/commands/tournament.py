@@ -41,11 +41,11 @@ class CommandMegaAd(Command):
 
 		notifs = 0
 
-		for guild in ctx.bot.guilds:
+		for guild in ctx.bot.guilds.copy():
 			try:
 				dbguild = db.Guild.from_guild_id(guild.id)
-
-				if dbguild.subscribed:
+	
+				if dbguild and dbguild.subscribed:
 					for channel in guild.channels:
 						if "chess" in channel.name.lower():
 							try:
