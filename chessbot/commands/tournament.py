@@ -9,18 +9,18 @@ class CommandTournament(Command):
 	async def run(self,ctx):
 
 			if len(ctx.args) > 0 and ctx.args[0] == "signup":
-			
-			chessbotguild = ctx.bot.get_guild(CHESSBOTSERVER)
+				
+				chessbotguild = ctx.bot.get_guild(CHESSBOTSERVER)
 
-			if ctx.mem not in chessbotguild:
-				await ctx.mem.send("In order to sign up for the tournament, you must be in the ChessBot Community server, as that is where the games will take place. After joining, try signing up again.\n\nHere's a link for ya: {}".format(DISCORD_LINK))
-				return
-			
-			await ctx.bot.get_channel(714596355238133810).send("{} ({})".format(str(ctx.mem), ctx.mem.id))
+				if ctx.mem not in chessbotguild:
+					await ctx.mem.send("In order to sign up for the tournament, you must be in the ChessBot Community server, as that is where the games will take place. After joining, try signing up again.\n\nHere's a link for ya: {}".format(DISCORD_LINK))
+					return
+				
+				await ctx.bot.get_channel(714596355238133810).send("{} ({})".format(str(ctx.mem), ctx.mem.id))
 
-			await ctx.mem.send("Thank you for signing up for the tournament. You will be notified about your first game sometime around 5/30/2020. You must stay in the ChessBot Community server if you wish to compete in the tournament. A bracket will be released in a few days.")
+				await ctx.mem.send("Thank you for signing up for the tournament. You will be notified about your first game sometime around 5/30/2020. You must stay in the ChessBot Community server if you wish to compete in the tournament. A bracket will be released in a few days.")
 
-			await ctx.ch.send("You have successfully signed up for the tournament!")
+				await ctx.ch.send("You have successfully signed up for the tournament!")
 
 
 class CommandMegaAd(Command):
