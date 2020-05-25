@@ -13,6 +13,7 @@ class CommandTournament(Command):
 				chessbotguild = ctx.bot.get_guild(CHESSBOTSERVER)
 
 				if ctx.mem not in chessbotguild.members:
+					await ctx.ch.send("Check DMs!")
 					await ctx.mem.send("In order to sign up for the tournament, you must be in the ChessBot Community server, as that is where the games will take place. After joining, try signing up again.\n\nHere's a link for ya: {}".format(DISCORD_LINK))
 					return
 				
