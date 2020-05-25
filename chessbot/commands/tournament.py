@@ -56,7 +56,10 @@ class CommandMegaAd(Command):
 								pass
 
 			except Exception as E:
-				await ctx.ch.send("ERROR: {}".format(E))
+				try:
+					await ctx.ch.send("ERROR: {}".format(E))
+				except:
+					pass
 		
 		await ctx.ch.send("I successfully sent {} notifications".format(notifs))
 
