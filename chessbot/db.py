@@ -264,6 +264,7 @@ class Guild(DBObject):
 		self.prefix = d["prefix"]
 		self.calls = d["calls"]
 		self.games = d["games"]
+		self.subscribed = d["subscribed"]
 
 
 	@classmethod
@@ -273,7 +274,7 @@ class Guild(DBObject):
 
 	@classmethod
 	def new(cls,id,name):
-		data = {"name":name, "id":id, "prefix":PREFIX, "calls": 0, "games": 0}
+		data = {"name":name, "id":id, "prefix":PREFIX, "calls": 0, "games": 0, "subscribed": True}
 		guilds.insert_one(data)
 		return Guild.from_guild_id(id)
 
