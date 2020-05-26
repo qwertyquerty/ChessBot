@@ -23,7 +23,7 @@ class CommandTournament(Command):
 
 				await ctx.ch.send("You have successfully signed up for the tournament!")
 
-
+"""
 class CommandMegaAd(Command):
 	name = "megaad"
 	aliases = []
@@ -69,7 +69,7 @@ class CommandMegaAd(Command):
 					pass
 		
 		await ctx.ch.send("I successfully sent {} notifications".format(notifs))
-
+"""
 
 class CommandUnsubscribe(Command):
 	name = "unsubscribe"
