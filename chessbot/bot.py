@@ -82,11 +82,12 @@ async def on_message(message):
 			if ctx.user.flags & USER_FLAG_BLACKLISTED: return
 
 			ctx.game = db.Game.from_user_id(ctx.mem.id)
-			ctx.args = ' '.join(ctx.msg.content.strip(ctx.prefix).split()).split()
+			ctx.raw_args = ' '.join(ctx.msg.content.lstrip(ctx.prefix).split()).split()
+			ctx.args = []
 
-			if len(ctx.args) == 0: return
+			if len(ctx.raw_args) == 0: return
 
-			ctx.command = ctx.args.pop(0).lower()
+			ctx.command = ctx.raw_args.pop(0).lower()
 
 			for cmd in command_list:
 				if ctx.command == cmd.name or ctx.command in cmd.aliases:

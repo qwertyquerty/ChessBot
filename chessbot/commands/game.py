@@ -3,52 +3,35 @@ from chessbot.command import *
 class CommandGames(Command):
     name = "games"
     helpstring = ["games [mention]", "View a list of games a user has played."]
-
+    parameters = [ParamUser(required=False), ParamInt("page", required=False)]
 
     @classmethod
     async def run(self, ctx):
-        page = 0
-        a = -1 # Not found
-        if len(ctx.args) > 0:
-            if (len(ctx.mentions) == 0):
-                a = int(ctx.args[0])
-            else:
-                a = int(ctx.mentions[0].id)
-				
-        if a != -1 and len(str(a)) > 16 and len(str(a)) < 20:
-            u = db.User.from_user_id(int(a))
-            if len(ctx.args) >= 2:
-                try:
-                    page = int(ctx.args[1])-1
-                except:
-                    pass
-        else:
-            u = ctx.user
-            if len(ctx.args) >= 1:
-                try:
-                    page = int(ctx.args[0])-1
-                except:
-                    pass
+        mention = ctx.args[0] if ctx.args[0] else ctx.mem
+        page = ctx.args[1] - 1 if ctx.args[1] else 0
 
-        if not u:
-            await ctx.ch.send("User not found!")
-            return
-        gs = u.get_games()
-        if len(gs) == 0:
+        user = db.User.from_user_id(mention.id)
+
+        if not user:
             await ctx.ch.send("No games found!")
             return
 
-        pages = int(math.ceil(len(gs)/PAGELENGTH))
-        page = min(max(page,0), pages-1)
+        games = user.get_games()
+        if len(games) == 0:
+            await ctx.ch.send("No games found!")
+            return
+
+        pages = int(math.ceil(len(games) / PAGELENGTH))
+        page = min(max(page, 0), pages-1)
 
         em = discord.Embed()
-        em.title = "{}'s games ({}/{})".format(u.name,page+1,pages)
+        em.title = "{}'s games ({}/{})".format(user.name, page+1, pages)
         em.colour = discord.Colour(config.COLOR)
         em.type = "rich"
 
-        gs = gs[page*PAGELENGTH:(page+1)*PAGELENGTH]
-        for g in gs:
-            em.add_field(name="{}".format(g._id), value="{} vs {} ({}) â€” {} Moves".format(db.User.from_user_id(g.white).name, db.User.from_user_id(g.black).name, OUTCOME_NAMES[g.outcome], math.ceil(len(db.Game.from_id(g._id).moves) / 2)), inline=False)
+        games = games[page * PAGELENGTH : (page + 1) * PAGELENGTH]
+        for game in games:
+            em.add_field(name="{}".format(game.id), value="{} vs {} ({}) in {} Moves".format(db.User.from_user_id(game.white).name, db.User.from_user_id(game.black).name, OUTCOME_NAMES[game.outcome].lower(), math.ceil(len(db.Game.from_id(game.id).moves) / 2)), inline=False)
 
         await ctx.ch.send(embed=em)
 
@@ -57,52 +40,60 @@ class CommandGames(Command):
 class CommandGame(Command):
     name = "game"
     helpstring = ["game [mention/game id]", "View information about a game."]
-
+    parameters = [ParamUnion((ParamGameID(), ParamUser()), required=False)]
 
     @classmethod
     async def run(self,ctx):
-        if ctx.mentions:
-            g = db.Game.from_user_id_recent(ctx.mentions[0].id)
-            if not g:
-                await ctx.ch.send(ctx.mentions[0].mention+" hasn't played any games!")
-                return
+        game = None
+
+        if isinstance(ctx.args[0], discord.abc.User):
+            game = db.Game.from_user_id_recent(ctx.args[0].id)
+            
+            if not game:
+                await ctx.ch.send("{} hasn't played any games!".format(ctx.args[0].mention))
+
+        elif isinstance(ctx.args[0], str):
+            game = db.Game.from_id(ctx.args[0])
+
+            if not game:
+                await ctx.ch.send("Game not found!")
+        
         else:
-            if len(ctx.args) > 0:
-                try:
-                    g = db.Game.from_id(ctx.args[0])
-                    if not g:
-                        await ctx.ch.send("Game not found!")
-                        return
-                except:
-                    await ctx.ch.send("Game not found!")
-                    return
-            else:
-                g = db.Game.from_user_id_recent(ctx.mem.id)
-                if not g:
-                    await ctx.ch.send("You haven't played any games!")
-                    return
+            game = db.Game.from_user_id_recent(ctx.mem.id)
 
-        await ctx.ch.send(embed=embed_from_game(g))
+            if not game:
+                await ctx.ch.send("You haven't played any games!")
 
+        if game:
+            await ctx.ch.send(embed=embed_from_game(game))
 
 
 class CommandFen(Command):
-	name = "fen"
-	helpstring = ["fen [mention]", "Get the FEN of a game!"]
+    name = "fen"
+    helpstring = ["fen [mention]", "Get the FEN of a game!"]
+    parameters = [ParamUnion((ParamGameID(), ParamUser()), required=False)]
 
+    @classmethod
+    async def run(self,ctx):
+        game = None
 
-	@classmethod
-	async def run(self,ctx):
-		if ctx.mentions:
-			try:
-				g = db.Game.from_user_id_recent(ctx.mentions[0].id)
-				await ctx.ch.send('```'+str(g.fen)+'```')
-			except:
-				await ctx.ch.send(ctx.mentions[0].mention+" hasn't played any games! Make one with {prefix}newgame [mention]".format(prefix=ctx.prefix))
+        if isinstance(ctx.args[0], discord.abc.User):
+            game = db.Game.from_user_id_recent(ctx.args[0].id)
+            
+            if not game:
+                await ctx.ch.send("{} hasn't played any games!".format(ctx.args[0].mention))
 
-		else:
-			try:
-				g = db.Game.from_user_id_recent(ctx.mem.id)
-				await ctx.ch.send('```'+str(g.fen)+'```')
-			except:
-				await ctx.ch.send("You haven't played any games! Make one with {prefix}newgame [mention]".format(prefix=ctx.prefix))
+        elif isinstance(ctx.args[0], str):
+            game = db.Game.from_id(ctx.args[0])
+
+            if not game:
+                await ctx.ch.send("Game not found!")
+        
+        else:
+            game = db.Game.from_user_id_recent(ctx.mem.id)
+
+            if not game:
+                await ctx.ch.send("You haven't played any games!")
+
+        if game:
+            await ctx.ch.send(codeblock(str(game.fen)))

@@ -1,29 +1,28 @@
 from chessbot.command import *
 
 class CommandHelp(Command):
-    name = "help"
-    helpstring = ["help", "You're reading it, buddy..."]
+	name = "help"
+	helpstring = ["help", "You're reading it, buddy..."]
+	parameters = [ParamInt("page", required=False)]
 
-    @classmethod
-    async def run(self,ctx):
-        page = 0
-        if len(ctx.args) > 0:
-            try:
-                page = int(ctx.args[0])-1
-                page = max(0, min(page, len(HELP)-1)) #CLAMP
-            except:
-                page = 0
+	@classmethod
+	async def run(self,ctx):
+		if ctx.args[0]:
+			page = int(ctx.args[0])-1
+			page = max(0, min(page, len(HELP)-1))
+		else:
+			page = 0
 
-        em = discord.Embed()
-        em.title= "Help Page {}/{}".format(page+1,len(HELP))
-        em.colour = discord.Colour(COLOR)
-        em.type = "rich"
+		em = discord.Embed()
+		em.title= "Help Page {}/{}".format(page+1,len(HELP))
+		em.colour = discord.Colour(COLOR)
+		em.type = "rich"
 
-        for cmd,desc in HELP[page].items():
-            em.add_field(name="{prefix}{cmd}".format(prefix=ctx.prefix,cmd=cmd),value=desc.format(prefix=ctx.prefix), inline=False)
-        em.set_footer(text="{prefix}help (page)".format(prefix=ctx.prefix))
+		for cmd,desc in HELP[page].items():
+			em.add_field(name="{prefix}{cmd}".format(prefix=ctx.prefix,cmd=cmd),value=desc.format(prefix=ctx.prefix), inline=False)
+		em.set_footer(text="{prefix}help (page)".format(prefix=ctx.prefix))
 
-        await ctx.ch.send(embed=em)
+		await ctx.ch.send(embed=em)
 
 
 class CommandAbout(Command):

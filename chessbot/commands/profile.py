@@ -4,21 +4,17 @@ class CommandProfile(Command):
 	name = "profile"
 	aliases = ["pf"]
 	helpstring = ["profile [mention]", "View your, or someone else's profile!"]
+	parameters = [ParamUser(required=False)]
 
 	@classmethod
 	async def run(self,ctx):
-		if ctx.mentions:
-			member = await ctx.bot.fetch_user(ctx.mentions[0].id)
-			user = db.User.from_mem(ctx.mentions[0])
+		mention = ctx.args[0] if ctx.args[0] else ctx.mem
 
-		else:
-			member = await ctx.bot.fetch_user(ctx.mem.id)
-			user = ctx.user
-
+		user = db.User.from_user_id(mention.id)
 
 		em = discord.Embed()
-		em.title=member.name
-		em.set_thumbnail(url=member.avatar_url)
+		em.title=mention.name
+		em.set_thumbnail(url=mention.avatar_url)
 		em.colour = discord.Colour(EMBED_COLOR)
 		em.type = "rich"
 		if user.bio !=None:
@@ -49,8 +45,8 @@ class CommandBio(Command):
 
 	@classmethod
 	async def run(self,ctx):
-		if len(ctx.args) > 0:
-			bio = ' '.join(ctx.args[0:])
+		if len(ctx.raw_args) > 0:
+			bio = ' '.join(ctx.raw_args[0:])
 			if len(bio)<=250:
 				ctx.user.set("bio", bio)
 				await ctx.ch.send("Bio set!")

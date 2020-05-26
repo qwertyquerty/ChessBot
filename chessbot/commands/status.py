@@ -56,6 +56,7 @@ class CommandStats(Command):
 class CommandAnalytics(Command):
     name = "analytics"
     helpstring = ["analytics", "View the bot analytics."]
+    parameters = [ParamInt("days", required=False)]
     level = LEVEL_MOD
 
     @classmethod
@@ -67,11 +68,7 @@ class CommandAnalytics(Command):
 
         days_ago = 30
 
-        if len(ctx.args) > 0:
-            try:
-                days_ago = int(ctx.args[0])
-            except:
-                pass
+        if ctx.args[0]: days_ago = ctx.args[0]
 
         em.title = "ChessBot Analytics (Past {} Days)".format(days_ago)
 
