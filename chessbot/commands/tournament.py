@@ -48,13 +48,13 @@ class CommandMegaAd(Command):
 				if dbguild and dbguild.subscribed:
 					cont = False
 					for channel in guild.channels:
-						if "chess" in channel.name.lower():
+						if "chess" in channel.name.lower() or "commands" in channel.name.lower():
 							cont = True
 					
 					if cont == True: continue
 
 					for channel in guild.channels:
-						if "commands" in channel.name.lower():
+						if "bots" in channel.name.lower():
 							try:
 								await channel.send(announcement.replace("[prefix]", dbguild.prefix))
 								notifs += 1
