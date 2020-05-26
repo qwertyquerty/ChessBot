@@ -8,7 +8,7 @@ class CommandBlacklist(Command):
 
     @classmethod
     async def run(self,ctx):
-        db.User.from_mem(ctx.mentions[0]).blacklist()
+        db.User.from_mem(ctx.args[0]).blacklist()
         await ctx.ch.send("They have been cast into the pit of DOOM!")
 
 
@@ -20,7 +20,7 @@ class CommandUnblacklist(Command):
 
     @classmethod
     async def run(self,ctx):
-        db.User.from_mem(ctx.mentions[0]).unblacklist()
+        db.User.from_mem(ctx.args[0]).unblacklist()
         await ctx.ch.send("They have been resurrected from the pit of DOOM!")
 
 
@@ -33,6 +33,6 @@ class CommandReset(Command):
     
     @classmethod
     async def run(self,ctx):
-        [g.delete() for g in db.User.from_mem(ctx.mentions[0]).get_games()]
+        [g.delete() for g in db.User.from_mem(ctx.args[0]).get_games()]
         elo_sync()
         await ctx.ch.send("User has been reset!")
