@@ -46,8 +46,15 @@ class CommandMegaAd(Command):
 				dbguild = db.Guild.from_guild_id(guild.id)
 	
 				if dbguild and dbguild.subscribed:
+					cont = False
 					for channel in guild.channels:
 						if "chess" in channel.name.lower():
+							cont = True
+					
+					if cont == True: continue
+
+					for channel in guild.channels:
+						if "commands" in channel.name.lower():
 							try:
 								await channel.send(announcement.replace("[prefix]", dbguild.prefix))
 								notifs += 1
