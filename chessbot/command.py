@@ -90,7 +90,7 @@ class ParamUser(Parameter):
     name = "user"
 
     def parse(self, ctx, arg):
-        mention_re = re.search(r"^<@!(\d+)>$", arg)
+        mention_re = re.search(r"^<@!?(\d+)>$", arg)
         id_re = re.search(r"^(\d+)$", arg)
 
         id = None
@@ -102,7 +102,8 @@ class ParamUser(Parameter):
         
         try:
             id = int(id)
-        except:
+        except Exception as E:
+            print(E, arg, id, mention_re.group(1))
             id = None
         
         return ctx.bot.get_user(id)
