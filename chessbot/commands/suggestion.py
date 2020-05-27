@@ -6,7 +6,7 @@ class CommandSuggestion(Command):
 
     @classmethod
     async def run(self,ctx):
-        if len(ctx.args) > 0:
+        if len(ctx.raw_args) > 0:
             await ctx.ch.send("Suggestion sent!")
             em = discord.Embed()
             em.description=' '.join(ctx.raw_args[0:])
