@@ -9,6 +9,9 @@ class CommandTournament(Command):
 	@classmethod
 	async def run(self,ctx):
 		if ctx.args[0] == "signup":
+
+			await ctx.ch.send("Signups have closed!")
+			return
 			
 			chessbotguild = ctx.bot.get_guild(CHESSBOTSERVER)
 
