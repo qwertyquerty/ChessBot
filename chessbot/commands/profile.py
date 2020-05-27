@@ -10,14 +10,14 @@ class CommandProfile(Command):
 	async def run(self,ctx):
 		mention = ctx.args[0] if ctx.args[0] else ctx.mem
 
-		user = db.User.from_user_id(mention.id)
+		user = db.User.from_mem(mention)
 
 		em = discord.Embed()
 		em.title=mention.name
 		em.set_thumbnail(url=mention.avatar_url)
 		em.colour = discord.Colour(EMBED_COLOR)
 		em.type = "rich"
-		if user.bio !=None:
+		if user.bio != None:
 			em.description = user.bio
 		em.add_field(name="Elo", value=int(round(user.elo, 0)), inline=True)
 		em.add_field(name="Rank", value="#{}".format(user.get_rank()+1), inline=True)
