@@ -144,7 +144,7 @@ async def reward_game(winner,loser,outcome, game, channel, bot):
     loser = db.User.from_user_id(loser)
     guild = channel.guild
     if game.ranked:
-        if outcome == OUTCOME_RESIGN or outcome == OUTCOME_CHECKMATE:
+        if (outcome == OUTCOME_RESIGN and len(game.moves) > 2) or outcome == OUTCOME_CHECKMATE:
             new_elo = elo_rating(winner.elo, loser.elo, ELO_K)
             winner.set("elo", new_elo[0])
             loser.set("elo", new_elo[1])
