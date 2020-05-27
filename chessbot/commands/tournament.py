@@ -74,7 +74,7 @@ class CommandMegaAd(Command):
 class CommandUnsubscribe(Command):
 	name = "unsubscribe"
 	helpstring = ["unsubscribe", "Unsubscribe your guild from notifications!"]
-	flags = FLAG_MUST_BE_SERVER_OWNER
+	flags = FLAG_MUST_HAVE_PERM_MANAGE_SERVER
 
 	@classmethod
 	async def run(self,ctx):
@@ -85,7 +85,7 @@ class CommandUnsubscribe(Command):
 class CommandSubscribe(Command):
 	name = "subscribe"
 	helpstring = ["subscribe", "Subscribe your guild to notifications!"]
-	flags = FLAG_MUST_BE_SERVER_OWNER
+	flags = FLAG_MUST_HAVE_PERM_MANAGE_SERVER
 
 	@classmethod
 	async def run(self,ctx):

@@ -43,6 +43,7 @@ LEVEL_OWNER = 3
 FLAG_NONE = 0
 FLAG_MUST_BE_IN_GAME = 1
 FLAG_MUST_BE_SERVER_OWNER = 2
+FLAG_MUST_HAVE_PERM_MANAGE_SERVER = 4
 
 #
 USER_FLAG_BLACKLISTED = 1
@@ -94,8 +95,7 @@ BADGES = {
     "admin": "\U0001f440",
     "voter": "\U0001f4dd",
     "expert": "\U00002694",
-    "intermediate":
-    "\U0001f5e1",
+    "intermediate": "\U0001f5e1",
     "novice": "\U0001f4a1",
     "addicted": "\U0001f48a",
     "master": "\U0001f3c6",

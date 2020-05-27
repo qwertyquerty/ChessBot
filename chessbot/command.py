@@ -40,6 +40,10 @@ class Command():
             await ctx.ch.send("You must be the server owner to do this!")
             return
         
+        if self.flags & FLAG_MUST_HAVE_PERM_MANAGE_SERVER and not ctx.mem.guild_permissions.manage_guild:
+            await ctx.ch.send("You must have the permission `manage server` to do this!")
+            return           
+
         arg_num = 0
 
         for param in self.parameters:

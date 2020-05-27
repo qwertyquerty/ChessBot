@@ -5,7 +5,7 @@ class CommandPrefix(Command):
 	name = "prefix"
 	helpstring = ["prefix <prefix>", "Set a new prefix for your server!"]
 	parameters = [ParamString("prefix")]
-	flags = FLAG_MUST_BE_SERVER_OWNER
+	flags = FLAG_MUST_HAVE_PERM_MANAGE_SERVER
 
 	@classmethod
 	async def run(self,ctx):

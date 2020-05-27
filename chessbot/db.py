@@ -175,21 +175,21 @@ class User(DBObject):
 		self.level = d["level"]
 
 		self.badges = []
-		if self.level >= LEVEL_OWNER:self.badges.append("developer")
-		if self.level >= LEVEL_ADMIN:self.badges.append("admin")
-		if self.wins >= 3:self.badges.append("novice")
-		elif self.wins >= 10:self.badges.append("intermediate")
-		elif self.wins >= 20:self.badges.append("expert")
-		if self.games >= 25:self.badges.append("addicted")
-		if self.elo >= 1800:self.badges.append("brilliant")
-		elif self.elo >= 1500:self.badges.append("proficient")
-		elif self.elo <= 900:self.badges.append("blunder")
-		if self.votes > 0:self.badges.append("voter")
-		if self.flags & USER_FLAG_BLACKLISTED:self.badges.append("blacklisted")
-		if self.flags & USER_FLAG_TOURNAMENT_1ST:self.badges.append("tournament-first-place")
-		if self.flags & USER_FLAG_TOURNAMENT_2ND:self.badges.append("tournament-second-place")
-		if self.flags & USER_FLAG_PATRON:self.badges.append("patron")
-		if self.flags & USER_FLAG_MASTER:self.badges.append("master")
+		if self.level >= LEVEL_OWNER: self.badges.append("developer")
+		if self.level >= LEVEL_ADMIN: self.badges.append("admin")
+		if self.wins >= 3: self.badges.append("novice")
+		elif self.wins >= 10: self.badges.append("intermediate")
+		elif self.wins >= 20: self.badges.append("expert")
+		if self.games >= 50: self.badges.append("addicted")
+		if self.elo >= 1700: self.badges.append("brilliant")
+		elif self.elo >= 1400: self.badges.append("proficient")
+		elif self.elo <= 1000: self.badges.append("blunder")
+		if self.votes > 0: self.badges.append("voter")
+		if self.flags & USER_FLAG_BLACKLISTED: self.badges.append("blacklisted")
+		if self.flags & USER_FLAG_TOURNAMENT_1ST: self.badges.append("tournament-first-place")
+		if self.flags & USER_FLAG_TOURNAMENT_2ND: self.badges.append("tournament-second-place")
+		if self.flags & USER_FLAG_PATRON: self.badges.append("patron")
+		if self.flags & USER_FLAG_MASTER: self.badges.append("master")
 
 
 	@classmethod
