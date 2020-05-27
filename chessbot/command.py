@@ -102,8 +102,7 @@ class ParamUser(Parameter):
         
         try:
             id = int(id)
-        except Exception as E:
-            print(E, arg, id, mention_re.group(1))
+        except:
             id = None
         
         return ctx.bot.get_user(id)
