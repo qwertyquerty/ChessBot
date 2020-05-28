@@ -54,7 +54,7 @@ class Command():
                 parsed_arg = param.parse(ctx, arg)
 
                 if parsed_arg == None:
-                    await ctx.ch.send("Invalid input for: `{}` of type `{}`".format(param.name, param.type_name))
+                    await ctx.ch.send("Invalid input for: `{}` of type `{}`! **Usage:** `{}{}`".format(param.name, param.type_name, ctx.prefix, self.usage_string()))
                     return
 
                 ctx.args[arg_num] = parsed_arg
@@ -63,13 +63,25 @@ class Command():
                 ctx.args[arg_num] = None
 
             else:
-                await ctx.ch.send("You must specify: `{}` of type `{}`".format(param.name, param.type_name))
+                await ctx.ch.send("You must specify: `{}` of type `{}`! **Usage:** `{}{}`".format(param.name, param.type_name, ctx.prefix, self.usage_string()))
                 return
 
             arg_num += 1
 
 
         await self.run(ctx)
+    
+    @classmethod
+    def usage_string(self):
+        usage_str = self.name
+        for param in self.parameters:
+            usage_str += " "
+            if param.required:
+                usage_str += "<{}>".format(param.name)
+            else:
+                usage_str += "[{}]".format(param.name)
+        
+        return usage_str
 
     @classmethod
     async def run(self,ctx):
