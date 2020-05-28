@@ -3,14 +3,11 @@ from chessbot.config import *
 from chessbot.util import *
 
 from pymongo import MongoClient
-import math
 import datetime
 import random
 
 import chess
-import itertools
 from bson.objectid import ObjectId
-import json
 import chess.variant
 import chess.pgn
 

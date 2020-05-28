@@ -27,7 +27,7 @@ class CommandGames(Command):
 
         em = discord.Embed()
         em.title = "{}'s games ({}/{})".format(user.name, page+1, pages)
-        em.colour = discord.Colour(config.COLOR)
+        em.colour = discord.Colour(config.EMBED_COLOR)
         em.type = "rich"
 
         games = games[page * PAGELENGTH : (page + 1) * PAGELENGTH]

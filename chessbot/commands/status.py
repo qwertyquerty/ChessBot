@@ -22,7 +22,7 @@ class CommandStats(Command):
     async def run(self,ctx):
         em = discord.Embed()
         em.title = "All Systems Operational"
-        em.colour = discord.Colour(config.COLOR)
+        em.colour = discord.Colour(EMBED_COLOR)
         em.type = "rich"
 
         pingnow = datetime.datetime.utcnow()
@@ -65,7 +65,7 @@ class CommandAnalytics(Command):
     async def run(self,ctx):
         em = discord.Embed()
         
-        em.colour = discord.Colour(config.COLOR)
+        em.colour = discord.Colour(EMBED_COLOR)
         em.type = "rich"
 
         days_ago = 30

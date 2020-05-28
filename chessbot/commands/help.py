@@ -22,7 +22,7 @@ class CommandHelp(Command):
 
 		em = discord.Embed()
 		em.title= "Help Page {}/{}".format(page, pages)
-		em.colour = discord.Colour(COLOR)
+		em.colour = discord.Colour(EMBED_COLOR)
 		em.type = "rich"
 
 		for command in sorted_commands[(page - 1) * PAGELENGTH : (page - 1) * PAGELENGTH + PAGELENGTH]:

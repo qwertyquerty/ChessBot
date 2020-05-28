@@ -1,7 +1,5 @@
 from chessbot.tok import *
 
-import re
-
 BOTURL = "https://discordbots.org/bot/366770566331629579"
 MOTD = ""
 
@@ -26,8 +24,7 @@ VARIANT_RACINGKINGS = 6
 VARIANT_HORDE = 7
 VARIANT_960 = 8
 VARIANT_CUSTOMFEN = 9
-VARIANT_NAMES = ["Chess", "Suicide", "Crazyhouse", "Atomic",
-                 "King of the Hill", "Antichess", "Racing Kings", "Horde", "Chess960", "Custom FEN"]
+VARIANT_NAMES = ["Chess", "Suicide", "Crazyhouse", "Atomic", "King of the Hill", "Antichess", "Racing Kings", "Horde", "Chess960", "Custom FEN"]
 
 RATED = True
 CASUAL = False
@@ -59,29 +56,20 @@ STARTING_ELO = 1200
 ACCEPT_MARK = "\U00002705"
 DENY_MARK = "\U0000274e"
 
-COLOR = 4623620
 EMBED_COLOR = 4623620
 
 MAX_MESSAGE_CACHE = 5000
 
-ID_REGEX = re.compile("[0-9]+")
-USERNAME_REGEX = re.compile(".+#[0-9][0-9][0-9][0-9]")
-
 DBLURL = "https://top.gg/api/bots/366770566331629579/stats"
-DISCURL = "https://top.gg/api"
 VOTEURL = "https://top.gg/bot/366770566331629579/vote"
 
 DBLHEADERS = {"Authorization" : DBLTOKEN}
-DISCHEADERS = {"Authorization" : "Bot "+BOTTOKEN}
-
-BOT_ID = 366770566331629579
 
 PREFIX = "|"
 
 CHESSBOTSERVER = 430504476458221570
 
 ERRORCHANNEL = 433431162107723787
-VOTECHANNEL = 430858422582378517
 LOGCHANNEL = 436342882551595008
 GAMESCHANNEL = 503633867673042953
 SUGGESTIONCHANNEL = 441095220038467585
@@ -110,7 +98,6 @@ WINMESSAGES = [
 "{winner} TORE THE HEAD OFF OF--err, won in a chess match against {loser}",
 "{winner} just absolutely demolished {loser}"
 ]
-
 
 DISCORD_LINK = "https://discord.gg/uV5y7RY"
 

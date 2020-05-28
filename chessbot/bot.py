@@ -69,7 +69,7 @@ async def on_message(message):
 			ctx.prefix = ctx.dbguild.prefix
 			prefix_cache[ctx.guild.id] = ctx.dbguild.prefix
 
-		if ctx.mem.id != BOT_ID and not ctx.mem.bot and ctx.content.startswith(ctx.prefix):
+		if ctx.mem.id != ctx.bot.user.id and not ctx.mem.bot and ctx.content.startswith(ctx.prefix):
 
 			if ctx.dbguild == None:
 				ctx.dbguild = db.Guild.from_guild(ctx.guild)

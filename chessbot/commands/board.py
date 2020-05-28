@@ -9,4 +9,4 @@ class CommandBoard(Command):
 
 	@classmethod
 	async def run(self,ctx):
-		await ctx.ch.send(COLOR_NAMES[ctx.game.board.turn]+" to move...", file=makeboard(ctx.game.board))
+		await ctx.ch.send(EMBED_COLOR[ctx.game.board.turn]+" to move...", file=makeboard(ctx.game.board))

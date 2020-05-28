@@ -198,7 +198,7 @@ async def reward_game(winner,loser,outcome, game, channel, bot):
 def embed_from_game(game):
     em = discord.Embed()
     em.title="Game "+str(game.id)
-    em.colour = discord.Colour(COLOR)
+    em.colour = discord.Colour(EMBED_COLOR)
     em.type = "rich"
     em.description = "```"+str(pgn_from_game(game))+"```"
     em.add_field(name="White",value=db.User.from_user_id(game.white).name,inline=True)
