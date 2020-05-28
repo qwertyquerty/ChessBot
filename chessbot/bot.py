@@ -12,7 +12,7 @@ command_list = Command.__subclasses__()
 prefix_cache = {}
 
 
-bot = discord.AutoShardedClient()
+bot = discord.AutoShardedClient(max_messages=MAX_MESSAGE_CACHE)
 stats = Stats(bot)
 
 @bot.event

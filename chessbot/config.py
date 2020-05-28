@@ -62,6 +62,7 @@ DENY_MARK = "\U0000274e"
 COLOR = 4623620
 EMBED_COLOR = 4623620
 
+MAX_MESSAGE_CACHE = 5000
 
 ID_REGEX = re.compile("[0-9]+")
 USERNAME_REGEX = re.compile(".+#[0-9][0-9][0-9][0-9]")
