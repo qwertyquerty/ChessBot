@@ -162,12 +162,10 @@ class User(DBObject):
 		self.name = d["name"]
 		self.id = d["id"]
 		self._id = d["_id"]
-		wongames = games.find({"$and": [{"$or": [{"outcome": OUTCOME_CHECKMATE}, {"outcome": OUTCOME_RESIGN}]}, {"winner": self.id}, {"ranked": True}, {"valid": True}]})
-		self.wins = wongames.count()
+		self.wins = games.find({"$and": [{"$or": [{"outcome": OUTCOME_CHECKMATE}, {"outcome": OUTCOME_RESIGN}]}, {"winner": self.id}, {"ranked": True}, {"valid": True}]}).count()
 		self.loss = games.find({"$and": [{"$or": [{"outcome": OUTCOME_CHECKMATE}, {"outcome": OUTCOME_RESIGN}]}, {"loser": self.id}, {"ranked": True}, {"valid": True}]}).count()
 		self.draws =  games.find({"$and": [{"$or": [{"1":self.id},  {"2":self.id}]}, {"outcome": OUTCOME_DRAW}, {"ranked": True}, {"valid": True}]}).count()
 		self.games = games.find({"$and": [{"outcome": {"$ne": OUTCOME_EXIT}}, {"$or": [{"1":self.id}, {"2":self.id}]}, {"ranked": True}, {"valid": True}]}).count()
-		self.unique = list(set([game["loser"] for game in wongames]))
 		self.votes = d["votes"]
 		self.bio = d["bio"]
 		self.flags = d["flags"]
