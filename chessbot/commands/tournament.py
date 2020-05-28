@@ -4,94 +4,49 @@ class CommandTournament(Command):
 	name = "tournament"
 	aliases = ["tnmt"]
 	helpstring = ["tournament", "Usually has something to do with Chess tournaments"]
-	parameters = [ParamString("subcommand", required=False)]
-
-	@classmethod
-	async def run(self,ctx):
-		if ctx.args[0] == "signup":
-
-			await ctx.ch.send("Signups have closed!")
-			return
-			
-			chessbotguild = ctx.bot.get_guild(CHESSBOTSERVER)
-
-			if ctx.mem not in chessbotguild.members:
-				await ctx.ch.send("Check DMs!")
-				await ctx.mem.send("In order to sign up for the tournament, you must be in the ChessBot Community server, as that is where the games will take place. After joining, try signing up again.\n\nHere's a link for ya: {}".format(DISCORD_LINK))
-				return
-			
-			await ctx.bot.get_channel(714596355238133810).send("{} ({})".format(str(ctx.mem), ctx.mem.id))
-
-			await ctx.mem.send("Thank you for signing up for the tournament. You will be notified about your first game sometime around 5/30/2020. You must stay in the ChessBot Community server if you wish to compete in the tournament. A bracket will be released in a few days.")
-
-			await ctx.ch.send("You have successfully signed up for the tournament!")
-
-"""
-class CommandMegaAd(Command):
-	name = "megaad"
-	aliases = []
-	helpstring = ["megaad", "For qwerty"]
+	parameters = [ParamUser("p1"), ParamUser("p2"), ParamInt("game")]
 	level = LEVEL_OWNER
 
 	@classmethod
 	async def run(self,ctx):
+		cbguild = ctx.bot.get_guild(CHESSBOTSERVER)
 
-		await ctx.ch.send("I'm doin it:")
+		p1mem = ctx.guild.get_member(ctx.args[0].id)
+		p2mem = ctx.guild.get_member(ctx.args[1].id)
 
-		announcement = ctx.content[len(ctx.prefix+ctx.command):]
-
-		await ctx.ch.send(announcement.replace("[prefix]", ctx.prefix))
-
-		notifs = 0
-
-		for guild in ctx.bot.guilds.copy():
-			try:
-				dbguild = db.Guild.from_guild_id(guild.id)
-	
-				if dbguild and dbguild.subscribed:
-					cont = False
-					for channel in guild.channels:
-						if "chess" in channel.name.lower() or "commands" in channel.name.lower():
-							cont = True
-					
-					if cont == True: continue
-
-					for channel in guild.channels:
-						if "bots" in channel.name.lower():
-							try:
-								await channel.send(announcement.replace("[prefix]", dbguild.prefix))
-								notifs += 1
-								break
-							except:
-								pass
-
-			except Exception as E:
-				try:
-					await ctx.ch.send("ERROR: {}".format(E))
-				except:
-					pass
+		if not p1mem:
+			await ctx.ch.send("p1 left the server")
+		if not p2mem:
+			await ctx.ch.send("p2 left the server")
 		
-		await ctx.ch.send("I successfully sent {} notifications".format(notifs))
-"""
+		if (not p1mem) or (not p2mem):
+			return
 
-class CommandUnsubscribe(Command):
-	name = "unsubscribe"
-	helpstring = ["unsubscribe", "Unsubscribe your guild from notifications!"]
-	flags = FLAG_MUST_HAVE_PERM_MANAGE_SERVER
+		overwrites = {
+			cbguild.default_role: discord.PermissionOverwrite(send_messages=False),
+			p1mem: discord.PermissionOverwrite(send_messages=True),
+			p2mem: discord.PermissionOverwrite(send_messages=True)
+		}
+
+		category = cbguild.get_channel(715245810425659403)
+
+		channel = await cbguild.create_text_channel("game-{}".format(ctx.args[2]), category = category, overwrites = overwrites)
+
+		await channel.send("**{p1} VS {p2}**\n\nYou have 3 days to complete your game! Use the `{prefix}coinflip` command to decide who will play white. Then use the `{prefix}newgame <mention>` command to start the game! Whoever does the `{prefix}newgame` command will be white! If the game results in a *draw*, **replay the game until there is a clear win.**\n\n***All games will be checked for cheating.***\n\n**Observers:** No recommending moves through reactions or other channels!! Doing so will lead to a ban.\n**Players:** You may not use outside assistance in any way. Doing so will lead to a loss and a blacklist.\n\nWhen you complete your game: run the command `{prefix}game`, ping qwerty and then **stop talking in the channel.**".format(p1=p1mem.mention, p2=p2mem.mention, prefix=ctx.prefix))
+
+		await ctx.ch.send("Game **{}** started in: {}".format(ctx.args[2], channel.mention))
+
+class CommandTournament(Command):
+	name = "archive"
+	helpstring = ["archive", "Archiving a tournament channel."]
+	level = LEVEL_OWNER
 
 	@classmethod
 	async def run(self,ctx):
-		ctx.dbguild.set("subscribed", False)
-		
-		await ctx.ch.send("You have unsubscribed your guild from ChessBot notifications! You can resubscribe with {}subcribe".format(ctx.prefix))
+		cbguild = ctx.bot.get_guild(CHESSBOTSERVER)
 
-class CommandSubscribe(Command):
-	name = "subscribe"
-	helpstring = ["subscribe", "Subscribe your guild to notifications!"]
-	flags = FLAG_MUST_HAVE_PERM_MANAGE_SERVER
+		archived_cat = cbguild.get_channel(715616342283255818)
 
-	@classmethod
-	async def run(self,ctx):
-		ctx.dbguild.set("subscribed", True)
-		
-		await ctx.ch.send("You have subscribed your guild from ChessBot notifications!")
+		await ctx.ch.edit(category = archived_cat, overwrites = {}, sync_permissions = True)
+
+		await ctx.ch.send("Archived.")
