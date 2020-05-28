@@ -25,7 +25,6 @@ class CommandMove(Command):
 					else:
 						await ctx.ch.send("That move is illegal!")
 				except Exception as E:
-					print(E)
 					await ctx.ch.send("That move is invalid! Try something like: a2a4")
 
 			elif ctx.command in ["go", "g"]:
@@ -40,7 +39,6 @@ class CommandMove(Command):
 					else:
 						await ctx.ch.send("That move is illegal!")
 				except Exception as E:
-					print(E)
 					await ctx.ch.send("That move is invalid! Try something like: Nf3")
 
 
