@@ -2,7 +2,7 @@ from chessbot.command import *
 
 class C_Setstatus(Command):
     name = "setactivity"
-    helpstring = ["setactivity", "Set the bot's game."]
+    help_string = "Set the bot's activity for all shards"
     level = LEVEL_OWNER
 
     @classmethod

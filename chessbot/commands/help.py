@@ -2,32 +2,42 @@ from chessbot.command import *
 
 class CommandHelp(Command):
 	name = "help"
-	helpstring = ["help", "You're reading it, buddy..."]
+	help_string = "You're reading it, buddy..."
 	parameters = [ParamInt("page", required=False)]
+	help_index = 440
 
 	@classmethod
 	async def run(self,ctx):
+
+		available_commands = [command for command in Command.__subclasses__() if command.level == LEVEL_EVERYONE]
+
+		sorted_commands = sorted(available_commands, key = lambda x: x.help_index)
+
+		pages = math.ceil(len(sorted_commands) / PAGELENGTH)
+
 		if ctx.args[0]:
-			page = int(ctx.args[0])-1
-			page = max(0, min(page, len(HELP)-1))
+			page = max(1, min(ctx.args[0], pages))
 		else:
-			page = 0
+			page = 1
 
 		em = discord.Embed()
-		em.title= "Help Page {}/{}".format(page+1,len(HELP))
+		em.title= "Help Page {}/{}".format(page, pages)
 		em.colour = discord.Colour(COLOR)
 		em.type = "rich"
 
-		for cmd,desc in HELP[page].items():
-			em.add_field(name="{prefix}{cmd}".format(prefix=ctx.prefix,cmd=cmd),value=desc.format(prefix=ctx.prefix), inline=False)
-		em.set_footer(text="{prefix}help (page)".format(prefix=ctx.prefix))
+		for command in sorted_commands[(page - 1) * PAGELENGTH : (page - 1) * PAGELENGTH + PAGELENGTH]:
+			if ctx.user.level >= command.level:
+				em.add_field(name = "{}{}".format(ctx.prefix, command.usage_string()), value = command.help_string, inline=False)
+
+		em.set_footer(text="{}{}".format(ctx.prefix, self.usage_string()))
 
 		await ctx.ch.send(embed=em)
 
 
 class CommandAbout(Command):
 	name = "about"
-	helpstring = ["about", "All about me!"]
+	help_string = "All about me"
+	help_index = 420
 
 	@classmethod
 	async def run(self,ctx):

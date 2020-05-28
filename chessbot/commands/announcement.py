@@ -2,7 +2,8 @@ from chessbot.command import *
 
 class CommandUnsubscribe(Command):
 	name = "unsubscribe"
-	helpstring = ["unsubscribe", "Unsubscribe your guild from notifications!"]
+	help_string = "Unsubscribe your guild from notifications"
+	help_index = 500
 	flags = FLAG_MUST_HAVE_PERM_MANAGE_SERVER
 
 	@classmethod
@@ -13,7 +14,8 @@ class CommandUnsubscribe(Command):
 
 class CommandSubscribe(Command):
 	name = "subscribe"
-	helpstring = ["subscribe", "Subscribe your guild to notifications!"]
+	help_string = "Subscribe your guild to notifications"
+	help_index = 480
 	flags = FLAG_MUST_HAVE_PERM_MANAGE_SERVER
 
 	@classmethod

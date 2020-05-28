@@ -1,20 +1,22 @@
 from chessbot.command import *
 
 class CommandPing(Command):
-	name = "ping"
-	helpstring = ["ping", "Check latency!"]
+    name = "ping"
+    help_string = "Check the bot's latency"
+    help_index = 300
 
-	@classmethod
-	async def run(self,ctx):
-		now = datetime.datetime.utcnow()
-		delta = now-ctx.message.created_at
-		await ctx.ch.send(str(delta.total_seconds()*1000)+'ms')
+    @classmethod
+    async def run(self,ctx):
+        now = datetime.datetime.utcnow()
+        delta = now-ctx.message.created_at
+        await ctx.ch.send(str(delta.total_seconds()*1000)+'ms')
 
 
 
 class CommandStats(Command):
     name = "stats"
-    helpstring = ["stats", "View the bot stats."]
+    help_string = "View some stats about the bot"
+    help_index = 320
 
     @classmethod
     async def run(self,ctx):
@@ -55,7 +57,7 @@ class CommandStats(Command):
 
 class CommandAnalytics(Command):
     name = "analytics"
-    helpstring = ["analytics", "View the bot analytics."]
+    help_string = "View the bot's analytics"
     parameters = [ParamInt("days", required=False)]
     level = LEVEL_MOD
 

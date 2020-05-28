@@ -2,7 +2,8 @@ from chessbot.command import *
 
 class CommandBadge(Command):
 	name = "badge"
-	helpstring = ["badge <emoji>", "View a badge name!"]
+	help_string = "View the name of a badge"
+	help_index = 290
 	parameters = [ParamString("emoji")]
 
 	@classmethod

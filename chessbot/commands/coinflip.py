@@ -2,7 +2,8 @@ from chessbot.command import *
 
 class CommandCoinflip(Command):
 	name = "coinflip"
-	helpstring = ["coinflip", "Flip a coin!"]
+	help_string = "Flip a coin"
+	help_index = 310
 	aliases = ["cf"]
 
 	@classmethod

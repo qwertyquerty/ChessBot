@@ -3,7 +3,8 @@ from chessbot.command import *
 class CommandProfile(Command):
 	name = "profile"
 	aliases = ["pf"]
-	helpstring = ["profile [mention]", "View your, or someone else's profile!"]
+	help_string = "View your profile, or someone else's profile"
+	help_index = 140
 	parameters = [ParamUser(required=False)]
 
 	@classmethod
@@ -41,7 +42,8 @@ class CommandProfile(Command):
 
 class CommandBio(Command):
 	name = "bio"
-	helpstring = ["bio <bio>", "Set your user profile bio!"]
+	help_string = "Set your user profile bio!"
+	help_index = 240
 
 	@classmethod
 	async def run(self,ctx):

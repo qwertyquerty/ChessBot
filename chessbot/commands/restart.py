@@ -2,7 +2,7 @@ from chessbot.command import *
 
 class CommandRestart(Command):
     name = "restart"
-    helpstring = ["restart", "Restarts the bot, or another process"]
+    help_string = "Restarts the bot"
     level = LEVEL_OWNER
 
     @classmethod

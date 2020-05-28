@@ -2,7 +2,8 @@ from chessbot.command import *
 
 class CommandSuggestion(Command):
     name = "suggestion"
-    helpstring = ["suggestion [suggestion]", "Suggest a feature, report a bug, and more."]
+    help_string = "Suggest a feature, report a bug, and more"
+    help_index = 260
 
     @classmethod
     async def run(self,ctx):

@@ -3,7 +3,7 @@ from chessbot.command import *
 class CommandTournament(Command):
 	name = "tournament"
 	aliases = ["tnmt"]
-	helpstring = ["tournament", "Usually has something to do with Chess tournaments"]
+	help_string = "Start a tournament game"
 	parameters = [ParamUser("p1"), ParamUser("p2"), ParamInt("game")]
 	level = LEVEL_OWNER
 
@@ -38,7 +38,7 @@ class CommandTournament(Command):
 
 class CommandTournament(Command):
 	name = "archive"
-	helpstring = ["archive", "Archiving a tournament channel."]
+	help_string = "Archive a tournament game"
 	level = LEVEL_OWNER
 
 	@classmethod

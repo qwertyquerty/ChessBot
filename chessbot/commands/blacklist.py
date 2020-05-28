@@ -2,7 +2,7 @@ from chessbot.command import *
 
 class CommandBlacklist(Command):
     name = "blacklist"
-    helpstring = ["blacklist", "Blacklist a user!"]
+    help_string = "Blacklist a user"
     parameters = [ParamUser()]
     level = LEVEL_ADMIN
 
@@ -14,7 +14,7 @@ class CommandBlacklist(Command):
 
 class CommandUnblacklist(Command):
     name = "unblacklist"
-    helpstring = ["unblacklist", "Unblacklist a user!"]
+    help_string = "Unblacklist a user"
     parameters = [ParamUser()]
     level = LEVEL_ADMIN
 
@@ -27,7 +27,7 @@ class CommandUnblacklist(Command):
 
 class CommandReset(Command):
     name = "reset"
-    helpstring = ["reset", "Reset a user!"]
+    help_string = "Reset a user's profile"
     parameters = [ParamUser()]
     level = LEVEL_ADMIN
     

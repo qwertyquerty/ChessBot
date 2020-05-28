@@ -3,7 +3,8 @@ from chessbot.command import *
 class CommandBoard(Command):
 	name = "board"
 	aliases = ["bd"]
-	helpstring = ["board", "View the board!"]
+	help_string = "View the game board"
+	help_index = 40
 	flags = FLAG_MUST_BE_IN_GAME
 
 	@classmethod

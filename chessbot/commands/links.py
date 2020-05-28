@@ -2,7 +2,8 @@ from chessbot.command import *
 
 class CommandVote(Command):
     name = "vote"
-    helpstring = ["vote", "Vote for the bot (please) for prizes"]
+    help_string = "Vote for the bot (please) for prizes"
+    help_index = 340
 
     @classmethod
     async def run(self,ctx):
@@ -11,7 +12,8 @@ class CommandVote(Command):
 
 class CommandServer(Command):
     name = "server"
-    helpstring = ["server", "Join the official bot server!"]
+    help_string = "Join the official bot server"
+    help_index = 360
 
     @classmethod
     async def run(self,ctx):
@@ -21,7 +23,8 @@ class CommandServer(Command):
 class CommandInvite(Command):
     name = "invite"
     aliases = ["inv"]
-    helpstring = ["invite", "Invite the bot to your server!"]
+    help_string = "Invite the bot to your server"
+    help_index = 380
 
     @classmethod
     async def run(self,ctx):
@@ -31,7 +34,8 @@ class CommandInvite(Command):
 class CommandDonate(Command):
     name = "donate"
     aliases = ["patreon"]
-    helpstring = ["donate", "Give me money. Please."]
+    help_string = "Give me money. Please."
+    help_index = 400
 
     @classmethod
     async def run(self,ctx):

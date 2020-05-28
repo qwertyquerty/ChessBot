@@ -2,7 +2,8 @@ from chessbot.command import *
 
 class CommandGames(Command):
     name = "games"
-    helpstring = ["games [mention]", "View a list of games a user has played."]
+    help_string = "View a list of games a user has played"
+    help_index = 180
     parameters = [ParamUser(required=False), ParamInt("page", required=False)]
 
     @classmethod
@@ -39,7 +40,8 @@ class CommandGames(Command):
 
 class CommandGame(Command):
     name = "game"
-    helpstring = ["game [mention/game id]", "View information about a game."]
+    help_string = "View information about a specific game"
+    help_index = 200
     parameters = [ParamUnion((ParamGameID(), ParamUser()), required=False)]
 
     @classmethod
@@ -70,7 +72,8 @@ class CommandGame(Command):
 
 class CommandFen(Command):
     name = "fen"
-    helpstring = ["fen [mention]", "Get the FEN of a game!"]
+    help_string = "Get the FEN of a game"
+    help_index = 220
     parameters = [ParamUnion((ParamGameID(), ParamUser()), required=False)]
 
     @classmethod

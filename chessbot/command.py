@@ -23,7 +23,8 @@ class Command():
     level = LEVEL_EVERYONE
     aliases = []
     enabled = True
-    helpstring = ["{prefix}command", "runs the command"]
+    help_string = None
+    help_index = 0
     parameters = []
 
     @classmethod
@@ -160,6 +161,9 @@ class ParamUnion(Parameter):
 
         self.params = params
         self.type_name = "/".join([param.type_name for param in self.params])
+
+        if not name:
+            self.name = "/".join([param.name for param in self.params])
     
     def parse(self, ctx, arg):
         for param in self.params:

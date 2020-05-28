@@ -1,19 +1,21 @@
 from chessbot.command import *
 
 class CommandResign(Command):
-	name = "resign"
-	aliases = ["forfeit"]
-	helpstring = ["resign", "Resign your game."]
-	flags = FLAG_MUST_BE_IN_GAME
+    name = "resign"
+    aliases = ["forfeit"]
+    help_string = "Resign your game"
+    help_index = 60
+    flags = FLAG_MUST_BE_IN_GAME
 
-	@classmethod
-	async def run(self,ctx):
-		await reward_game(ctx.game.players[not ctx.game.players.index(ctx.mem.id)], ctx.mem.id, OUTCOME_RESIGN, ctx.game,ctx.ch,ctx.bot)
+    @classmethod
+    async def run(self,ctx):
+        await reward_game(ctx.game.players[not ctx.game.players.index(ctx.mem.id)], ctx.mem.id, OUTCOME_RESIGN, ctx.game,ctx.ch,ctx.bot)
 
 
 class CommandExit(Command):
     name = "exit"
-    helpstring = ["exit", "Exit a game as if it were not ranked. ONLY USE THIS IF YOUR OPPONENT IS CHEATING OR WAITING YOU OUT. ABUSE WILL LEAD TO A BLACKLIST!"]
+    help_string = "Exit a game as if it were not ranked; ONLY USE THIS IF YOUR OPPONENT IS CHEATING OR WAITING YOU OUT. ABUSE WILL LEAD TO A BLACKLIST!"
+    help_index = 100
     flags = FLAG_MUST_BE_IN_GAME
 
     @classmethod
@@ -23,7 +25,8 @@ class CommandExit(Command):
 
 class CommandDraw(Command):
     name = "draw"
-    helpstring = ["draw", "Request to draw a game."]
+    help_string = "Request to draw a game"
+    help_index = 80
     flags = FLAG_MUST_BE_IN_GAME
 
     @classmethod

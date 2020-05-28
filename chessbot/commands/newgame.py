@@ -3,7 +3,8 @@ from chessbot.command import *
 class CommandNewgame(Command):
 	name = "newgame"
 	aliases = ["ng"]
-	helpstring = ["newgame <mention> [variant]", "Start a new game against someone!"]
+	help_string = "Start a new game against someone"
+	help_index = 0
 	parameters = [ParamUser(), ParamString("variant", required=False)]
 
 

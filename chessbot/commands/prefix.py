@@ -3,7 +3,8 @@ from chessbot.command import *
 
 class CommandPrefix(Command):
 	name = "prefix"
-	helpstring = ["prefix <prefix>", "Set a new prefix for your server!"]
+	help_string = "Set a new prefix for your server"
+	help_index = 280
 	parameters = [ParamString("prefix")]
 	flags = FLAG_MUST_HAVE_PERM_MANAGE_SERVER
 

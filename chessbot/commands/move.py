@@ -3,7 +3,8 @@ from chessbot.command import *
 class CommandMove(Command):
 	name = "move"
 	aliases = ["m", "go", "g"]
-	helpstring = ["move <LAN>", "Make a move using Long Notation, aka a2a3 to move the piece at a2 to a3. Promoting: a7a8q"]
+	help_string = "Make a move using Long Notation, aka a2a3 to move the piece at a2 to a3. Promoting: a7a8q"
+	help_index = 20
 	parameters = [ParamString("move")]
 	flags = FLAG_MUST_BE_IN_GAME
 

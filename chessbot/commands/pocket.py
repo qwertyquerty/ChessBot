@@ -2,7 +2,8 @@ from chessbot.command import *
 
 class CommandPocket(Command):
     name = "pocket"
-    helpstring = ["game", "View your crazyhouse pocket."]
+    help_string = "View your crazyhouse pocket"
+    help_index = 460
     flags = FLAG_MUST_BE_IN_GAME
 
     @classmethod
