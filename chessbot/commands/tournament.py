@@ -36,7 +36,7 @@ class CommandTournament(Command):
 
 		await ctx.ch.send("Game **{}** started in: {}".format(ctx.args[2], channel.mention))
 
-class CommandTournament(Command):
+class CommandArchive(Command):
 	name = "archive"
 	help_string = "Archive a tournament game"
 	level = LEVEL_OWNER
