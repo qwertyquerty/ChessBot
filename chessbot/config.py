@@ -1,5 +1,7 @@
 from chessbot.tok import *
 
+WEBHOOK_PORT = 7003
+
 BOTURL = "https://discordbots.org/bot/366770566331629579"
 MOTD = ""
 
