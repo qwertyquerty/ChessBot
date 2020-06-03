@@ -82,7 +82,7 @@ async def on_message(message):
 			if ctx.user.flags & USER_FLAG_BLACKLISTED: return
 
 			ctx.game = db.Game.from_user_id(ctx.mem.id)
-			ctx.raw_args = ' '.join(ctx.msg.content.lstrip(ctx.prefix).split()).split()
+			ctx.raw_args = ' '.join(ctx.msg.content[len(ctx.prefix):].split()).split()
 			ctx.args = []
 
 			if len(ctx.raw_args) == 0: return
