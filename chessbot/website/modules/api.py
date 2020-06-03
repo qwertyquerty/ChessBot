@@ -1,11 +1,11 @@
-from flask import Flask, abort, request
+from flask import abort, Blueprint, request
 
 from chessbot.config import *
 from chessbot import db
 
-app = Flask(__name__)
+blueprint_api = Blueprint('api', __name__)
 
-@app.route("/api/vote", methods = ['POST'])
+@blueprint_api.route("/api/vote", methods = ['POST'])
 def page_api_vote():
 
 	if request.headers["Authorization"] != WEBHOOK_TOKEN:

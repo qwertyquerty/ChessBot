@@ -1,0 +1,8 @@
+.active-game {
+	text-align: center;
+}
+
+#active-game-image {
+	max-height: 80vh;
+	max-width: 90vw;
+}

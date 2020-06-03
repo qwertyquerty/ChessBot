@@ -1,0 +1,106 @@
+:root {
+	--chess-green:			#468d04;
+	--chess-white:			#ffffff;
+	--chess-black:			#000000;
+	--chess-gray:			#aaaaaa;
+	--chess-dark-gray-1:	#353535;
+	--chess-dark-gray-2:	#242424;
+	--chess-dark-gray-3:	#1c1c1c;
+	--chess-dark-gray-4:	#121110;
+
+	--chess-border-thick: 4px;
+	--chess-border-thin:  1px;
+
+	--chess-text-tiny:   12px;
+	--chess-text-body:   16px;
+	--chess-text-normal: 20px;
+	--chess-text-medium: 25px;
+	--chess-text-big:    30px;
+	--chess-text-huge:   40px;
+	--chess-text-mega:   60px;
+
+	--chess-padding-thick:     30px;
+	--chess-padding-big:       20px;
+	--chess-padding-medium:    15px;
+	--chess-padding-normal:    8px;
+	--chess-padding-thin:      5px;
+	--chess-padding-very-thin: 2px;
+	--chess-padding-none:      0px;
+}
+
+.text-tiny   {font-size: var(--chess-text-tiny);}
+.text-body   {font-size: var(--chess-text-body);}
+.text-normal {font-size: var(--chess-text-normal);}
+.text-big    {font-size: var(--chess-text-big);}
+.text-huge   {font-size: var(--chess-text-huge);}
+.text-mega   {font-size: var(--chess-text-mega);}
+
+
+html {
+	height:100%;
+}
+
+body {
+	background-color: var(--chess-dark-gray-1);
+	margin: 0px;
+	color: var(--chess-white);
+	font-family: Arial;
+	box-sizing: border-box;
+	overflow-x: auto;
+	height: 100%;
+}
+
+
+#nav {
+	display: inline-block;
+	height: 45px;
+	width: 100%;
+	display: flex;
+	background-color: var(--chess-dark-gray-3);
+	font-size: var(--chess-text-normal);
+	justify-content: space-between;
+	letter-spacing: 1px;
+	border-bottom: solid var(--chess-border-thick) var(--chess-green);
+}
+  
+.nav-item {
+	color: var(--chess-white);
+	transition: text-decoration 0.2s;
+	cursor: pointer;
+	flex-grow: 1;
+	text-align: center;
+	padding: var(--chess-padding-normal) var(--chess-padding-thin);
+	min-width: 150px;
+	max-width: 150px;
+	user-select: none;
+	font-size: var(--chess-text-normal);
+	text-decoration: none;
+	line-height: 30px;
+}
+
+.nav-item:hover, .nav-item:focus {
+	text-decoration: underline;
+	outline: none;
+}
+
+#nav-spacer {
+	flex-grow: 1;
+}
+
+
+#content {
+	padding: var(--chess-padding-medium);
+}
+
+
+.leaderboard-entry {
+	background-color: var(--chess-dark-gray-2);
+	font-size: var(--chess-text-normal);
+	padding: var(--chess-padding-medium);
+	border-bottom: solid var(--chess-border-thick) var(--chess-green);
+	margin-bottom: var(--chess-padding-normal);
+}
+
+.right {
+	float: right;
+}

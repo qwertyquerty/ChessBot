@@ -28,7 +28,7 @@ class CommandInvite(Command):
 
     @classmethod
     async def run(self,ctx):
-        await ctx.ch.send("https://discordapp.com/oauth2/authorize?client_id=366770566331629579&scope=bot&permissions=8")
+        await ctx.ch.send(BOT_INVITE_LINK)
 
 
 class CommandDonate(Command):

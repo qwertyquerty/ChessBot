@@ -1,0 +1,18 @@
+{% extends "layout.html" %}
+{% block title %}Home{% endblock %}
+{% block active %}home{% endblock %}
+
+{% block head %}
+	<script src="/static/js/home.js"></script>
+
+	<link rel="stylesheet" href="/static/css/home.css">
+{% endblock %}
+
+{% block content %}
+	<div class="active-game">
+		{% set active_game = db.Game(db.games.find().sort("timestamp", -1)[0]) %}
+		<div class="text-big">Game {{ active_game.id }}</div>
+		<br/>
+		<img id="active-game-image" src="/game_image/{{ active_game.id }}"/>
+	</div>
+{% endblock %}

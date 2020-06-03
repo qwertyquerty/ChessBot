@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta property="og:type"  content="website" />
+    <meta property="og:image" content="http://chess.qwertyquerty.cf/static/img/logo.png" />
+    <meta property="og:url" content="{{ request.url }}" />
+    <meta name="description"  content="A Discord bot for playing Chess!"/>
+    <meta property="og:description" content="A Discord bot for playing Chess!"/>
+    
+    {% block head %}
+
+    {% endblock %}
+
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js" type="application/javascript"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/odometer.js/0.4.8/odometer.min.js" type="application/javascript"></script>
+	
+    <link   rel="stylesheet" href="/static/css/main.css">
+    <link   rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/odometer.js/0.4.8/themes/odometer-theme-default.min.css">
+    <link   rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/all.css" integrity="sha384-lKuwvrZot6UHsBSfcMvOkWwlCMgc0TaWr+30HWe3a4ltaBwTZhyTEggF5tJv8tbt" crossorigin="anonymous">
+	
+	<title>ChessBot - {% block title %}{% endblock %}</title>
+
+    <style>#nav-{% block active %}{% endblock %} {text-decoration: underline !important;}</style>
+  </head>
+
+	<body>
+		<div id="container">
+			<div id="nav">
+			<a href="/" id="nav-home" class="nav-item">ChessBot</a>
+			<div id="nav-spacer"></div>
+			<a href = "/leaderboard" id="nav-leaderboard" class="nav-item">Leaderboard</a>
+			<a href = "/github" class="nav-item">Source Code</a>
+			<a href = "/invite" class="nav-item">Invite Bot</a>
+			</div>
+
+			<div id="content">
+				{% block content %}{% endblock %}
+			</div>
+	</body>
+</html>

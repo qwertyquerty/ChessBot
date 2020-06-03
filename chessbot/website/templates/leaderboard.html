@@ -1,0 +1,14 @@
+{% extends "layout.html" %}
+{% block title %}Leaderboard{% endblock %}
+{% block active %}leaderboard{% endblock %}
+
+{% block head %}
+{% endblock %}
+
+{% block content %}
+
+  {% for user in db.leaderboard(100) %}
+    <div class="leaderboard-entry">{{ loop.index }}. {{ user["name"] }} <span class="right">{{ user["elo"] | round | int }} elo</span></div>
+  {% endfor %}
+
+{% endblock %}

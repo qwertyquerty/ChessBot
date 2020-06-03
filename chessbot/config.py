@@ -2,6 +2,9 @@ from chessbot.tok import *
 
 WEBHOOK_PORT = 7003
 
+BOT_INVITE_LINK = "https://discordapp.com/oauth2/authorize?client_id=366770566331629579&scope=bot&permissions=8"
+GITHUB_LINK = "https://github.com/qwertyquerty/ChessBot"
+
 BOTURL = "https://discordbots.org/bot/366770566331629579"
 MOTD = ""
 
