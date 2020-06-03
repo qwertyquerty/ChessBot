@@ -23,7 +23,7 @@ def page_game_image(game_id):
 		return abort(404)
 
 	if len(board.move_stack) > 0:
-		board_svg = chess.svg.board(game.board, lastmove=game.board.peek(), style=BOARD_CSS))
+		board_svg = chess.svg.board(game.board, lastmove=game.board.peek(), style=BOARD_CSS)
 	else:
 		board_svg = chess.svg.board(game.board, style=BOARD_CSS)
 	
