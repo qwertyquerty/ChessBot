@@ -22,7 +22,7 @@ def page_game_image(game_id):
 	if not game:
 		return abort(404)
 	
-	return Response(chess.svg.board(game.board, lastmove=game.board.peek()), content_type="image/svg+xml")
+	return Response(chess.svg.board(game.board, lastmove=game.board.peek(), style=BOARD_CSS), content_type="image/svg+xml")
 
 @blueprint_home.route("/leaderboard")
 def page_leaderboard():
