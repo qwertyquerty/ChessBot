@@ -21,7 +21,7 @@ games = db.games
 
 users.create_index("id",unique=True)
 guilds.create_index("id",unique=True)
-
+games.create_index("timestamp")
 
 class DBObject():
 
