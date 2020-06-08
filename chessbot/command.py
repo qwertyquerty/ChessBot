@@ -42,7 +42,11 @@ class Command():
         
         if self.flags & FLAG_MUST_HAVE_PERM_MANAGE_SERVER and not ctx.mem.guild_permissions.manage_guild:
             await ctx.ch.send("You must have the permission `manage server` to do this!")
-            return           
+            return
+        
+        if self.flags & FLAG_MUST_NOT_BE_BLACKLISTED and ctx.user.flags & USER_FLAG_BLACKLISTED:
+            await ctx.ch.send("You cannot run this command while blacklisted!")
+            return         
 
         arg_num = 0
 

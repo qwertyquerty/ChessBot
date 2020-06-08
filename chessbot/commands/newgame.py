@@ -18,7 +18,6 @@ class CommandNewgame(Command):
 					await ctx.ch.send("You can't connect with yourself in this way. Why not take a walk?")
 
 				else:
-
 					variant = VARIANT_STANDARD
 					if ctx.args[1] == "atomic": variant = VARIANT_ATOMIC
 					elif ctx.args[1] == "koth": variant = VARIANT_KOTH
@@ -30,8 +29,13 @@ class CommandNewgame(Command):
 					elif ctx.args[1] == "custom": variant = VARIANT_CUSTOMFEN
 
 					rated = variant == VARIANT_STANDARD
+
+					user2 = db.User.from_mem(ctx.args[0])
 					
 					if ctx.args[1] == "casual": rated = False
+
+					if ctx.user.flags & USER_FLAG_BLACKLISTED or user2.flags & USER_FLAG_BLACKLISTED:
+						rated = False
 
 					m = await ctx.ch.send("{u1}, you are being challenged to a **{rated}** game of **{game}** by {u2}!".format(u1=ctx.args[0].mention,rated=RATED_NAMES[rated],game=VARIANT_NAMES[variant],u2=ctx.mem.mention))
 												

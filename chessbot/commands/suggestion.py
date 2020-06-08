@@ -4,6 +4,7 @@ class CommandSuggestion(Command):
     name = "suggestion"
     help_string = "Suggest a feature, report a bug, and more"
     help_index = 260
+    flags = FLAG_MUST_NOT_BE_BLACKLISTED
 
     @classmethod
     async def run(self,ctx):
