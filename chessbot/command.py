@@ -33,7 +33,7 @@ class Command():
             return
 
         if self.flags & FLAG_MUST_BE_IN_GAME and not ctx.game:
-            await ctx.ch.send("You are not in a game! Make one with `{prefix}newgame [mention]`".format(prefix=ctx.prefix))
+            await ctx.ch.send("You are not in a game! Make one with `{prefix}newgame <user>`".format(prefix=ctx.prefix))
             return
 
         if self.flags & FLAG_MUST_BE_SERVER_OWNER and ctx.mem != ctx.guild.owner:
