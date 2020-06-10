@@ -99,11 +99,10 @@ def elo_sync():
         db.users.update({"id": id}, {"$set": {"elo": elo}})
 
 def get_base_board(g):
-    if g.variant == VARIANT_SUICIDE: board = chess.variant.SuicideBoard(fen=g.basefen)
-    elif g.variant == VARIANT_CRAZYHOUSE: board = chess.variant.CrazyhouseBoard(fen=g.basefen)
+    if g.variant == VARIANT_CRAZYHOUSE: board = chess.variant.CrazyhouseBoard(fen=g.basefen)
     elif g.variant == VARIANT_KOTH: board = chess.variant.KingOfTheHillBoard(fen=g.basefen)
     elif g.variant == VARIANT_ATOMIC: board = chess.variant.AtomicBoard(fen=g.basefen)
-    elif g.variant == VARIANT_ANTICHESS: board = chess.variant.GiveawayBoard(fen=g.basefen)
+    elif g.variant == VARIANT_ANTICHESS: board = chess.variant.AntichessBoard(fen=g.basefen)
     elif g.variant == VARIANT_RACINGKINGS: board = chess.variant.RacingKingsBoard(fen=g.basefen)
     elif g.variant == VARIANT_HORDE: board = chess.variant.HordeBoard(fen=g.basefen)
     elif g.variant == VARIANT_960 or g.variant == VARIANT_STANDARD or g.variant == VARIANT_CUSTOMFEN: board = chess.Board(fen=g.basefen)

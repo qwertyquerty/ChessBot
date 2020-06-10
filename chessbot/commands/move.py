@@ -43,10 +43,13 @@ class CommandMove(Command):
 
 
 			if ctx.game.board.is_checkmate() or ctx.game.board.is_variant_loss():
-				await reward_game(ctx.mem.id, ctx.game.players[not ctx.game.players.index(ctx.mem.id)], OUTCOME_CHECKMATE, ctx.game,ctx.ch,ctx.bot)
+				await reward_game(ctx.mem.id, ctx.game.players[not ctx.game.players.index(ctx.mem.id)], OUTCOME_CHECKMATE, ctx.game, ctx.ch, ctx.bot)
+
+			if type(ctx.game.board).uci_variant == "antichess" and ctx.game.board.is_variant_win():
+				await reward_game(ctx.game.players[not ctx.game.players.index(ctx.mem.id)], ctx.mem.id, OUTCOME_CHECKMATE, ctx.game, ctx.ch, ctx.bot)
 
 			if ctx.game.board.is_stalemate() or ctx.game.board.is_fivefold_repetition() or ctx.game.board.is_seventyfive_moves() or ctx.game.board.is_variant_draw() or ctx.game.board.is_insufficient_material():
-				await reward_game(ctx.mem.id, ctx.game.players[not ctx.game.players.index(ctx.mem.id)], OUTCOME_DRAW, ctx.game,ctx.ch,ctx.bot)
+				await reward_game(ctx.mem.id, ctx.game.players[not ctx.game.players.index(ctx.mem.id)], OUTCOME_DRAW, ctx.game, ctx.ch, ctx.bot)
 		
 		else:
 			await ctx.ch.send("It is not your turn!")
