@@ -162,7 +162,7 @@ class User(DBObject):
 		self.wins = games.find({"$and": [{"$or": [{"outcome": OUTCOME_CHECKMATE}, {"outcome": OUTCOME_RESIGN}]}, {"winner": self.id}, {"ranked": True}, {"valid": True}]}).count()
 		self.loss = games.find({"$and": [{"$or": [{"outcome": OUTCOME_CHECKMATE}, {"outcome": OUTCOME_RESIGN}]}, {"loser": self.id}, {"ranked": True}, {"valid": True}]}).count()
 		self.draws =  games.find({"$and": [{"$or": [{"1":self.id},  {"2":self.id}]}, {"outcome": OUTCOME_DRAW}, {"ranked": True}, {"valid": True}]}).count()
-		self.games = games.find({"$and": [{"outcome": {"$ne": OUTCOME_EXIT}}, {"$or": [{"1":self.id}, {"2":self.id}]}, {"ranked": True}, {"valid": True}]}).count()
+		self.games = games.find({"$and": [{"$and": [{"outcome": {"$ne": OUTCOME_EXIT}}, {"outcome": {"$ne": OUTCOME_UNFINISHED}}]}, {"$or": [{"1":self.id}, {"2":self.id}]}, {"ranked": True}, {"valid": True}]}).count()
 		self.votes = d["votes"]
 		self.bio = d["bio"]
 		self.flags = d["flags"]
