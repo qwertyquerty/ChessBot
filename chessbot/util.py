@@ -38,9 +38,9 @@ async def send_dbl_stats(bot):
 
 def makeboard(board):
     if len(board.move_stack)>0:
-        bytes = cairosvg.svg2png(bytestring=chess.svg.board(board=board, lastmove=board.peek(), style=BOARD_CSS))
+        bytes = cairosvg.svg2png(bytestring=chess.svg.board(board=board, lastmove=board.peek()))
     else:
-        bytes = cairosvg.svg2png(bytestring=chess.svg.board(board=board, style=BOARD_CSS))
+        bytes = cairosvg.svg2png(bytestring=chess.svg.board(board=board))
     bytesio = BytesIO(bytes)
     dfile = discord.File(bytesio, filename="board.png")
     return dfile

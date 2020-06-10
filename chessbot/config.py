@@ -1,5 +1,7 @@
 from chessbot.tok import *
 
+import chess.svg
+
 WEBHOOK_PORT = 7003
 
 BOT_INVITE_LINK = "https://discord.com/oauth2/authorize?client_id=366770566331629579&scope=bot&permissions=52288"
@@ -107,13 +109,8 @@ WINMESSAGES = [
 
 DISCORD_LINK = "https://discord.gg/uV5y7RY"
 
-BOARD_CSS = """
-text {
-    fill: #f1ad00;
-    font-size:20px;
-    font-weight: bold;
-}
-"""
+chess.svg.DEFAULT_COLORS["coord"] = "#f1ad00"
+chess.svg.DEFAULT_COLORS["margin"] = "rgba(0,0,0,0)"
 
 ELO_ROLES = {
     1200: 559561778607161376,
