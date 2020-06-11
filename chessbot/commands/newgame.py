@@ -26,7 +26,6 @@ class CommandNewgame(Command):
 					elif ctx.args[1] == "horde": variant = VARIANT_HORDE
 					elif ctx.args[1] == "racingkings": variant = VARIANT_RACINGKINGS
 					elif ctx.args[1] == "960": variant = VARIANT_960
-					elif ctx.args[1] == "custom": variant = VARIANT_CUSTOMFEN
 
 					rated = variant == VARIANT_STANDARD
 

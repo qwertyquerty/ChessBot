@@ -105,7 +105,7 @@ def get_base_board(g):
     elif g.variant == VARIANT_ANTICHESS: board = chess.variant.AntichessBoard(fen=g.basefen)
     elif g.variant == VARIANT_RACINGKINGS: board = chess.variant.RacingKingsBoard(fen=g.basefen)
     elif g.variant == VARIANT_HORDE: board = chess.variant.HordeBoard(fen=g.basefen)
-    elif g.variant == VARIANT_960 or g.variant == VARIANT_STANDARD or g.variant == VARIANT_CUSTOMFEN: board = chess.Board(fen=g.basefen)
+    elif g.variant == VARIANT_960 or g.variant == VARIANT_STANDARD: board = chess.Board(fen=g.basefen)
 
     return board
 
