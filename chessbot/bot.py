@@ -80,7 +80,6 @@ async def on_message(message):
 
 			if ctx.user.name != str(ctx.mem): ctx.user.set("name", str(ctx.mem))
 
-			ctx.game = db.Game.from_user_id(ctx.mem.id)
 			ctx.raw_args = ' '.join(ctx.msg.content[len(ctx.prefix):].split()).split()
 			ctx.args = []
 
@@ -91,6 +90,9 @@ async def on_message(message):
 			for cmd in command_list:
 				if ctx.command == cmd.name or ctx.command in cmd.aliases:
 					await ctx.ch.trigger_typing()
+
+					ctx.game = db.Game.from_user_id(ctx.mem.id)
+
 					await cmd.call(ctx)
 
 					ctx.stats.commandcalls += 1

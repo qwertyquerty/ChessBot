@@ -18,10 +18,10 @@ class CommandMove(Command):
 					move = chess.Move.from_uci(movecoord)
 					if move in ctx.game.board.legal_moves:
 						ctx.game.board.push(move)
-
-						await ctx.ch.send(file=makeboard(ctx.game.board), content=ment(ctx.game.players[ctx.game.board.turn]))
 						ctx.game.add_move(move.uci())
 
+						await ctx.ch.send(file=makeboard(ctx.game.board), content=ment(ctx.game.players[ctx.game.board.turn]))
+						
 					else:
 						await ctx.ch.send("That move is illegal!")
 				except Exception as E:
@@ -32,10 +32,10 @@ class CommandMove(Command):
 					move = ctx.game.board.parse_san(movecoord)
 					if move in ctx.game.board.legal_moves:
 						ctx.game.board.push(move)
-
-						await ctx.ch.send(file=makeboard(ctx.game.board), content=ment(ctx.game.players[ctx.game.board.turn]))
 						ctx.game.add_move(move.uci())
 
+						await ctx.ch.send(file=makeboard(ctx.game.board), content=ment(ctx.game.players[ctx.game.board.turn]))
+					
 					else:
 						await ctx.ch.send("That move is illegal!")
 				except Exception as E:
