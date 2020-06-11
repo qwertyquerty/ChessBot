@@ -11,36 +11,25 @@ class CommandMove(Command):
 	@classmethod
 	async def run(self,ctx):
 		if ctx.mem.id == ctx.game.players[ctx.game.board.turn]:
-			movecoord = ctx.args[0]
+			move = None
 
-			if ctx.command in ["move", "m"]:
+			try:
+				move = chess.Move.from_uci(ctx.args[0])
+			except:
 				try:
-					move = chess.Move.from_uci(movecoord)
-					if move in ctx.game.board.legal_moves:
-						ctx.game.board.push(move)
-						ctx.game.add_move(move.uci())
-
-						await ctx.ch.send(file=makeboard(ctx.game.board), content=ment(ctx.game.players[ctx.game.board.turn]))
-						
-					else:
-						await ctx.ch.send("That move is illegal!")
-				except Exception as E:
+					move = ctx.game.board.parse_san(ctx.args[0])
+				except:
 					await ctx.ch.send("That move is invalid! Try something like: a2a4")
 
-			elif ctx.command in ["go", "g"]:
-				try:
-					move = ctx.game.board.parse_san(movecoord)
-					if move in ctx.game.board.legal_moves:
-						ctx.game.board.push(move)
-						ctx.game.add_move(move.uci())
+			if move:
+				if move in ctx.game.board.legal_moves:
+					ctx.game.board.push(move)
+					ctx.game.add_move(move.uci())
 
-						await ctx.ch.send(file=makeboard(ctx.game.board), content=ment(ctx.game.players[ctx.game.board.turn]))
+					await ctx.ch.send(file=makeboard(ctx.game.board), content=ment(ctx.game.players[ctx.game.board.turn]))
 					
-					else:
-						await ctx.ch.send("That move is illegal!")
-				except Exception as E:
-					await ctx.ch.send("That move is invalid! Try something like: Nf3")
-
+				else:
+					await ctx.ch.send("That move is illegal!")
 
 			if ctx.game.board.is_checkmate() or ctx.game.board.is_variant_loss():
 				await reward_game(ctx.mem.id, ctx.game.players[not ctx.game.players.index(ctx.mem.id)], OUTCOME_CHECKMATE, ctx.game, ctx.ch, ctx.bot)
