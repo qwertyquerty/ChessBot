@@ -10,8 +10,12 @@ def page_api_vote():
 
 	if request.headers["Authorization"] != WEBHOOK_TOKEN:
 		return abort(401)
+	
+	print(request.json)
 
 	user = db.User.from_user_id(request.json["user"])
+
+	print(user)
 
 	if not user:
 		return abort(400)
