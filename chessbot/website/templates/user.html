@@ -54,7 +54,7 @@
 			<div class="user-profile-stat">
 				<div class="user-profile-stat-caption">W/G</div>
 				{% if user.games > 0 %}
-					{{ user.wins / user.games * 100 | round | int }}
+					{{ (user.wins / user.games * 100) | round | int }}%
 				{% else %}
 					None
 				{% endif %}	
