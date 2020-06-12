@@ -2,6 +2,7 @@ from chessbot.command import *
 
 class CommandTakeback(Command):
     name = "takeback"
+    aliases = ["undo"]
     help_string = "Request a takeback for a move"
     help_index = 120
     flags = FLAG_MUST_BE_IN_GAME

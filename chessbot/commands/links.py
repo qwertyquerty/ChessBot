@@ -12,6 +12,7 @@ class CommandVote(Command):
 
 class CommandServer(Command):
     name = "server"
+    aliases = ["support", "guild"]
     help_string = "Join the official bot server"
     help_index = 360
 
@@ -22,7 +23,7 @@ class CommandServer(Command):
 
 class CommandInvite(Command):
     name = "invite"
-    aliases = ["inv"]
+    aliases = ["inv", "join"]
     help_string = "Invite the bot to your server"
     help_index = 380
 
@@ -33,7 +34,7 @@ class CommandInvite(Command):
 
 class CommandDonate(Command):
     name = "donate"
-    aliases = ["patreon"]
+    aliases = ["patreon", "money"]
     help_string = "Give me money. Please."
     help_index = 400
 

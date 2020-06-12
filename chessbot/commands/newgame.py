@@ -1,8 +1,8 @@
 from chessbot.command import *
 
-class CommandNewgame(Command):
-	name = "newgame"
-	aliases = ["ng"]
+class CommandPlay(Command):
+	name = "play"
+	aliases = ["newgame", "ng"]
 	help_string = "Start a new game against someone"
 	help_index = 0
 	parameters = [ParamUser(), ParamString("variant", required=False)]

@@ -2,7 +2,7 @@ from chessbot.command import *
 
 class CommandProfile(Command):
 	name = "profile"
-	aliases = ["pf"]
+	aliases = ["pf", "me"]
 	help_string = "View your profile, or someone else's profile"
 	help_index = 140
 	parameters = [ParamUser(required=False)]

@@ -2,6 +2,7 @@ from chessbot.command import *
 
 class CommandHelp(Command):
 	name = "help"
+	aliases = ["commands"]
 	help_string = "You're reading it, buddy..."
 	parameters = [ParamInt("page", required=False)]
 	help_index = 440

@@ -2,7 +2,7 @@ from chessbot.command import *
 
 class CommandLeaderboard(Command):
 	name = "leaderboard"
-	aliases = ["lb"]
+	aliases = ["lb", "top"]
 	help_string = "View the global elo leaderboard!"
 	help_index = 160
 
