@@ -6,12 +6,14 @@
 	<script src="/static/js/home.js"></script>
 
 	<link rel="stylesheet" href="/static/css/user.css">
+
+	<meta property="og:description" content="The user profile for {{ user.name }}!"/>
 {% endblock %}
 
 {% block content %}
 	<div class="user-profile">
 		<div class="user-profile-name">{{ user.name }}</div>
-		
+
 		{% if user.bio %}
 			<br/>
 			<div class="user-profile-bio">{{ user.bio }}</div>
