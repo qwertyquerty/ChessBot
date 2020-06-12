@@ -50,6 +50,10 @@ body {
 	height: 100%;
 }
 
+a {
+	color: var(--chess-white);
+}
+
 
 #nav {
 	display: inline-block;
@@ -92,14 +96,6 @@ body {
 	padding: var(--chess-padding-medium);
 }
 
-
-.leaderboard-entry {
-	background-color: var(--chess-dark-gray-2);
-	font-size: var(--chess-text-normal);
-	padding: var(--chess-padding-medium);
-	border-bottom: solid var(--chess-border-thick) var(--chess-green);
-	margin-bottom: var(--chess-padding-normal);
-}
 
 .right {
 	float: right;

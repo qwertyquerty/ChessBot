@@ -12,6 +12,7 @@ blueprint_home = Blueprint('home', __name__)
 def page_index():
 	return render_template("home.html")
 
+
 @blueprint_home.route("/game_image/<string:game_id>")
 def page_game_image(game_id):
 	try:
@@ -29,13 +30,27 @@ def page_game_image(game_id):
 	
 	return Response(board_svg, content_type="image/svg+xml")
 
+
 @blueprint_home.route("/leaderboard")
 def page_leaderboard():
 	return render_template("leaderboard.html")
 
+
+@blueprint_home.route("/user/<int:id>")
+def page_user(id):
+
+	user = db.User.from_user_id(id)
+
+	if not user:
+		abort(404)
+
+	return render_template("user.html", user=user)
+
+
 @blueprint_home.route("/invite")
 def page_invite():
 	return redirect(BOT_INVITE_LINK)
+
 
 @blueprint_home.route("/github")
 def page_github():

@@ -1,0 +1,64 @@
+{% extends "layout.html" %}
+{% block title %}User / {{ user.name }}{% endblock %}
+{% block active %}leaderboard{% endblock %}
+
+{% block head %}
+	<script src="/static/js/home.js"></script>
+
+	<link rel="stylesheet" href="/static/css/user.css">
+{% endblock %}
+
+{% block content %}
+	<div class="user-profile">
+		<div class="user-profile-name">{{ user.name }}</div>
+		
+		{% if user.bio %}
+			<br/>
+			<div class="user-profile-bio">{{ user.bio }}</div>
+		{% endif %}
+		<br/>
+
+		<div class="user-profile-stats">
+			<div class="user-profile-stat">
+				<div class="user-profile-stat-caption">Rank</div>
+				#{{ user.get_rank() + 1 }}
+			</div>
+
+			<div class="user-profile-stat">
+				<div class="user-profile-stat-caption">Elo</div>
+				{{ user.elo | round | int }}
+			</div>
+
+			<div class="user-profile-stat">
+				<div class="user-profile-stat-caption">Wins</div>
+				{{ user.wins }}
+			</div>
+
+			<div class="user-profile-stat">
+				<div class="user-profile-stat-caption">Draws</div>
+				{{ user.draws }}
+			</div>
+
+			<div class="user-profile-stat">
+				<div class="user-profile-stat-caption">Losses</div>
+				{{ user.loss }}
+			</div>
+
+			<div class="user-profile-stat">
+				<div class="user-profile-stat-caption">Games</div>
+				{{ user.games }}
+			</div>
+
+			<div class="user-profile-stat">
+				<div class="user-profile-stat-caption">W/G</div>
+				{% if user.games > 0 %}
+					{{ user.wins / user.games * 100 | round | int }}
+				{% else %}
+					None
+				{% endif %}	
+			</div>
+
+			<div class="user-profile-stat"><div class="user-profile-stat-caption">Votes</div>{{ user.votes }}</div>
+		</div>
+	</div>
+{% endblock %}

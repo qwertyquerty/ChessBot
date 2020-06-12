@@ -3,12 +3,13 @@
 {% block active %}leaderboard{% endblock %}
 
 {% block head %}
+	<link rel="stylesheet" href="/static/css/leaderboard.css">
 {% endblock %}
 
 {% block content %}
 
-  {% for user in db.leaderboard(100) %}
-    <div class="leaderboard-entry">{{ loop.index }}. {{ user["name"] }} <span class="right">{{ user["elo"] | round | int }} elo</span></div>
-  {% endfor %}
+	{% for user in db.leaderboard(100) %}
+		<div class="leaderboard-entry">{{ loop.index }}. <a href="/user/{{ user["id"] }}">{{ user["name"] }}</a> <span class="right">{{ user["elo"] | round | int }} elo</span></div>
+	{% endfor %}
 
 {% endblock %}
