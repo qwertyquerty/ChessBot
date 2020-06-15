@@ -224,7 +224,8 @@ async def update_elo_roles(ctx):
         user = db.User.from_mem(member)
         elo = int((user.elo)/100)*100
         rs = [r for r in rmroles if r in member.roles]
-        await member.remove_roles(*rs)
+        if len(rs) > 0:
+            await member.remove_roles(*rs)
         if user.games > 0:
             if elo in ELO_ROLES:
                 await member.add_roles(guild.get_role(ELO_ROLES[elo]))
