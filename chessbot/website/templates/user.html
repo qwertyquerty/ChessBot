@@ -3,7 +3,7 @@
 {% block active %}leaderboard{% endblock %}
 
 {% block head %}
-	<script src="/static/js/home.js"></script>
+	<script src="/static/js/user.js"></script>
 
 	<link rel="stylesheet" href="/static/css/user.css">
 
@@ -61,6 +61,26 @@
 			</div>
 
 			<div class="user-profile-stat"><div class="user-profile-stat-caption">Votes</div>{{ user.votes }}</div>
+		</div>
+	</div>
+	{% set games = db.games.find({"$or": [{"1":user.id}, {"2":user.id}]}).limit(8) | list %}
+	{% set pages = (db.games.find({"$or": [{"1":user.id}, {"2":user.id}]}).count() / 8) | round(0, 'ceil') %}
+	<div class='user-profile'>
+		<div class="user-profile-name">Games</div>
+		<br>
+		<div class='pagination'>
+			<a>«</a>
+			{% for i in range(pages|int) %}
+				<a id='number-{{i+1}}' href="?page={{i+1}}">{{i+1}}</a>
+			{% endfor %}
+			<a>»</a>
+		</div>
+		<br>
+		<div class='user-profile-stats'>				
+			{% for i in range(games|length) %}
+				<img class="game-images" src="/game_image/{{ games[i]._id }}"/>
+			{%endfor%}
+	
 		</div>
 	</div>
 {% endblock %}
