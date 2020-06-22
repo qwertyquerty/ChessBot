@@ -164,7 +164,10 @@ class User(DBObject):
 		self.votes = d["votes"]
 		self.bio = d["bio"]
 		self.flags = d["flags"]
-		self.elo = d["elo"]
+		self.rating = d["rating"]
+		self.rating_deviation = d["rating_deviation"]
+		self.rating_volatility = d["rating_volatility"]
+		self.glicko = glicko_env.create_rating(self.rating, self.rating_deviation, self.rating_volatility)
 		self.level = d["level"]
 
 		self.badges = []
@@ -174,9 +177,9 @@ class User(DBObject):
 		elif self.wins >= 10: self.badges.append("intermediate")
 		elif self.wins >= 20: self.badges.append("expert")
 		if self.games >= 50: self.badges.append("addicted")
-		if self.elo >= 1700: self.badges.append("brilliant")
-		elif self.elo >= 1400: self.badges.append("proficient")
-		elif self.elo <= 1000: self.badges.append("blunder")
+		if self.rating >= 1700: self.badges.append("brilliant")
+		elif self.rating >= 1400: self.badges.append("proficient")
+		elif self.rating <= 1000: self.badges.append("blunder")
 		if self.votes >= 5: self.badges.append("voter")
 		if self.flags & USER_FLAG_BLACKLISTED: self.badges.append("blacklisted")
 		if self.flags & USER_FLAG_TOURNAMENT_1ST: self.badges.append("tournament-first-place")
@@ -192,8 +195,11 @@ class User(DBObject):
 
 	@classmethod
 	def new(cls,userid,name):
-		data = {"name": name, "id": userid, "flags": 0, "votes": 0, "bio": None, "elo": config.STARTING_ELO, "level": 0}
+		rating = glicko_env.create_rating()
+
+		data = {"name": name, "id": userid, "flags": 0, "votes": 0, "bio": None, "rating": rating.mu, "rating_deviation": rating.phi, "rating_volatility": rating.sigma, "level": 0}
 		users.insert_one(data)
+
 		return User.from_user_id(userid)
 
 	@classmethod
@@ -223,17 +229,17 @@ class User(DBObject):
 	def blacklist(self):
 		db.games.update_many({"$or": [{"1":self.id}, {"2":self.id}]}, {"$set": {"valid": False}})
 		self.set('flags', self.flags|USER_FLAG_BLACKLISTED)
-		elo_sync()
+		rating_sync()
 		return self
 
 	def unblacklist(self):
 		db.games.update_many({"$or": [{"1":self.id}, {"2":self.id}]}, {"$set": {"valid": True}})
 		self.set('flags', self.flags&~USER_FLAG_BLACKLISTED)
-		elo_sync()
+		rating_sync()
 		return self
 	
 	def get_rank(self):
-		rank_cur = db.users.find().sort("elo", -1)
+		rank_cur = db.users.find().sort("rating", -1)
 		i = 0
 
 		for user in rank_cur:
@@ -241,6 +247,13 @@ class User(DBObject):
 				return i
 		
 			i += 1
+	
+	def update_glicko(self, glicko):
+		self.collection.update_one({"_id": ObjectId(self._id)}, {"$set": {
+			"rating": glicko.mu,
+			"rating_deviation": glicko.phi,
+			"rating_volatility": glicko.sigma
+		}})
 
 
 class Guild(DBObject):
@@ -280,7 +293,7 @@ class Guild(DBObject):
 			return d
 
 
-def leaderboard(limit,sort="elo"):
+def leaderboard(limit,sort="rating"):
 	return [i for i in db.users.find().sort(sort,-1).limit(limit)]
 
 def leaderboardguilds(limit,sort="games"):

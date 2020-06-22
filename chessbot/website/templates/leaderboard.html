@@ -9,7 +9,7 @@
 {% block content %}
 
 	{% for user in db.leaderboard(100) %}
-		<div class="leaderboard-entry">{{ loop.index }}. <a href="/user/{{ user["id"] }}">{{ user["name"] }}</a> <span class="right">{{ user["elo"] | round | int }} elo</span></div>
+		<div class="leaderboard-entry">{{ loop.index }}. <a href="/user/{{ user["id"] }}">{{ user["name"] }}</a> <span class="right">{{ user["rating"] | round | int }}</span></div>
 	{% endfor %}
 
 {% endblock %}

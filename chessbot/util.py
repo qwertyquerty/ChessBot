@@ -14,6 +14,10 @@ import cairosvg
 import traceback
 from io import BytesIO
 
+from .glicko2 import Glicko2
+
+glicko_env = Glicko2(GLICKO_MU, GLICKO_PHI, GLICKO_SIGMA, GLICKO_TAU)
+
 class Ctx():
     def __init__(self):
         pass
@@ -53,50 +57,33 @@ def codeblock(s, language=None):
         return "```{}\n{}```".format(language,s)
     return "```{}```".format(s)
 
-def elo_probability(rating1, rating2):
-    return 1.0 * 1.0 / (1 + 1.0 * math.pow(10, 1.0 * (rating1 - rating2) / 400))
-
-def elo_rating(ra, rb, K, draw=False):
-
-    pb = elo_probability(ra, rb)
-    pa = elo_probability(rb, ra)
-
-    if not draw:
-        ra = ra + K * (1 - pa)
-        rb = rb + K * (0 - pb)
-    else:
-        ra = ra + K * (0.5 - pa)
-        rb = rb + K * (0.5 - pb)
-
-    return (ra,rb)
-
-
-def elo_sync():
+def rating_sync():
     users = {}
     games = db.date_ordered_games()
 
     for game in games:
         if game["ranked"] and game["valid"] and game["outcome"] != OUTCOME_EXIT and game["outcome"] != OUTCOME_UNFINISHED:
             if not game["1"] in users:
-                users[game["1"]] = STARTING_ELO
+                users[game["1"]] = glicko_env.create_rating()
 
             if not game["2"] in users:
-                users[game["2"]] = STARTING_ELO
+                users[game["2"]] = glicko_env.create_rating()
 
             if game["outcome"] == OUTCOME_DRAW:
-                e = elo_rating(users[game["1"]], users[game["2"]], ELO_K, draw=True)
-                users[game["1"]] = e[0]
-                users[game["2"]] = e[1]
+                new_rating = glicko_env.rate_1vs1(users[game["1"]], users[game["2"]], drawn=True)
+                users[game["1"]] = new_rating[0]
+                users[game["2"]] = new_rating[1]
 
             elif game["outcome"] == OUTCOME_RESIGN or game["outcome"] == OUTCOME_CHECKMATE:
-                e = elo_rating(users[game["winner"]], users[game["loser"]], ELO_K)
-                users[game["winner"]] = e[0]
-                users[game["loser"]] = e[1]
+                new_rating = glicko_env.rate_1vs1(users[game["winner"]], users[game["loser"]])
+                users[game["winner"]] = new_rating[0]
+                users[game["loser"]] = new_rating[1]
 
-    db.users.update_many({}, {"$set": {"elo": STARTING_ELO}})
+    default_rating = glicko_env.create_rating()
+    db.users.update_many({}, {"$set": {"rating": default_rating.mu, "rating_deviation": default_rating.phi, "rating_volatility": default_rating.sigma}})
 
-    for id,elo in users.items():
-        db.users.update({"id": id}, {"$set": {"elo": elo}})
+    for id, rating in users.items():
+        db.users.update({"id": id}, {"$set": {"rating": rating.mu, "rating_deviation": rating.phi, "rating_volatility": rating.sigma}})
 
 def get_base_board(g):
     if g.variant == VARIANT_CRAZYHOUSE: board = chess.variant.CrazyhouseBoard(fen=g.basefen)
@@ -144,13 +131,13 @@ async def reward_game(winner,loser,outcome, game, channel, bot):
     guild = channel.guild
     if game.ranked:
         if (outcome == OUTCOME_RESIGN and len(game.moves) > 2) or outcome == OUTCOME_CHECKMATE:
-            new_elo = elo_rating(winner.elo, loser.elo, ELO_K)
-            winner.set("elo", new_elo[0])
-            loser.set("elo", new_elo[1])
+            new_rating = glicko_env.rate_1vs1(winner.glicko, loser.glicko)
+            winner.update_glicko(new_rating[0])
+            loser.update_glicko(new_rating[1])
 
     if outcome == OUTCOME_CHECKMATE:
         if game.ranked:
-            await channel.send(random.choice(WINMESSAGES).format(winner=ment(winner.id), loser=ment(loser.id))+"! Checkmate! ({}/{})".format(int(round(new_elo[0]-winner.elo, 0)),int(round(new_elo[1]-loser.elo, 0))))
+            await channel.send(random.choice(WINMESSAGES).format(winner=ment(winner.id), loser=ment(loser.id))+"! Checkmate! ({}/{})".format(int(round(new_rating[0].mu-winner.rating, 0)),int(round(new_rating[1].mu-loser.rating, 0))))
         else:
             await channel.send(random.choice(WINMESSAGES).format(winner=ment(winner.id), loser=ment(loser.id))+"! Checkmate!")
         
@@ -159,7 +146,7 @@ async def reward_game(winner,loser,outcome, game, channel, bot):
     if outcome == OUTCOME_RESIGN:
         if len(game.moves) > 2:
             if game.ranked:
-                await channel.send("You have resigned! <@!"+str(winner.id)+"> wins! ({}/{})".format(int(round(new_elo[0]-winner.elo, 0)),int(round(new_elo[1]-loser.elo, 0))))
+                await channel.send("You have resigned! <@!"+str(winner.id)+"> wins! ({}/{})".format(int(round(new_rating[0].mu-winner.rating, 0)),int(round(new_rating[1].mu-loser.rating, 0))))
             else:
                 await channel.send("You have resigned! <@!"+str(winner.id)+"> wins!")
             game.end(winner.id, loser.id, OUTCOME_RESIGN)
@@ -170,10 +157,11 @@ async def reward_game(winner,loser,outcome, game, channel, bot):
     if outcome == OUTCOME_DRAW:
         if len(game.moves) > 2:
             if game.ranked:
-                new_elo = elo_rating(winner.elo, loser.elo, ELO_K, draw=True)
-                winner.set("elo", new_elo[0])
-                loser.set("elo", new_elo[1])
-                await channel.send("The game is a draw! Game over! ({}/{})".format(int(round(new_elo[0]-winner.elo, 0)),int(round(new_elo[1]-loser.elo, 0))))
+                new_rating = glicko_env.rate_1vs1(winner.glicko, loser.glicko, drawn=True)
+                winner.update_glicko(new_rating[0])
+                loser.update_glicko(new_rating[1])
+
+                await channel.send("The game is a draw! Game over! ({}/{})".format(int(round(new_rating[0].mu-winner.rating, 0)),int(round(new_rating[1].mu-loser.rating, 0))))
 
             else:
                 await channel.send("The game is a draw! Game over!")
@@ -217,15 +205,15 @@ def embed_from_game(game):
         
     return em
 
-async def update_elo_roles(ctx):
+async def update_rating_roles(ctx):
     guild = ctx.bot.get_guild(CHESSBOTSERVER)
-    rmroles = [guild.get_role(r) for r in ELO_ROLES.values()]
+    rmroles = [guild.get_role(r) for r in RATING_ROLES.values()]
     for member in guild.members:
         user = db.User.from_mem(member)
-        elo = int((user.elo)/100)*100
+        rating = int((user.rating)/100)*100
         rs = [r for r in rmroles if r in member.roles]
         if len(rs) > 0:
             await member.remove_roles(*rs)
         if user.games > 0:
-            if elo in ELO_ROLES:
-                await member.add_roles(guild.get_role(ELO_ROLES[elo]))
+            if rating in RATING_ROLES:
+                await member.add_roles(guild.get_role(RATING_ROLES[rating]))

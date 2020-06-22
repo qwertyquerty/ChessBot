@@ -34,5 +34,5 @@ class CommandReset(Command):
     @classmethod
     async def run(self,ctx):
         [g.delete() for g in db.User.from_mem(ctx.args[0]).get_games()]
-        elo_sync()
+        rating_sync()
         await ctx.ch.send("User has been reset!")
