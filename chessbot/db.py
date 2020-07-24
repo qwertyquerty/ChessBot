@@ -293,11 +293,14 @@ class Guild(DBObject):
 			return d
 
 
-def leaderboard(limit,sort="rating"):
-	return [i for i in db.users.find().sort(sort,-1).limit(limit)]
+def leaderboard(limit):
+	return list(db.users.find().sort("rating",-1).limit(limit))
 
-def leaderboardguilds(limit,sort="games"):
-	return [i for i in db.guilds.find().sort(sort,-1).limit(limit)]
+def local_leaderboard(limit, guild):
+
+	guild_member_ids = [member.id for member in guild.members]
+
+	return list(db.users.find({"id": {"$in": guild_member_ids}}).sort("rating",-1).limit(limit))
 
 def date_ordered_games():
 	return db.games.find().sort("timestamp",1)
