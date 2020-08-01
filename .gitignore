@@ -6,3 +6,5 @@ commands/__pycache__
 venv
 
 .vscode
+
+.swp
