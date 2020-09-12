@@ -31,6 +31,12 @@ class CommandDraw(Command):
 
     @classmethod
     async def run(self,ctx):
+
+        if ctx.game.board.can_claim_draw():
+            await ctx.ch.send("{user} has claimed a draw!".format(user=ctx.mem.mention))
+            await reward_game(ctx.mem.id, ctx.game.players[not ctx.game.players.index(ctx.mem.id)], OUTCOME_DRAW, ctx.game, ctx.ch, ctx.bot)
+            return # If a draw is claimed legally dont request a draw offer
+            
         m = await ctx.ch.send("{u1}, you are being offered a draw from {u2}!".format(u1=ment(ctx.game.players[not ctx.game.players.index(ctx.mem.id)]),u2=str(ctx.mem.mention)))
         await m.add_reaction(ACCEPT_MARK)
         await m.add_reaction(DENY_MARK)
@@ -42,7 +48,7 @@ class CommandDraw(Command):
             reaction, user = await ctx.bot.wait_for('reaction_add', check=check, timeout=15)
 
             if str(reaction) == ACCEPT_MARK:
-                await reward_game(ctx.mem.id, ctx.game.players[not ctx.game.players.index(ctx.mem.id)], OUTCOME_DRAW, ctx.game,ctx.ch,ctx.bot)
+                await reward_game(ctx.mem.id, ctx.game.players[not ctx.game.players.index(ctx.mem.id)], OUTCOME_DRAW, ctx.game, ctx.ch, ctx.bot)
 
             elif str(reaction) == DENY_MARK:
                 await ctx.ch.send("You have declined the draw request!")
