@@ -25,7 +25,7 @@ class CommandExit(Command):
 
 class CommandDraw(Command):
     name = "draw"
-    help_string = "Request to draw a game"
+    help_string = "Request to draw a game, or legally claim a draw"
     help_index = 80
     flags = FLAG_MUST_BE_IN_GAME
 
@@ -36,7 +36,7 @@ class CommandDraw(Command):
             await ctx.ch.send("{user} has claimed a draw!".format(user=ctx.mem.mention))
             await reward_game(ctx.mem.id, ctx.game.players[not ctx.game.players.index(ctx.mem.id)], OUTCOME_DRAW, ctx.game, ctx.ch, ctx.bot)
             return # If a draw is claimed legally dont request a draw offer
-            
+
         m = await ctx.ch.send("{u1}, you are being offered a draw from {u2}!".format(u1=ment(ctx.game.players[not ctx.game.players.index(ctx.mem.id)]),u2=str(ctx.mem.mention)))
         await m.add_reaction(ACCEPT_MARK)
         await m.add_reaction(DENY_MARK)
