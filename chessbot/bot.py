@@ -71,15 +71,6 @@ async def on_message(message):
 
 		if not ctx.mem.bot and ctx.content.startswith(ctx.prefix):
 
-			if ctx.dbguild == None:
-				ctx.dbguild = db.Guild.from_guild(ctx.guild)
-
-			if ctx.guild.name != ctx.dbguild.name: ctx.dbguild.set("name", ctx.guild.name)
-
-			ctx.user = db.User.from_mem(ctx.mem)
-
-			if ctx.user.name != str(ctx.mem): ctx.user.set("name", str(ctx.mem))
-
 			ctx.raw_args = ' '.join(ctx.msg.content[len(ctx.prefix):].split()).split()
 			ctx.args = []
 
@@ -89,10 +80,23 @@ async def on_message(message):
 
 			for cmd in command_list:
 				if ctx.command == cmd.name or ctx.command in cmd.aliases:
+
+					### Make the bot type while it works out the command
 					await ctx.ch.trigger_typing()
 
+					### Update user name and guild name if needed when a viable command is found
+					ctx.user = db.User.from_mem(ctx.mem)
+					if ctx.user.name != str(ctx.mem): ctx.user.set("name", str(ctx.mem))
+
+					if ctx.dbguild == None:
+						ctx.dbguild = db.Guild.from_guild(ctx.guild)
+
+					if ctx.guild.name != ctx.dbguild.name: ctx.dbguild.set("name", ctx.guild.name)
+
+					### Fetch the game because it's usually needed (probably bad practice here whatever tho)
 					ctx.game = db.Game.from_user_id(ctx.mem.id)
 
+					### Actually call the command
 					await cmd.call(ctx)
 
 					ctx.stats.commandcalls += 1
