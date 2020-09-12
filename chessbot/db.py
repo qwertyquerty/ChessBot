@@ -157,10 +157,48 @@ class User(DBObject):
 		self.name = d["name"]
 		self.id = d["id"]
 		self._id = d["_id"]
-		self.wins = games.find({"$and": [{"$or": [{"outcome": OUTCOME_CHECKMATE}, {"outcome": OUTCOME_RESIGN}]}, {"winner": self.id}, {"ranked": True}, {"valid": True}]}).count()
-		self.loss = games.find({"$and": [{"$or": [{"outcome": OUTCOME_CHECKMATE}, {"outcome": OUTCOME_RESIGN}]}, {"loser": self.id}, {"ranked": True}, {"valid": True}]}).count()
-		self.draws =  games.find({"$and": [{"$or": [{"1":self.id},  {"2":self.id}]}, {"outcome": OUTCOME_DRAW}, {"ranked": True}, {"valid": True}]}).count()
-		self.games = games.find({"$and": [{"$and": [{"outcome": {"$ne": OUTCOME_EXIT}}, {"outcome": {"$ne": OUTCOME_UNFINISHED}}]}, {"$or": [{"1":self.id}, {"2":self.id}]}, {"ranked": True}, {"valid": True}]}).count()
+
+		self.list_of_games = list(games.find({"$and": [{"$or": [{"1":self.id}, {"2":self.id}]}, {"valid": True}]})) # Get all valid games the user is in
+
+		self.wins = len([
+			game for game in self.list_of_games if (
+				(
+					game["outcome"] == OUTCOME_CHECKMATE or
+					game["outcome"] == OUTCOME_RESIGN
+				) and
+				game["winner"] == self.id and
+				game["ranked"] == True
+			)
+		])
+		
+		self.loss = len([
+			game for game in self.list_of_games if (
+				(
+					game["outcome"] == OUTCOME_CHECKMATE or
+					game["outcome"] == OUTCOME_RESIGN
+				) and
+				game["loser"] == self.id and
+				game["ranked"] == True
+			)
+		])
+
+		self.draws =  len([
+			game for game in self.list_of_games if (
+				game["outcome"] == OUTCOME_DRAW and
+				game["ranked"] == True
+			)
+		])
+
+		self.games =  len([
+			game for game in self.list_of_games if (
+				(
+					game["outcome"] != OUTCOME_EXIT and
+					game["outcome"] != OUTCOME_UNFINISHED
+				) and
+				game["ranked"] == True
+			)
+		])
+		
 		self.votes = d["votes"]
 		self.bio = d["bio"]
 		self.flags = d["flags"]
