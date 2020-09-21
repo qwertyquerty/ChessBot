@@ -59,10 +59,9 @@ class CommandPlay(Command):
 								await ctx.ch.send('The game has started! Type {prefix}board to see the board!'.format(prefix=ctx.prefix))
 
 								await ctx.bot.get_channel(config.LOGCHANNEL).send("`Create Game: "+str(u1.name)+" "+str(u2.name)+" "+str(ctx.guild.id)+"`")
-								if config.MOTD == "":
-									await ctx.bot.change_presence(activity=discord.Game(name=str(db.games.find().count())+" games!"),status=discord.Status.online)
-								else:
-									await ctx.bot.change_presence(activity=discord.Game(name=config.MOTD),status=discord.Status.online)
+								
+								await update_activity(ctx.bot)
+
 							else:
 								await ctx.ch.send("{u1}, {u2} I dunno which, but one of you is already in a game!".format(u1=ctx.mem.mention,u2=ctx.args[0].mention))
 						elif str(reaction) == DENY_MARK:

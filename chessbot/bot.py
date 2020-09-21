@@ -20,12 +20,9 @@ async def on_ready():
 	stats.startgames = db.games.count_documents({})
 	stats.startguilds = len(bot.guilds)
 	stats.startusers = len(bot.users)
-	
-	if MOTD == "":
-		await bot.change_presence(activity=discord.Game(name=str(db.games.count_documents({}))+" games!"),status=discord.Status.online)
-	else:
-		await bot.change_presence(activity=discord.Game(name=MOTD),status=discord.Status.online)
-	
+
+	await update_activity(bot)
+
 	await send_dbl_stats(bot)
 
 @bot.event

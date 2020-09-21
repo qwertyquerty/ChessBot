@@ -181,6 +181,7 @@ async def reward_game(winner,loser,outcome, game, channel, bot):
     if g:
         await bot.get_channel(GAMESCHANNEL).send(embed=embed_from_game(g))
 
+    await update_activity(bot)
 
 def embed_from_game(game):
     em = discord.Embed()
@@ -217,3 +218,10 @@ async def update_rating_roles(ctx):
         if user.games > 0:
             if rating in RATING_ROLES:
                 await member.add_roles(guild.get_role(RATING_ROLES[rating]))
+
+
+async def update_activity(bot):
+    await bot.change_presence(activity=discord.Game(name="{} / {} games!".format(
+        db.games.find({"outcome": OUTCOME_UNFINISHED}).count(),
+        db.games.count_documents({})
+    )), status=discord.Status.online)
