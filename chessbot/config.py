@@ -68,7 +68,9 @@ EMBED_COLOR = 4623620
 MAX_MESSAGE_CACHE = 5000
 
 DBLURL = "https://top.gg/api/bots/366770566331629579/stats"
-VOTEURL = "https://top.gg/bot/366770566331629579/vote"
+
+BOTVOTEURL = "https://top.gg/bot/366770566331629579/vote"
+SERVERVOTEURL = "https://top.gg/servers/430504476458221570/vote"
 
 DBLHEADERS = {"Authorization" : DBLTOKEN}
 
@@ -103,7 +105,10 @@ PAGELENGTH = 8
 
 WINMESSAGES = [
 "{winner} TORE THE HEAD OFF OF--err, won in a chess match against {loser}",
-"{winner} just absolutely demolished {loser}"
+"{winner} just absolutely demolished {loser}",
+"{winner} completely outwitted {loser}",
+"{winner} has asserted dominance over {loser}",
+"{winner} is obviously better at Chess than {loser}"
 ]
 
 DISCORD_LINK = "https://discord.gg/uV5y7RY"

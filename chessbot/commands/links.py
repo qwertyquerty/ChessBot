@@ -7,7 +7,7 @@ class CommandVote(Command):
 
     @classmethod
     async def run(self,ctx):
-        await ctx.ch.send(VOTEURL)
+        await ctx.ch.send("{}\n\n{}".format(BOTVOTEURL, SERVERVOTEURL))
 
 
 class CommandServer(Command):
