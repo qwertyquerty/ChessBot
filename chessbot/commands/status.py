@@ -47,7 +47,7 @@ class CommandStats(Command):
         em.add_field(name="Calls",value="{} {}/d {}".format(v[0], v[1], emotes[bool(v[1])]))
         v = (len(ctx.bot.guilds),int((len(ctx.bot.guilds)-ctx.stats.startguilds)/(uptime/60/60/24)))
         em.add_field(name="Guilds",value="{} {}/d {}".format(v[0], v[1], emotes[bool(v[0])]))
-        v = (len(ctx.bot.users), int((len(ctx.bot.users)-ctx.stats.startusers)/(uptime/60/60/24)))
+        v = (len(ctx.bot.users), int((sum([i.member_count for i in ctx.bot.guilds])-ctx.stats.startusers)/(uptime/60/60/24)))
         em.add_field(name="Users",value="{} {}/d {}".format(v[0], v[1], emotes[bool(v[0])]))
         v = (db.games.count(), int((db.games.count()-ctx.stats.startgames)/(uptime/60/60/24)))
         em.add_field(name="Games",value="{} {}/d {}".format(v[0], v[1], emotes[bool(v[0])]))

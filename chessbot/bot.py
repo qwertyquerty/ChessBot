@@ -20,7 +20,7 @@ stats = Stats(bot)
 async def on_ready():
 	stats.startgames = db.games.count_documents({})
 	stats.startguilds = len(bot.guilds)
-	stats.startusers = len(bot.users)
+	stats.startusers = sum([i.member_count for i in bot.guilds])
 
 	await update_activity(bot)
 
