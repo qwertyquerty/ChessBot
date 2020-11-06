@@ -12,7 +12,6 @@ command_list = Command.__subclasses__()
 prefix_cache = {}
 
 intents = discord.Intents.default()
-intents.members = True
 
 bot = discord.AutoShardedClient(max_messages=MAX_MESSAGE_CACHE, intents=intents)
 stats = Stats(bot)

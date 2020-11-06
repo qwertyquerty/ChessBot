@@ -11,14 +11,14 @@ class Parameter():
 		if name:
 			self.name = name
 	
-	def parse(self, ctx, arg):
+	async def parse(self, ctx, arg):
 		return None
 
 class ParamUser(Parameter):
 	type_name = "user"
 	name = "user"
 
-	def parse(self, ctx, arg):
+	async def parse(self, ctx, arg):
 		mention_re = re.search(r"^<@!?(\d+)>$", arg)
 		id_re = re.search(r"^(\d+)$", arg)
 
@@ -34,13 +34,13 @@ class ParamUser(Parameter):
 		except:
 			id = None
 		
-		return ctx.bot.get_user(id)
+		return await ctx.bot.fetch_user(id)
 
 class ParamGameID(Parameter):
 	type_name = "game_id"
 	name = "game"
 
-	def parse(self, ctx, arg):
+	async def parse(self, ctx, arg):
 		try:
 			ObjectId(arg)
 			return arg
@@ -51,14 +51,14 @@ class ParamString(Parameter):
 	type_name = "text"
 	name = "text"
 
-	def parse(self, ctx, arg):
+	async def parse(self, ctx, arg):
 		return str(arg)
 
 class ParamInt(Parameter):
 	type_name = "number"
 	name = "number"
 
-	def parse(self, ctx, arg):
+	async def parse(self, ctx, arg):
 		try:
 			return int(arg)
 		except:
@@ -77,9 +77,9 @@ class ParamUnion(Parameter):
 		if not name:
 			self.name = "/".join([param.name for param in self.params])
 	
-	def parse(self, ctx, arg):
+	async def parse(self, ctx, arg):
 		for param in self.params:
-			parsed = param.parse(ctx, arg)
+			parsed = await param.parse(ctx, arg)
 			if parsed:
 				return parsed
 		
