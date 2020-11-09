@@ -26,8 +26,8 @@ if __name__ == '__main__':
 	
 	while 1:
 		sleep(1)
-		for pid, process in processes.items():
-			if not process.is_alive():
+		for pid in list(processes.keys()):
+			if not processes[pid].is_alive():
 				print("Process {} failed! Restarting...".format(pid))
 
 				del processes[pid]
