@@ -31,10 +31,9 @@ class ParamUser(Parameter):
 		
 		try:
 			id = int(id)
+			return await ctx.bot.fetch_user(id)
 		except:
-			id = None
-		
-		return await ctx.bot.fetch_user(id)
+			return None
 
 class ParamGameID(Parameter):
 	type_name = "game_id"
