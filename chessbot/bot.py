@@ -7,107 +7,98 @@ from chessbot.util import *
 import discord
 import traceback
 
-command_list = Command.__subclasses__()
+class ChessBot(discord.AutoShardedClient):
+	def __init__(self, pid=None, **kwargs):
+		super().__init__(**kwargs)
+		
+		self.pid = pid
+		self.prefix_cache = {}
+		self.command_list = Command.__subclasses__()
 
-prefix_cache = {}
+		self.log_channel = None
+		self.error_channel = None
 
-intents = discord.Intents.default()
+	async def on_ready(self):
+		self.log_channel = await self.fetch_channel(LOGCHANNEL)
+		self.error_channel = await self.fetch_channel(ERRORCHANNEL)
 
-bot = discord.AutoShardedClient(max_messages=MAX_MESSAGE_CACHE, intents=intents)
-stats = Stats(bot)
+		await update_activity(self)
 
-@bot.event
-async def on_ready():
-	stats.startgames = db.games.count_documents({})
-	stats.startguilds = len(bot.guilds)
-	stats.startusers = sum([i.member_count for i in bot.guilds])
+		await send_dbl_stats(self)
 
-	await update_activity(bot)
+	async def on_guild_join(self, guild):
+		db.Guild.new(guild.id,guild.name)
+		await send_dbl_stats(self)
 
-	await send_dbl_stats(bot)
+	async def on_guild_remove(self, guild):
+		await send_dbl_stats(self)
 
-@bot.event
-async def on_guild_join(guild):
-	db.Guild.new(guild.id,guild.name)
-	await send_dbl_stats(bot)
+	async def on_guild_update(self, before, after):
+		guild = db.Guild.from_guild_id(after.id)
+		if after.name != guild.name: guild.set("name", after.name)
 
-@bot.event
-async def on_guild_remove(guild):
-	await send_dbl_stats(bot)
+	async def on_message(self, message):
+		ctx = Ctx()
+		ctx.bot = self
+		ctx.msg = message
+		ctx.message = ctx.msg
+		ctx.mem = ctx.msg.author
+		ctx.content = ctx.msg.content
+		ctx.ch = ctx.msg.channel
+		ctx.channel = ctx.ch
 
-@bot.event
-async def on_guild_update(before, after):
-	guild = db.Guild.from_guild_id(after.id)
-	if after.name != guild.name: guild.set("name", after.name)
+		try:
+			ctx.guild = ctx.msg.guild
+			ctx.mentions = ctx.msg.mentions
 
+			ctx.dbguild = None
 
-@bot.event
-async def on_message(message):
-	ctx = Ctx()
-	ctx.bot = bot
-	ctx.stats = stats
-	ctx.stats.messages += 1
-	ctx.msg = message
-	ctx.message = ctx.msg
-	ctx.mem = ctx.msg.author
-	ctx.content = ctx.msg.content
-	ctx.ch = ctx.msg.channel
-	ctx.channel = ctx.ch
+			if ctx.guild.id in self.prefix_cache:
+				ctx.prefix = self.prefix_cache[ctx.guild.id]
+			else:
+				ctx.dbguild = db.Guild.from_guild(ctx.guild)
+				ctx.prefix = ctx.dbguild.prefix
+				self.prefix_cache[ctx.guild.id] = ctx.dbguild.prefix
 
-	try:
-		ctx.guild = ctx.msg.guild
-		ctx.mentions = ctx.msg.mentions
+			if not ctx.mem.bot and ctx.content.startswith(ctx.prefix):
 
-		ctx.dbguild = None
+				ctx.raw_args = ' '.join(ctx.msg.content[len(ctx.prefix):].split()).split()
+				ctx.args = []
 
-		if ctx.guild.id in prefix_cache:
-			ctx.prefix = prefix_cache[ctx.guild.id]
-		else:
-			ctx.dbguild = db.Guild.from_guild(ctx.guild)
-			ctx.prefix = ctx.dbguild.prefix
-			prefix_cache[ctx.guild.id] = ctx.dbguild.prefix
+				if len(ctx.raw_args) == 0: return
 
-		if not ctx.mem.bot and ctx.content.startswith(ctx.prefix):
+				ctx.command = ctx.raw_args.pop(0).lower()
 
-			ctx.raw_args = ' '.join(ctx.msg.content[len(ctx.prefix):].split()).split()
-			ctx.args = []
+				for cmd in self.command_list:
+					if ctx.command == cmd.name or ctx.command in cmd.aliases:
 
-			if len(ctx.raw_args) == 0: return
+						### Make the bot type while it works out the command
+						await ctx.ch.trigger_typing()
 
-			ctx.command = ctx.raw_args.pop(0).lower()
+						### Update user name and guild name if needed when a viable command is found
+						ctx.user = db.User.from_mem(ctx.mem)
+						if ctx.user.name != str(ctx.mem): ctx.user.set("name", str(ctx.mem))
 
-			for cmd in command_list:
-				if ctx.command == cmd.name or ctx.command in cmd.aliases:
+						if ctx.dbguild == None:
+							ctx.dbguild = db.Guild.from_guild(ctx.guild)
 
-					### Make the bot type while it works out the command
-					await ctx.ch.trigger_typing()
+						if ctx.guild.name != ctx.dbguild.name: ctx.dbguild.set("name", ctx.guild.name)
 
-					### Update user name and guild name if needed when a viable command is found
-					ctx.user = db.User.from_mem(ctx.mem)
-					if ctx.user.name != str(ctx.mem): ctx.user.set("name", str(ctx.mem))
+						### Fetch the game because it's usually needed (probably bad practice here whatever tho)
+						ctx.game = db.Game.from_user_id(ctx.mem.id)
 
-					if ctx.dbguild == None:
-						ctx.dbguild = db.Guild.from_guild(ctx.guild)
+						### Actually call the command
+						await cmd.call(ctx)
+						
+						if ctx.guild != None: await log_command(ctx)
+						if ctx.dbguild != None: ctx.dbguild.inc("calls", 1)
 
-					if ctx.guild.name != ctx.dbguild.name: ctx.dbguild.set("name", ctx.guild.name)
+						break
 
-					### Fetch the game because it's usually needed (probably bad practice here whatever tho)
-					ctx.game = db.Game.from_user_id(ctx.mem.id)
-
-					### Actually call the command
-					await cmd.call(ctx)
-
-					ctx.stats.commandcalls += 1
-
-					if ctx.guild != None: await log_command(ctx)
-					if ctx.dbguild != None: ctx.dbguild.inc("calls", 1)
-
-					break
-
-	except Exception as E:
-		if type(E) == discord.errors.Forbidden:
-			await ctx.mem.send("I don't have permissions to talk in that channel! I need: ```Read Messages, Send Messages, Embed Links, Upload files, Add reactions``` If you do not have permission to change these, talk to the server owner.")
-		elif type(E) == UnboundLocalError:
-			await ctx.mem.send("I don't do DMs nerd")
-		else:
-			await log_error(ctx.bot, ctx.msg, traceback.format_exc())
+		except Exception as E:
+			if type(E) == discord.errors.Forbidden:
+				await ctx.mem.send("I don't have permissions to talk in that channel! I need: ```Read Messages, Send Messages, Embed Links, Upload files, Add reactions``` If you do not have permission to change these, talk to the server owner.")
+			elif type(E) == UnboundLocalError:
+				await ctx.mem.send("I don't do DMs nerd")
+			else:
+				await log_error(ctx.bot, ctx.msg, traceback.format_exc())

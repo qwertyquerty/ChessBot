@@ -6,6 +6,8 @@ class CommandDebug(Command):
     aliases = ["debug", "await"]
     level = LEVEL_OWNER
 
+    previous_output = None
+
     @classmethod
     async def run(self,ctx):
         user = ctx.user
@@ -14,10 +16,13 @@ class CommandDebug(Command):
         msg = ctx.msg
         dbguild = ctx.dbguild
         game = ctx.game
+
+        _ = self.previous_output
  
         if ctx.command == "debug":
             try:
                 o = eval(ctx.content.replace(ctx.prefix+ctx.command+" ",""))
+                self.previous_output = o
                 await ctx.ch.send(codeblock(o))
             except Exception as E:
                 await ctx.ch.send(codeblock(traceback.format_exc()))
@@ -25,6 +30,7 @@ class CommandDebug(Command):
         elif ctx.command == "await":
             try:
                 o = await eval(ctx.content.replace(ctx.prefix+ctx.command+" ",""))
+                self.previous_output = o
                 await ctx.ch.send(codeblock(o))
             except Exception as E:
                 await ctx.ch.send(codeblock(traceback.format_exc()))

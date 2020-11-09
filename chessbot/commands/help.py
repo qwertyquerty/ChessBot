@@ -51,10 +51,10 @@ class CommandAbout(Command):
 		em.description = "A bot for playing a Chess game in your server with ease. Challenge your friends to fight to the death."
 		em.add_field(name="Creator",value="qwerty#6768",inline=True)
 		em.add_field(name="Help Command",value="`{}help`".format(ctx.prefix),inline=True)
-		em.add_field(name="Servers",value=str(len(ctx.bot.guilds)),inline=True)
-		em.add_field(name="Users",value=str(sum([i.member_count for i in ctx.bot.guilds])),inline=True)
+		em.add_field(name="Games",value=str(db.games.count()),inline=True)
+		em.add_field(name="Players",value=str(db.users.count()),inline=True)
 		em.add_field(name="Support Server",value="https://discord.gg/uV5y7RY",inline=True)
-		em.add_field(name="Version",value="2.5.9",inline=True)
+		em.add_field(name="Version",value="3.0.0",inline=True)
 		em.set_footer(text="Special thanks: Rapptz, niklasf, channelcat, MongoDB Inc, DBL, Aurora, And you, yes you.")
 		em.url = "https://discordbots.org/bot/366770566331629579"
 		await ctx.ch.send(embed=em)

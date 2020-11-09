@@ -15,6 +15,7 @@ class CommandSuggestion(Command):
             em.description=' '.join(ctx.raw_args[0:])
             em.colour = discord.Colour(EMBED_COLOR)
             em.set_author(name=str(ctx.mem), icon_url=ctx.mem.avatar_url)
-            msg = await ctx.bot.get_channel(SUGGESTIONCHANNEL).send(embed=em)
+            ch = await ctx.bot.fetch_channel(SUGGESTIONCHANNEL)
+            msg = await ch.send(embed=em)
             await msg.add_reaction(ACCEPT_MARK)
             await msg.add_reaction(DENY_MARK)

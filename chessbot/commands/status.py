@@ -31,26 +31,21 @@ class CommandStats(Command):
 
         emotes = ["\U0000203c", "\U00002705"]
 
-        uptime = int(time.time())-ctx.stats.starttime
-
         v = int(psutil.cpu_percent()*10)/10
         em.add_field(name="CPU Usage",value="{}% {}".format(v, emotes[v<70]))
+
         v = int(psutil.virtual_memory().percent*10)/10
-        em.add_field(name="RAM Usage",value="{}% {}".format(v, emotes[v<70]))
-        v = int(psutil.disk_usage("/").percent*10)/10
-        em.add_field(name="Disk Usage",value="{}% {}".format(v, emotes[v<70]))
+        em.add_field(name="RAM Usage",value="{}% {}".format(v, emotes[v<80]))
+
         v = int(ping*10)/10
         em.add_field(name="Latency",value="{}ms {}".format(v, emotes[v<300]))
-        v = (ctx.stats.messages,int(((ctx.stats.messages/(uptime/60))*10))/10)
-        em.add_field(name="Messages",value="{} {}/m {}".format(v[0], v[1], emotes[bool(v[1])]))
-        v = (ctx.stats.commandcalls,int(ctx.stats.commandcalls/(uptime/60/60/24)))
-        em.add_field(name="Calls",value="{} {}/d {}".format(v[0], v[1], emotes[bool(v[1])]))
-        v = (len(ctx.bot.guilds),int((len(ctx.bot.guilds)-ctx.stats.startguilds)/(uptime/60/60/24)))
-        em.add_field(name="Guilds",value="{} {}/d {}".format(v[0], v[1], emotes[bool(v[0])]))
-        v = (sum([i.member_count for i in ctx.bot.guilds]), int((sum([i.member_count for i in ctx.bot.guilds])-ctx.stats.startusers)/(uptime/60/60/24)))
-        em.add_field(name="Users",value="{} {}/d {}".format(v[0], v[1], emotes[bool(v[0])]))
-        v = (db.games.count(), int((db.games.count()-ctx.stats.startgames)/(uptime/60/60/24)))
-        em.add_field(name="Games",value="{} {}/d {}".format(v[0], v[1], emotes[bool(v[0])]))
+
+        v = db.games.count()
+        em.add_field(name="Games",value="{} {}".format(v, emotes[bool(v)]))
+
+        em.add_field(name="Process",value="{}/{}".format(ctx.bot.pid, PROCESSES))
+
+        em.add_field(name="Shards",value="{} ({})".format(str(ctx.bot.shard_ids), ctx.guild.shard_id))
 
         await ctx.ch.send(embed=em)
 

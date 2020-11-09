@@ -22,16 +22,6 @@ class Ctx():
     def __init__(self):
         pass
 
-class Stats():
-    def __init__(self,bot):
-        self.messages = 0
-        self.commandcalls = 0
-        self.startgames = db.games.count()
-        self.startguilds = len(bot.guilds)
-        self.startusers = len(bot.users)
-        self.starttime = int(time.time())
-
-
 async def send_dbl_stats(bot):
     try:
         payload = {"shard_count": len(bot.shards), "server_count": len(bot.guilds)}
@@ -112,17 +102,17 @@ def pgn_from_game(g):
 async def log_command(ctx):
     data = "```USER NAME: {}\nUSER ID: {}\nGUILD NAME: {}\nGUILD ID: {}\nCHANNEL NAME: {}\nCHANNEL ID: {}\nMESSAGE ID: {}\nCOMMAND: {}\nARGS: {}```"
     data = data.format(ctx.mem, ctx.mem.id, ctx.guild, ctx.guild.id, ctx.ch, ctx.ch.id, ctx.msg.id, ctx.command, ctx.args)
-    await ctx.bot.get_channel(LOGCHANNEL).send(data)
+    await ctx.bot.log_channel.send(data)
 
 async def log_error(bot, msg, error):
     data = "```USER NAME: {}\nUSER ID: {}\nGUILD NAME: {}\nGUILD ID: {}\nCHANNEL NAME: {}\nCHANNEL ID: {}\nMESSAGE: {}\nMESSAGE ID: {}\nTRACEBACK:\n\n{}```"
     data = data.format(msg.author, msg.author.id, msg.guild, msg.guild.id, msg.channel, msg.channel.id, msg.content, msg.id,error)
-    await bot.get_channel(ERRORCHANNEL).send(data)
+    await bot.error_channel.send(data)
 
 async def log_lone_error(bot, event, error):
     data = "```ERROR IN: {}\nTRACEBACK:\n\n{}```"
     data = data.format(event, error)
-    await bot.get_channel(ERRORCHANNEL).send(data)
+    await bot.error_channel.send(data)
 
 
 async def reward_game(winner,loser,outcome, game, channel, bot):
@@ -179,7 +169,8 @@ async def reward_game(winner,loser,outcome, game, channel, bot):
 
     g = db.Game.from_id(game.id)
     if g:
-        await bot.get_channel(GAMESCHANNEL).send(embed=embed_from_game(g))
+        ch = await bot.fetch_channel(GAMESCHANNEL)
+        await ch.send(embed=embed_from_game(g))
 
     await update_activity(bot)
 
