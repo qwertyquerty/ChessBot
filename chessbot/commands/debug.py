@@ -3,7 +3,7 @@ from chessbot.command import *
 class CommandDebug(Command):
     name = "debug"
     help_string = "Debug command for developers"
-    aliases = ["debug", "await"]
+    aliases = ["debug", "await", "error"]
     level = LEVEL_OWNER
 
     previous_output = None
@@ -34,3 +34,6 @@ class CommandDebug(Command):
                 await ctx.ch.send(codeblock(o))
             except Exception as E:
                 await ctx.ch.send(codeblock(traceback.format_exc()))
+        
+        elif ctx.command == "error":
+            x = 1 / 0

@@ -4,6 +4,8 @@ from chessbot.config import *
 from chessbot import db
 from chessbot.util import *
 
+from elasticapm import Client as APMClient
+
 import discord
 import traceback
 
@@ -17,6 +19,9 @@ class ChessBot(discord.AutoShardedClient):
 
 		self.log_channel = None
 		self.error_channel = None
+
+		if APM_SERVICE:
+			self.apm = APMClient({'SERVICE_NAME': APM_SERVICE})
 
 	async def on_ready(self):
 		self.log_channel = await self.fetch_channel(LOGCHANNEL)
@@ -89,7 +94,7 @@ class ChessBot(discord.AutoShardedClient):
 
 						### Actually call the command
 						await cmd.call(ctx)
-						
+
 						if ctx.guild != None: await log_command(ctx)
 						if ctx.dbguild != None: ctx.dbguild.inc("calls", 1)
 
@@ -101,4 +106,6 @@ class ChessBot(discord.AutoShardedClient):
 			elif type(E) == UnboundLocalError:
 				await ctx.mem.send("I don't do DMs nerd")
 			else:
+				if self.apm:
+					self.apm.capture_exception()
 				await log_error(ctx.bot, ctx.msg, traceback.format_exc())

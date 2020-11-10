@@ -1,4 +1,3 @@
-from chessbot.tok import *
 
 import chess.svg
 
@@ -130,3 +129,7 @@ RATING_ROLES = {
 
 SHARDS_PER_PROCESS = 5
 PROCESSES = 4
+
+APM_SERVICE = None
+
+from chessbot.tok import * # Overwrite defaults
