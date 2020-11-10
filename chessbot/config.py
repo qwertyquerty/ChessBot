@@ -71,8 +71,6 @@ DBLURL = "https://top.gg/api/bots/366770566331629579/stats"
 BOTVOTEURL = "https://top.gg/bot/366770566331629579/vote"
 SERVERVOTEURL = "https://top.gg/servers/430504476458221570/vote"
 
-DBLHEADERS = {"Authorization" : DBLTOKEN}
-
 PREFIX = "|"
 
 CHESSBOTSERVER = 430504476458221570
@@ -133,3 +131,6 @@ PROCESSES = 4
 APM_SERVICE = None
 
 from chessbot.tok import * # Overwrite defaults
+
+
+DBLHEADERS = {"Authorization" : DBLTOKEN}
