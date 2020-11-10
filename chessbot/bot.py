@@ -4,7 +4,7 @@ from chessbot.config import *
 from chessbot import db
 from chessbot.util import *
 
-from elasticapm import Client as APMClient
+import elasticapm
 
 import discord
 import traceback
@@ -21,7 +21,7 @@ class ChessBot(discord.AutoShardedClient):
 		self.error_channel = None
 
 		if APM_SERVICE:
-			self.apm = APMClient({'SERVICE_NAME': APM_SERVICE})
+			self.apm = elasticapm.Client({'SERVICE_NAME': APM_SERVICE})
 
 	async def on_ready(self):
 		self.log_channel = await self.fetch_channel(LOGCHANNEL)
@@ -92,14 +92,16 @@ class ChessBot(discord.AutoShardedClient):
 						### Fetch the game because it's usually needed (probably bad practice here whatever tho)
 						ctx.game = db.Game.from_user_id(ctx.mem.id)
 
-						if self.apm: self.apm.begin_transaction("command.{}".format(cmd.name))
+						if self.apm:
+							self.apm.begin_transaction("command")
+							elasticapm.set_transaction_name("command.{}".format(cmd.name), override=False)
 
 						### Actually call the command
 						await cmd.call(ctx)
 
 						if ctx.guild != None:
 							await log_command(ctx)
-							if self.apm: self.apm.end_transaction("command.{}".format(cmd.name), "success")
+							if self.apm: self.apm.end_transaction("command", "success")
 
 						break
 
