@@ -92,11 +92,14 @@ class ChessBot(discord.AutoShardedClient):
 						### Fetch the game because it's usually needed (probably bad practice here whatever tho)
 						ctx.game = db.Game.from_user_id(ctx.mem.id)
 
+						if self.apm: self.apm.begin_transaction("command.{}".format(cmd.name))
+
 						### Actually call the command
 						await cmd.call(ctx)
 
-						if ctx.guild != None: await log_command(ctx)
-						if ctx.dbguild != None: ctx.dbguild.inc("calls", 1)
+						if ctx.guild != None:
+							await log_command(ctx)
+							if self.apm: self.apm.end_transaction("command.{}".format(cmd.name), "success")
 
 						break
 
