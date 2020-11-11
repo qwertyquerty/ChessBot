@@ -43,7 +43,7 @@ class CommandStats(Command):
         v = db.games.count()
         em.add_field(name="Games",value="{} {}".format(v, emotes[bool(v)]))
 
-        em.add_field(name="Process",value="{}/{}".format(ctx.bot.pid, PROCESSES))
+        em.add_field(name="Processes",value="{} ({})".format(PROCESSES, ctx.bot.pid))
 
         em.add_field(name="Shards",value="{} ({})".format(str(ctx.bot.shard_ids), ctx.guild.shard_id))
 

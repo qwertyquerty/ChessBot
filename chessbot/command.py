@@ -58,7 +58,7 @@ class Command():
                 parsed_arg = await param.parse(ctx, arg)
 
                 if parsed_arg == None:
-                    await ctx.ch.send("Invalid input for: `{}` of type `{}`! **Usage:** `{}{}`".format(param.name, param.type_name, ctx.prefix, self.usage_string()))
+                    await ctx.ch.send("Invalid input for: `{}` of type `{}`! {} **Usage:** `{}{}`".format(param.name, param.type_name, param.usage_string(), ctx.prefix, self.usage_string()))
                     return
 
                 ctx.args[arg_num] = parsed_arg

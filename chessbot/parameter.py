@@ -13,6 +13,9 @@ class Parameter():
 	
 	async def parse(self, ctx, arg):
 		return None
+	
+	def usage_string(self):
+		return ""
 
 class ParamUser(Parameter):
 	type_name = "user"
@@ -67,7 +70,7 @@ class ParamInt(Parameter):
 # You know you're doing something wrong when you self roll type unions
 class ParamUnion(Parameter):
 	name = "query"
-	def __init__(self, params, name=None, required=False):
+	def __init__(self, params, name=None, required=True):
 		super(ParamUnion, self).__init__(name, required)
 
 		self.params = params
@@ -83,3 +86,22 @@ class ParamUnion(Parameter):
 				return parsed
 		
 		return None
+
+
+class ParamChoice(Parameter):
+	type_name = "choice"
+	name = "choice"
+
+	def __init__(self, name=None, required=True, options=None):
+		super(ParamChoice, self).__init__(name, required)
+
+		self.options = options if options else None
+
+	async def parse(self, ctx, arg):
+		if str(arg) in self.options:
+			return str(arg)
+		
+		return None
+	
+	def usage_string(self):
+		return "Must be one of: `{}`!".format(", ".join(self.options))
