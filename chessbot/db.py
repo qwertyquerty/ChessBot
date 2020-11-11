@@ -158,46 +158,9 @@ class User(DBObject):
 		self.id = d["id"]
 		self._id = d["_id"]
 
-		self.list_of_games = list(games.find({"$and": [{"$or": [{"1":self.id}, {"2":self.id}]}, {"valid": True}]})) # Get all valid games the user is in
-
-		self.wins = len([
-			game for game in self.list_of_games if (
-				(
-					game["outcome"] == OUTCOME_CHECKMATE or
-					game["outcome"] == OUTCOME_RESIGN
-				) and
-				game["winner"] == self.id and
-				game["ranked"] == True
-			)
-		])
-		
-		self.loss = len([
-			game for game in self.list_of_games if (
-				(
-					game["outcome"] == OUTCOME_CHECKMATE or
-					game["outcome"] == OUTCOME_RESIGN
-				) and
-				game["loser"] == self.id and
-				game["ranked"] == True
-			)
-		])
-
-		self.draws =  len([
-			game for game in self.list_of_games if (
-				game["outcome"] == OUTCOME_DRAW and
-				game["ranked"] == True
-			)
-		])
-
-		self.games =  len([
-			game for game in self.list_of_games if (
-				(
-					game["outcome"] != OUTCOME_EXIT and
-					game["outcome"] != OUTCOME_UNFINISHED
-				) and
-				game["ranked"] == True
-			)
-		])
+		### STUFF THAT RELIES ON FETCHING GAMES THAT WE WILL LAZY LOAD WHEN NEEDED ###
+		self._list_of_games = None
+		self._badges = None
 		
 		self.votes = d["votes"]
 		self.bio = d["bio"]
@@ -207,24 +170,6 @@ class User(DBObject):
 		self.rating_volatility = d["rating_volatility"]
 		self.glicko = glicko_env.create_rating(self.rating, self.rating_deviation, self.rating_volatility)
 		self.level = d["level"]
-
-		self.badges = []
-		if self.level >= LEVEL_OWNER: self.badges.append("developer")
-		if self.level >= LEVEL_ADMIN: self.badges.append("admin")
-		if self.wins >= 3: self.badges.append("novice")
-		elif self.wins >= 10: self.badges.append("intermediate")
-		elif self.wins >= 20: self.badges.append("expert")
-		if self.games >= 50: self.badges.append("addicted")
-		if self.rating >= 1800: self.badges.append("brilliant")
-		elif self.rating >= 1500: self.badges.append("proficient")
-		elif self.rating <= 1000: self.badges.append("blunder")
-		if self.votes >= 5: self.badges.append("voter")
-		if self.flags & USER_FLAG_BLACKLISTED: self.badges.append("blacklisted")
-		if self.flags & USER_FLAG_TOURNAMENT_1ST: self.badges.append("tournament-first-place")
-		if self.flags & USER_FLAG_TOURNAMENT_2ND: self.badges.append("tournament-second-place")
-		if self.flags & USER_FLAG_PATRON: self.badges.append("patron")
-		if self.flags & USER_FLAG_MASTER: self.badges.append("master")
-
 
 	@classmethod
 	def from_user_id(cls,userid):
@@ -292,6 +237,76 @@ class User(DBObject):
 			"rating_deviation": glicko.phi,
 			"rating_volatility": glicko.sigma
 		}})
+	
+	def list_of_games(self): # Lazy load in the list of games only when needed
+		if self._list_of_games == None:
+			self._list_of_games = list(games.find({"$and": [{"$or": [{"1":self.id}, {"2":self.id}]}, {"valid": True}]})) # Get all valid games the user is in
+	
+		return self._list_of_games
+
+	def badges(self):
+		if self._badges == None:
+			self._badges = []
+			if self.level >= LEVEL_OWNER: self._badges.append("developer")
+			if self.level >= LEVEL_ADMIN: self._badges.append("admin")
+			if self.win_count() >= 3: self._badges.append("novice")
+			elif self.win_count() >= 10: self._badges.append("intermediate")
+			elif self.win_count() >= 20: self._badges.append("expert")
+			if self.game_count() >= 50: self._badges.append("addicted")
+			if self.rating >= 1800: self._badges.append("brilliant")
+			elif self.rating >= 1500: self._badges.append("proficient")
+			elif self.rating <= 1000: self._badges.append("blunder")
+			if self.votes >= 5: self._badges.append("voter")
+			if self.flags & USER_FLAG_BLACKLISTED: self._badges.append("blacklisted")
+			if self.flags & USER_FLAG_TOURNAMENT_1ST: self._badges.append("tournament-first-place")
+			if self.flags & USER_FLAG_TOURNAMENT_2ND: self._badges.append("tournament-second-place")
+			if self.flags & USER_FLAG_PATRON: self._badges.append("patron")
+			if self.flags & USER_FLAG_MASTER: self._badges.append("master")
+		
+		return self._badges
+
+	def win_count(self):
+		return len([
+			game for game in self.list_of_games() if (
+				(
+					game["outcome"] == OUTCOME_CHECKMATE or
+					game["outcome"] == OUTCOME_RESIGN
+				) and
+				game["winner"] == self.id and
+				game["ranked"] == True
+			)
+		])
+
+	def loss_count(self):
+		return len([
+			game for game in self.list_of_games() if (
+				(
+					game["outcome"] == OUTCOME_CHECKMATE or
+					game["outcome"] == OUTCOME_RESIGN
+				) and
+				game["loser"] == self.id and
+				game["ranked"] == True
+			)
+		])
+
+	def draw_count(self):
+		return len([
+			game for game in self.list_of_games() if (
+				game["outcome"] == OUTCOME_DRAW and
+				game["ranked"] == True
+			)
+		])
+
+	def game_count(self):
+		return len([
+			game for game in self.list_of_games() if (
+				(
+					game["outcome"] != OUTCOME_EXIT and
+					game["outcome"] != OUTCOME_UNFINISHED
+				) and
+				game["ranked"] == True
+			)
+		])
 
 
 class Guild(DBObject):

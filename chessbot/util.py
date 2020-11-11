@@ -206,7 +206,7 @@ async def update_rating_roles(ctx):
         rs = [r for r in rmroles if r in member.roles]
         if len(rs) > 0:
             await member.remove_roles(*rs)
-        if user.games > 0:
+        if user.game_count() > 0:
             if rating in RATING_ROLES:
                 await member.add_roles(guild.get_role(RATING_ROLES[rating]))
 

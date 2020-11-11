@@ -22,8 +22,15 @@ class ChessBot(discord.AutoShardedClient):
 
 		if APM_SERVICE:
 			self.apm = elasticapm.Client({'SERVICE_NAME': APM_SERVICE})
+		else:
+			self.apm = None
+		
+		print("Process {} created for shards {}".format(self.pid, self.shard_ids))
 
 	async def on_ready(self):
+
+		print("Process {} ready on shards {}".format(self.pid, self.shard_ids))
+
 		self.log_channel = await self.fetch_channel(LOGCHANNEL)
 		self.error_channel = await self.fetch_channel(ERRORCHANNEL)
 
@@ -100,7 +107,8 @@ class ChessBot(discord.AutoShardedClient):
 						await cmd.call(ctx)
 
 						if ctx.guild != None:
-							await log_command(ctx)
+							if self.log_channel:
+								await log_command(ctx)
 							if self.apm: self.apm.end_transaction("command", "success")
 
 						break
@@ -113,4 +121,6 @@ class ChessBot(discord.AutoShardedClient):
 			else:
 				if self.apm:
 					self.apm.capture_exception()
-				await log_error(ctx.bot, ctx.msg, traceback.format_exc())
+				
+				if self.error_channel:
+					await log_error(ctx.bot, ctx.msg, traceback.format_exc())
