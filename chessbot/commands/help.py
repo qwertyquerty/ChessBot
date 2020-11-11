@@ -58,3 +58,14 @@ class CommandAbout(Command):
 		em.set_footer(text="Special thanks: Rapptz, niklasf, channelcat, MongoDB Inc, DBL, Aurora, And you, yes you.")
 		em.url = "https://discordbots.org/bot/366770566331629579"
 		await ctx.ch.send(embed=em)
+
+
+class CommandVariants(Command):
+    name = "variants"
+    aliases = ["variants", "gamemodes"]
+    help_string = "Get a list of the variants the bot allows"
+    help_index = 410
+
+    @classmethod
+    async def run(self,ctx):
+        await ctx.ch.send("__**List of Variants:**__\n{}".format("\n".join(VARIANT_NAMES)))
