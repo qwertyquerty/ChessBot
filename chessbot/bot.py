@@ -111,7 +111,7 @@ class ChessBot(discord.AutoShardedClient):
 								await log_command(ctx)
 							if self.apm:
 								self.apm.end_transaction("command", "success")
-								self.apm.capture_message(param_mesage={
+								self.apm.capture_message(param_message={
 									"message": "USER: %s\nGUILD: %s\nCHANNEL: %s\nMESSAGE: %s\nCOMMAND: %s\nARGS: %s",
 									"params": (ctx.mem.id, ctx.guild.id, ctx.ch.id, ctx.msg.id, cmd.name, ctx.args)
 								})
