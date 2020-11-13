@@ -109,7 +109,12 @@ class ChessBot(discord.AutoShardedClient):
 						if ctx.guild != None:
 							if self.log_channel:
 								await log_command(ctx)
-							if self.apm: self.apm.end_transaction("command", "success")
+							if self.apm:
+								self.apm.end_transaction("command", "success")
+								self.apm.capture_message(param_mesage={
+									"message": "USER: %s\nGUILD: %s\nCHANNEL: %s\nMESSAGE: %s\nCOMMAND: %s\nARGS: %s",
+									"params": (ctx.mem.id, ctx.guld.id, ctx.ch.id, ctx.msg.id, cmd.name, ctx.args)
+								})
 
 						break
 
