@@ -113,7 +113,7 @@ class ChessBot(discord.AutoShardedClient):
 								self.apm.end_transaction("command", "success")
 								self.apm.capture_message(param_mesage={
 									"message": "USER: %s\nGUILD: %s\nCHANNEL: %s\nMESSAGE: %s\nCOMMAND: %s\nARGS: %s",
-									"params": (ctx.mem.id, ctx.guld.id, ctx.ch.id, ctx.msg.id, cmd.name, ctx.args)
+									"params": (ctx.mem.id, ctx.guild.id, ctx.ch.id, ctx.msg.id, cmd.name, ctx.args)
 								})
 
 						break
