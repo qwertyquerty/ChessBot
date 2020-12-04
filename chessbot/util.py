@@ -24,7 +24,7 @@ class Ctx():
 
 async def send_dbl_stats(bot):
     try:
-        payload = {"shard_count": len(bot.shards), "server_count": len(bot.guilds)}
+        payload = {"shard_count": len(bot.shards), "server_count": len(bot.guilds) * PROCESSES}
         async with aiohttp.ClientSession() as aioclient:
             await aioclient.post(DBLURL, data=payload, headers=DBLHEADERS)
     except:
