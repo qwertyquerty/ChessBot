@@ -23,12 +23,13 @@ class Ctx():
         pass
 
 async def send_dbl_stats(bot):
-    try:
-        payload = {"shard_count": len(bot.shards), "server_count": len(bot.guilds) * PROCESSES}
-        async with aiohttp.ClientSession() as aioclient:
-            await aioclient.post(DBLURL, data=payload, headers=DBLHEADERS)
-    except:
-        await log_lone_error(bot, "DBL STATS API", traceback.format_exc())
+    if bot.pid == 0:
+        try:
+            payload = {"shard_count": SHARDS_PER_PROCESS * PROCESSES, "server_count": len(bot.guilds) * PROCESSES}
+            async with aiohttp.ClientSession() as aioclient:
+                await aioclient.post(DBLURL, data=payload, headers=DBLHEADERS)
+        except:
+            await log_lone_error(bot, "DBL STATS API", traceback.format_exc())
 
 def makeboard(board):
     if len(board.move_stack)>0:
