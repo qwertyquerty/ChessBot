@@ -2,6 +2,8 @@ from flask import abort, Blueprint, redirect, request, render_template, Response
 
 from chessbot.config import *
 from chessbot import db
+from chessbot.command import Command
+from chessbot.commands import *
 
 import chess
 import chess.svg
@@ -35,6 +37,13 @@ def page_game_image(game_id):
 def page_leaderboard():
 	return render_template("leaderboard.html")
 
+
+@blueprint_home.route("/commands")
+def page_commands():
+	available_commands = [command for command in Command.__subclasses__() if command.level == LEVEL_EVERYONE]
+	sorted_commands = sorted(available_commands, key = lambda x: x.help_index)
+
+	return render_template("commands.html", commands=sorted_commands, prefix=PREFIX)
 
 @blueprint_home.route("/user/<int:id>")
 def page_user(id):

@@ -1,0 +1,25 @@
+{% extends "layout.html" %}
+
+{% block title %}Commands{% endblock %}
+{% block active %}commands{% endblock %}
+
+{% block head %}
+	<link rel="stylesheet" href="/static/css/commands.css">
+
+	<style>#nav {display: none !important;}</style>
+{% endblock %}
+
+{% block content %}
+
+	<p style="font-family: monospace; font-size: var(--chess-text-normal);">
+		<> = Required
+		[] = Optional
+	</p>
+
+	{% for command in commands %}
+
+		<div class="command-entry"><label style="font-family: monospace;">{{ prefix }}{{ command.usage_string() }}</label><br><br>{{ command.help_string }}</div>
+
+	{% endfor %}
+
+{% endblock %}
