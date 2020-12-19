@@ -23,7 +23,7 @@ class CommandTakeback(Command):
                 if str(reaction) == ACCEPT_MARK:
                         ctx.game.pop("moves", 1)
                         ctx.game = db.Game.from_user_id(ctx.mem.id)
-                        await ctx.ch.send(content= "The move has been taken back!", file=makeboard(ctx.game.board))
+                        await ctx.ch.send(content= "The move has been taken back!", file=makeboard(ctx.game.board, orientation=ctx.game.board.turn))
 
 
                 elif str(reaction) == DENY_MARK:

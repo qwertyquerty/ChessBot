@@ -26,7 +26,7 @@ class CommandMove(Command):
 					ctx.game.board.push(move)
 					ctx.game.add_move(move.uci())
 
-					await ctx.ch.send(file=makeboard(ctx.game.board), content=ment(ctx.game.players[ctx.game.board.turn]))
+					await ctx.ch.send(file=makeboard(ctx.game.board, orientation=ctx.game.board.turn), content=ment(ctx.game.players[ctx.game.board.turn]))
 					
 				else:
 					await ctx.ch.send("That move is illegal!")

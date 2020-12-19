@@ -31,9 +31,9 @@ async def send_dbl_stats(bot):
         except:
             await log_lone_error(bot, "DBL STATS API", traceback.format_exc())
 
-def makeboard(board):
+def makeboard(board, orientation = chess.WHITE):
     if len(board.move_stack)>0:
-        bytes = cairosvg.svg2png(bytestring=chess.svg.board(board=board, lastmove=board.peek()))
+        bytes = cairosvg.svg2png(bytestring=chess.svg.board(board=board, lastmove=board.peek(), orientation=orientation))
     else:
         bytes = cairosvg.svg2png(bytestring=chess.svg.board(board=board))
     bytesio = BytesIO(bytes)
