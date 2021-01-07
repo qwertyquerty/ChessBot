@@ -96,7 +96,7 @@ class Game(DBObject):
 		self.ranked = d["ranked"]
 		self.valid = d["valid"]
 		self.timestamp = d["timestamp"]
-
+		self.remark = d["remark"]
 
 	@classmethod
 	def new(cls,u1,u2, variant=VARIANT_STANDARD, fen=None, rated=True):
@@ -109,7 +109,7 @@ class Game(DBObject):
 				holder.set_chess960_pos(boar_num)
 				fen = holder.fen()
 			else: fen = chess.Board().fen()
-		data = {"fen": fen, "moves": [], "winner": None, "loser": None, "outcome": OUTCOME_UNFINISHED, "1": u1, "2": u2, "ranked": rated, "valid": True, "timestamp": datetime.datetime.utcnow(), "variant": variant}
+		data = {"fen": fen, "moves": [], "winner": None, "loser": None, "outcome": OUTCOME_UNFINISHED, "1": u1, "2": u2, "ranked": rated, "valid": True, "timestamp": datetime.datetime.utcnow(), "variant": variant, "remark": None}
 		games.insert_one(data)
 		return Game.from_user_id(u1)
 

@@ -180,7 +180,10 @@ def embed_from_game(game):
     em.title="Game "+str(game.id)
     em.colour = discord.Colour(EMBED_COLOR)
     em.type = "rich"
-    em.description = "```"+str(pgn_from_game(game))+"```"
+    if game.remark:
+        em.description = "> {}\n```{}```".format(game.remark, str(pgn_from_game(game)))
+    else:
+        em.description = "```{}```".format(str(pgn_from_game(game)))
     em.add_field(name="White",value=db.User.from_user_id(game.white).name,inline=True)
     em.add_field(name="Black",value=db.User.from_user_id(game.black).name,inline=True)
     em.add_field(name="Outcome",value=OUTCOME_NAMES[game.outcome],inline=True)
