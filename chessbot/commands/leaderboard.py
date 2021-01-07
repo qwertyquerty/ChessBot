@@ -5,15 +5,15 @@ class CommandLeaderboard(Command):
 	aliases = ["lb", "top"]
 	help_string = "View the global rating leaderboard!"
 	help_index = 160
-	parameters = [ParamInt("page", required=False), ParamChoice("sort", required=False, options=['lowest', 'highest'])]
+	parameters = [ParamInt("page", required=False), ParamChoice("sort", required=False, options=["lowest", "highest"])]
 
 	@classmethod
 	async def run(self,ctx):
 		page = ctx.args[0] - 1 if ctx.args[0] else 0
-		sort = ctx.args[1] if ctx.args[1] else 'highest'
+		sort = ctx.args[1] if ctx.args[1] else "highest"
 
 		# Might be able to limit amount and only load 8 at a time, but this is easier.
-		if sort == 'lowest' or sort == 'low':
+		if sort == "lowest":
 			lead = db.leaderboard(80, 1)
 		else:
 			lead = db.leaderboard(80)
