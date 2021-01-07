@@ -3,9 +3,9 @@ from chessbot.command import *
 class CommandLeaderboard(Command):
 	name = "leaderboard"
 	aliases = ["lb", "top"]
-	help_string = "View the global rating leaderboard!\nSort=(lowest)"
+	help_string = "View the global rating leaderboard!"
 	help_index = 160
-	parameters = [ParamInt("page", required=False), ParamString("sort", required=False)]
+	parameters = [ParamInt("page", required=False), ParamChoice("sort", required=False, options=['lowest', 'highest'])]
 
 	@classmethod
 	async def run(self,ctx):

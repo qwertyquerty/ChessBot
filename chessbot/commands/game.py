@@ -2,9 +2,9 @@ from chessbot.command import *
 
 class CommandGames(Command):
     name = "games"
-    help_string = "View a list of games a user has played\nSort=(moves,rated,wins)"
+    help_string = "View a list of games a user has played"
     help_index = 180
-    parameters = [ParamUser(required=False), ParamInt("page", required=False), ParamString("sort", required=False)]
+    parameters = [ParamUser(required=False), ParamInt("page", required=False), ParamChoice("sort", required=False, options=["moves", "rated", "wins"])]
 
     @classmethod
     async def run(self, ctx):
@@ -20,11 +20,11 @@ class CommandGames(Command):
 
         games = user.get_games()
 
-        if (sort == 'moves'):
+        if sort == 'moves':
             games.sort(key=lambda x: len(x.moves) * -1)
-        elif (sort == 'rated'):
+        elif sort == 'rated':
             games.sort(key=lambda x: not x.ranked)
-        elif (sort == 'wins'):
+        elif sort == 'wins':
             games.sort(key=lambda x: x.winner != mention.id)
 
         if len(games) == 0:
