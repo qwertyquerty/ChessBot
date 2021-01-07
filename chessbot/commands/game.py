@@ -2,14 +2,15 @@ from chessbot.command import *
 
 class CommandGames(Command):
     name = "games"
-    help_string = "View a list of games a user has played"
+    help_string = "View a list of games a user has played\nSort=(moves,rated,wins)"
     help_index = 180
-    parameters = [ParamUser(required=False), ParamInt("page", required=False)]
+    parameters = [ParamUser(required=False), ParamInt("page", required=False), ParamString("sort", required=False)]
 
     @classmethod
     async def run(self, ctx):
         mention = ctx.args[0] if ctx.args[0] else ctx.mem
         page = ctx.args[1] - 1 if ctx.args[1] else 0
+        sort = ctx.args[2] if ctx.args[2] else "recent"
 
         user = db.User.from_user_id(mention.id)
 
@@ -18,6 +19,14 @@ class CommandGames(Command):
             return
 
         games = user.get_games()
+
+        if (sort == 'moves'):
+            games.sort(key=lambda x: len(x.moves) * -1)
+        elif (sort == 'rated'):
+            games.sort(key=lambda x: not x.ranked)
+        elif (sort == 'wins'):
+            games.sort(key=lambda x: x.winner != mention.id)
+
         if len(games) == 0:
             await ctx.ch.send("No games found!")
             return
@@ -35,8 +44,8 @@ class CommandGames(Command):
             em.add_field(name="{}".format(game.id), value="{} vs {} ({}) in {} Moves".format(db.User.from_user_id(game.white).name, db.User.from_user_id(game.black).name, OUTCOME_NAMES[game.outcome].lower(), math.ceil(len(db.Game.from_id(game.id).moves) / 2)), inline=False)
 
         await ctx.ch.send(embed=em)
-
-
+    
+    
 
 class CommandGame(Command):
     name = "game"
