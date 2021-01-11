@@ -346,8 +346,8 @@ class Guild(DBObject):
 			return d
 
 
-def leaderboard(limit):
-	return list(db.users.find().sort("rating",-1).limit(limit))
+def leaderboard(limit, sort=-1):
+	return list(db.users.find().sort("rating", sort).limit(limit))
 
 def local_leaderboard(limit, guild):
 
