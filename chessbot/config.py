@@ -95,7 +95,8 @@ BADGES = {
     "addicted": "\U0001f48a",
     "master": "\U0001f3c6",
     "patron": "\U0001f4b3",
-    "blacklisted": "\U0001f6ab"
+    "blacklisted": "\U0001f6ab",
+    "supporter": "\u2764"
 }
 
 PAGELENGTH = 8

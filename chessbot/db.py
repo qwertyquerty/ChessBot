@@ -257,6 +257,7 @@ class User(DBObject):
 			elif self.rating >= 1500: self._badges.append("proficient")
 			elif self.rating <= 1000: self._badges.append("blunder")
 			if self.votes >= 5: self._badges.append("voter")
+			if self.votes >= 50: self._badges.append("supporter")
 			if self.flags & USER_FLAG_BLACKLISTED: self._badges.append("blacklisted")
 			if self.flags & USER_FLAG_TOURNAMENT_1ST: self._badges.append("tournament-first-place")
 			if self.flags & USER_FLAG_TOURNAMENT_2ND: self._badges.append("tournament-second-place")
