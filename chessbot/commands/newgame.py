@@ -87,6 +87,6 @@ class CommandMatchmake(Command):
 		if not len(match):
 			return await ctx.ch.send("Dude aren't you good enough already like come on man")
 		
-		opponent = match[0]
+		opponent = db.User(match[0])
 
 		ctx.ch.send(f"{opponent.name} ({int(opponent.rating)}) has a fairly close rating to you ({int(ctx.user.rating)})! Maybe you should friend them and challenge them to a game!")
