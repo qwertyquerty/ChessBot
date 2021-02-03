@@ -120,11 +120,14 @@ class CommandRecord(Command):
     @classmethod
     async def run(self,ctx):
         if ctx.args[1]:
-            user_1 = ctx.args[0]
-            user_2 = ctx.args[1]
+            user_1 = db.User.from_id(ctx.args[0].id)
+            user_2 = db.User.from_id(ctx.args[1].id)
         else:
             user_1 = ctx.user
-            user_2 = ctx.args[0]
+            user_2 = db.User.from_id(ctx.args[0].id)
+        
+        if user_1.id == user_2.id:
+            return await ctx.ch.send("no stupid head stop being dumb please im begging you stop making my life hard -qwetry")
 
         user_1_games = [db.Game(game) for game in user_1.list_of_games()]
         mutual_games = [game for game in user_1_games if user_2.id in game.players]
@@ -146,10 +149,16 @@ class CommandRecord(Command):
             if game.outcome == OUTCOME_DRAW:
                 user_1_record += 0.5
                 user_2_record += 0.5
+        
+        def render_record_mixed_number(number): # kill me
+            if int(number) != number:
+                return f"{number} ½"
+            else:
+                return number
 
         em = discord.Embed()
         em.colour = discord.Colour(EMBED_COLOR)
         em.title = f"{user_1.name} vs {user_2.name}"
 
-        em.add_field(name="Record", value=f"{user_1_record} : {user_2_record}", inline=True)
+        em.add_field(name="Record", value=f"{render_record_mixed_number(user_1_record)} : {render_record_mixed_number(user_2_record)}", inline=True)
         await ctx.ch.send(embed=em)
