@@ -73,3 +73,20 @@ class CommandPlay(Command):
 				await ctx.ch.send('That user is currently in a game with another person!')
 		else:
 			await ctx.ch.send('You are already in a game! Resign it with {prefix}resign'.format(prefix=ctx.prefix))
+
+
+class CommandMatchmake(Command):
+	name = "matchmake"
+	help_string = "Find another user with a close rating to you"
+	help_index = 410
+
+	@classmethod
+	async def run(self,ctx):
+		match = list(db.users.find({"rating": {"$gt": ctx.user.rating}}).sort("rating", 1).limit(1))
+
+		if not len(match):
+			return await ctx.ch.send("Dude aren't you good enough already like come on man")
+		
+		opponent = match[0]
+
+		ctx.ch.send(f"{opponent.name} ({int(opponent.rating)}) has a fairly close rating to you ({int(ctx.user.rating)})! Maybe you should friend them and challenge them to a game!")
