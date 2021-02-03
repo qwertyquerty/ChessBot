@@ -126,8 +126,8 @@ class CommandRecord(Command):
             user_1 = ctx.user
             user_2 = ctx.args[0]
 
-        user_1_games = user_1.list_of_games()
-        mutual_games = [db.Game(game) for game in user_1_games if user_2.id in game.players]
+        user_1_games = [db.Game(game) for game in user_1.list_of_games()]
+        mutual_games = [game for game in user_1_games if user_2.id in game.players]
 
         user_1_record = 0
         user_2_record = 0
