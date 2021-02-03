@@ -120,11 +120,11 @@ class CommandRecord(Command):
     @classmethod
     async def run(self,ctx):
         if ctx.args[1]:
-            user_1 = db.User.from_id(ctx.args[0].id)
-            user_2 = db.User.from_id(ctx.args[1].id)
+            user_1 = db.User.from_user_id(ctx.args[0].id)
+            user_2 = db.User.from_user_id(ctx.args[1].id)
         else:
             user_1 = ctx.user
-            user_2 = db.User.from_id(ctx.args[0].id)
+            user_2 = db.User.from_user_id(ctx.args[0].id)
         
         if user_1.id == user_2.id:
             return await ctx.ch.send("no stupid head stop being dumb please im begging you stop making my life hard -qwetry")
