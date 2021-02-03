@@ -152,7 +152,7 @@ class CommandRecord(Command):
         
         def render_record_mixed_number(number): # kill me
             if int(number) != number:
-                return f"{int(number)} ½"
+                return f"{int(number)}½"
             else:
                 return int(number)
 
