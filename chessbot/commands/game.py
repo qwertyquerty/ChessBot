@@ -108,3 +108,48 @@ class CommandFen(Command):
 
         if game:
             await ctx.ch.send(codeblock(str(game.fen)))
+
+
+class CommandRecord(Command):
+    name = "record"
+    aliases = ["compare", "vs"]
+    help_string = "View the win ratio between two players"
+    help_index = 190
+    parameters = [ParamUser("user"), ParamUser("user 2", required=False)]
+
+    @classmethod
+    async def run(self,ctx):
+        if ctx.args[1]:
+            user_1 = ctx.args[0]
+            user_2 = ctx.args[1]
+        else:
+            user_1 = ctx.user
+            user_2 = ctx.args[0]
+
+        user_1_games = user_1.list_of_games()
+        mutual_games = [game for game in user_1_games if user_2.id in game.players]
+
+        user_1_record = 0
+        user_2_record = 0
+
+        for game in mutual_games:
+            if game.outcome == OUTCOME_UNFINISHED or game.outcome == OUTCOME_EXIT:
+                continue
+            
+            if game.outcome == OUTCOME_CHECKMATE or game.outcome == OUTCOME_RESIGN:
+                if game.winner == user_1.id:
+                    user_1_record += 1
+                elif game.winner == user_2.id:
+                    user_2_record += 1
+                continue
+
+            if game.outcome == OUTCOME_DRAW:
+                user_1_record += 0.5
+                user_2_record += 0.5
+
+        em = discord.Embed()
+        em.colour = discord.Colour(EMBED_COLOR)
+        em.title = f"{user_1.name} vs {user_2.name}"
+
+        em.add_field(name="Record", value=f"{user_1_record} : {user_2_record}", inline=True)
+        await ctx.ch.send(embed=em)
