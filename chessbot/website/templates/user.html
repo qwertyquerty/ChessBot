@@ -28,7 +28,7 @@
 
 			<div class="user-profile-stat">
 				<div class="user-profile-stat-caption">Rating</div>
-				{{ user.rating | round | int }}
+				{{ user.render_rating() }}
 			</div>
 
 			<div class="user-profile-stat">

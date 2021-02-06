@@ -89,4 +89,4 @@ class CommandMatchmake(Command):
 		
 		opponent = db.User(match[0])
 
-		await ctx.ch.send(f"{opponent.name} ({int(opponent.rating)}) has a fairly close rating to you ({int(ctx.user.rating)})! Maybe you should friend them and challenge them to a game!")
+		await ctx.ch.send(f"**{opponent.name}** ({opponent.render_rating()}) has a fairly close rating to you ({ctx.user.render_rating()})! Maybe you should friend them and challenge them to a game!")

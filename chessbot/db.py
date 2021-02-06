@@ -239,6 +239,14 @@ class User(DBObject):
 			"rating_volatility": glicko.sigma
 		}})
 	
+	def render_rating(self):
+		rendered_rating = int(round(self.rating, 0))
+
+		if self.rating_deviation >= GLICKO_PROVISIONAL_MIN_PHI:
+			rendered_rating = f"{rendered_rating}?"
+		
+		return rendered_rating
+	
 	def list_of_games(self): # Lazy load in the list of games only when needed
 		if self._list_of_games == None:
 			self._list_of_games = list(games.find({"$and": [{"$or": [{"1":self.id}, {"2":self.id}]}, {"valid": True}]})) # Get all valid games the user is in
