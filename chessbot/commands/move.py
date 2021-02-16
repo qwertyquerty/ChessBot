@@ -13,13 +13,23 @@ class CommandMove(Command):
 		if ctx.mem.id == ctx.game.players[ctx.game.board.turn]:
 			move = None
 
+			# Yes I know this is a mess but there is little way to do this better, seriously
 			try:
-				move = chess.Move.from_uci(ctx.args[0])
+				move = chess.Move.from_uci(ctx.args[0]) # Check if the move is normal lan
+				assert move in ctx.game.board.legal_moves
 			except:
 				try:
-					move = ctx.game.board.parse_san(ctx.args[0])
+					move = chess.Move.from_uci(ctx.args[0]+"q") # Check if the move is lan but try promotion
+					assert move in ctx.game.board.legal_moves
 				except:
-					await ctx.ch.send("That move is invalid! Try something like: a2a4")
+					try:
+						move = ctx.game.board.parse_san(ctx.args[0]) # Check if the move is normal san			
+					except:
+						try:
+							move = ctx.game.board.parse_san(ctx.args[0]+"=Q") # Check if the move is san but try promotion
+						except:
+							await ctx.ch.send("That move is illegal or invalid! Try something like: a2a4")
+							move = None # lol
 
 			if move:
 				if move in ctx.game.board.legal_moves:
