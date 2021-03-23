@@ -1,4 +1,4 @@
-from flask import abort, Blueprint, request
+from flask import abort, Blueprint, request, Response
 
 from chessbot.config import *
 from chessbot import db
@@ -19,4 +19,4 @@ def page_api_vote():
 		return abort(400)
 	
 	user.inc("votes", 1)
-	return abort(200)
+	return Response(status=200)
