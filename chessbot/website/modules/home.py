@@ -45,6 +45,17 @@ def page_commands():
 
 	return render_template("commands.html", commands=sorted_commands, prefix=PREFIX)
 
+@blueprint_home.route("/big_stats")
+def page_big_stats():
+	big_stats = [
+		{"name": "Active Games", "value": db.games.count_documents({"outcome": OUTCOME_UNFINISHED})},
+		{"name": "Total Games", "value": db.games.count_documents({})},
+		{"name": "Total Users", "value": db.users.count_documents({})}
+	]
+
+	return render_template("big_stats.html", big_stats=big_stats)
+
+
 @blueprint_home.route("/user/<int:id>")
 def page_user(id):
 

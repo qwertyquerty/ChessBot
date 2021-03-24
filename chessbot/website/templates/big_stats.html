@@ -1,0 +1,25 @@
+{% extends "layout.html" %}
+
+{% block title %}Commands{% endblock %}
+{% block active %}commands{% endblock %}
+
+{% block head %}
+	<link rel="stylesheet" href="/static/css/big_stats.css">
+
+	<style>#nav {display: none !important;}</style>
+{% endblock %}
+
+{% block content %}
+	<div class="big-stats">
+		{% for stat in big_stats %}
+
+			<div class="big-stat">
+				<label style="font-family: monospace;">{{ stat["name"] }}</label>
+				<br>
+				{{ stat["value"] }}
+			</div>
+
+		{% endfor %}
+	</div>
+
+{% endblock %}

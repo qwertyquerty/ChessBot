@@ -1,0 +1,20 @@
+.big-stats {
+	display: flex;
+	justify-content: space-between;
+}
+
+.big-stat {
+	display: flex-item;
+	border-bottom: solid var(--chess-border-thick) var(--chess-green);
+	padding: var(--chess-padding-medium);
+	font-size: var(--chess-text-huge);
+	text-align: center;
+	flex-grow: 1;
+	background-color: var(--chess-dark-gray-2);
+	margin: 0px var(--chess-padding-thick)
+}
+
+.big-stat label {
+	font-size: var(--chess-text-huge);
+	text-decoration: underline;
+}
