@@ -15,6 +15,7 @@
 }
 
 .big-stat label {
-	font-size: var(--chess-text-huge);
+	font-size: var(--chess-text-normal);
 	text-decoration: underline;
+	color: var(--chess-gray);
 }
