@@ -36,18 +36,13 @@
 .text-mega   {font-size: var(--chess-text-mega);}
 
 
-html {
-	height:100%;
-}
-
-body {
+html, body {
 	background-color: var(--chess-dark-gray-1);
 	margin: 0px;
 	color: var(--chess-white);
 	font-family: Arial;
 	box-sizing: border-box;
 	overflow-x: auto;
-	height: 100%;
 }
 
 a {
