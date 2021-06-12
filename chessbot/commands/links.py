@@ -40,4 +40,4 @@ class CommandDonate(Command):
 
     @classmethod
     async def run(self,ctx):
-        await ctx.ch.send("https://www.patreon.com/qwertyquerty")
+        await ctx.ch.send("Patreon: <https://www.patreon.com/qwertyquerty>\n\nPayPal: <http://paypal.me/qwertyquerty>\n\nCrypto:\n\n`BTC: bc1qkqy5tqdahdn70tnm42gs6qmq0hg7x5xvr87f94`\n\n`ETH: 0x75FE644Df34A95b3C5E03767AeAEe80d7B1B6ce7`")
