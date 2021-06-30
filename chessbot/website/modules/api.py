@@ -5,7 +5,7 @@ from chessbot import db
 
 blueprint_api = Blueprint('api', __name__)
 
-@blueprint_api.route("/api/vote", methods = ['POST'])
+@blueprint_api.route("/api/vote", methods = ['GET', 'POST'])
 def page_api_vote():
 
 	if request.headers["Authorization"] != WEBHOOK_TOKEN:
