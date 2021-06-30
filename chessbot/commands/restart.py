@@ -12,5 +12,5 @@ class CommandRestart(Command):
 
         await ctx.ch.send("Saved...")
         
-        os.system("pm2 restart chess")
+        os.system("systemctl restart chess")
         await ctx.bot.change_presence(status=discord.Status.dnd)
