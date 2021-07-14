@@ -50,3 +50,39 @@ class CommandArchive(Command):
 		await ctx.ch.edit(category = archived_cat, overwrites = {}, sync_permissions = True)
 
 		await ctx.ch.send("Archived.")
+
+class CommandMegaAd(Command):
+	name = "megaad"
+	aliases = []
+	helpstring = ["megaad", "For qwerty"]
+	level = LEVEL_OWNER
+
+	@classmethod
+	async def run(self,ctx):
+
+		await ctx.ch.send("I'm doin it:")
+
+		announcement = ctx.content[len(ctx.prefix+ctx.command):]
+
+		await ctx.ch.send(announcement.replace("[prefix]", ctx.prefix))
+
+		notifs = 0
+
+		for guild in ctx.bot.guilds:
+			try:
+				dbguild = db.Guild.from_guild_id(guid.id)
+
+				if dbguild.subscribed:
+					for channel in guild.channels:
+						if "chess" in channel.name.lower():
+							try:
+								await channel.send(announcement.replace("[prefix]", dbguild.prefix))
+								notifs += 1
+								break
+							except:
+								pass
+
+			except Exception as E:
+				await ctx.ch.send("ERROR: {}".format(E))
+
+		await ctx.ch.send("I successfully sent {} notifications".format(notifs))
