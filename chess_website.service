@@ -1,0 +1,12 @@
+[Unit]
+Description=Chess Bot Website
+After=multi-user.target
+
+[Service]
+Type=simple
+Restart=always
+WorkingDirectory=/chess-bot
+ExecStart=/usr/bin/python3.8 /chess-bot/run_website.py
+
+[Install]
+WantedBy=multi-user.target
