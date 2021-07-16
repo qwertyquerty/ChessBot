@@ -70,7 +70,7 @@ class CommandMegaAd(Command):
 
 		for guild in ctx.bot.guilds:
 			try:
-				dbguild = db.Guild.from_guild_id(guid.id)
+				dbguild = db.Guild.from_guild_id(guild.id)
 
 				if dbguild.subscribed:
 					for channel in guild.channels:
