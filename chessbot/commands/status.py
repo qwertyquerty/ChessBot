@@ -6,7 +6,7 @@ class CommandPing(Command):
     help_index = 300
 
     @classmethod
-    async def run(self,ctx):
+    async def run(cls,ctx):
         now = datetime.datetime.utcnow()
         delta = now-ctx.message.created_at
         await ctx.ch.send(str(delta.total_seconds()*1000)+'ms')
@@ -19,7 +19,7 @@ class CommandStats(Command):
     help_index = 320
 
     @classmethod
-    async def run(self,ctx):
+    async def run(cls,ctx):
         em = discord.Embed()
         em.title = "All Systems Operational"
         em.colour = discord.Colour(EMBED_COLOR)
@@ -57,7 +57,7 @@ class CommandAnalytics(Command):
     level = LEVEL_MOD
 
     @classmethod
-    async def run(self,ctx):
+    async def run(cls,ctx):
         em = discord.Embed()
         
         em.colour = discord.Colour(EMBED_COLOR)

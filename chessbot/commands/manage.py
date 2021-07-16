@@ -7,7 +7,7 @@ class CommandForce(Command):
 	level = LEVEL_ADMIN
 
 	@classmethod
-	async def run(self,ctx):
+	async def run(cls,ctx):
 		game = db.Game.from_id(ctx.args[0])
 
 		if not game:

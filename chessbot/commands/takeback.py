@@ -8,7 +8,7 @@ class CommandTakeback(Command):
     flags = FLAG_MUST_BE_IN_GAME
 
     @classmethod
-    async def run(self,ctx):
+    async def run(cls,ctx):
         if len(ctx.game.moves) > 0:
             m = await ctx.ch.send("{u1}, {u2} is requesting a takeback!".format(u1=ment(ctx.game.players[not ctx.game.players.index(ctx.mem.id)]),u2=str(ctx.mem.mention)))
             await m.add_reaction(ACCEPT_MARK)

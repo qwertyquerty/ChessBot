@@ -9,13 +9,13 @@ class CommandPlay(Command):
 
 
 	@classmethod
-	async def run(self,ctx):
+	async def run(cls,ctx):
 		if not ctx.game:
 			game2 = db.Game.from_user_id(ctx.args[0].id)
 
 			if not game2:
 				if ctx.args[0].id == ctx.mem.id:
-					await ctx.ch.send("You can't connect with yourself in this way. Why not take a walk?")
+					await ctx.ch.send("You can't connect with yourcls in this way. Why not take a walk?")
 
 				else:
 					variant = VARIANT_STANDARD
@@ -81,7 +81,7 @@ class CommandMatchmake(Command):
 	help_index = 410
 
 	@classmethod
-	async def run(self,ctx):
+	async def run(cls,ctx):
 		match = list(db.users.find({"rating": {"$gt": ctx.user.rating}}).sort("rating", 1).limit(1))
 
 		if not len(match):

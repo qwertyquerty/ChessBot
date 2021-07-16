@@ -7,7 +7,7 @@ class CommandPocket(Command):
     flags = FLAG_MUST_BE_IN_GAME
 
     @classmethod
-    async def run(self,ctx):
+    async def run(cls,ctx):
         if ctx.game.variant == VARIANT_CRAZYHOUSE:
             pocket = ctx.game.board.pockets[ctx.game.players.index(ctx.user.id)]
             if len(pocket.pieces) == 0:

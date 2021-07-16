@@ -8,5 +8,5 @@ class CommandBoard(Command):
 	flags = FLAG_MUST_BE_IN_GAME
 
 	@classmethod
-	async def run(self,ctx):
+	async def run(cls,ctx):
 		await ctx.ch.send(COLOR_NAMES[ctx.game.board.turn]+" to move...", file=makeboard(ctx.game.board))

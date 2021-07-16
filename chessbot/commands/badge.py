@@ -7,7 +7,7 @@ class CommandBadge(Command):
 	parameters = [ParamString("emoji")]
 
 	@classmethod
-	async def run(self,ctx):
+	async def run(cls,ctx):
 		try:
 			await ctx.ch.send([key for key, value in config.BADGES.items() if value == ctx.args[0]][0].replace("-"," ").title())
 		except:

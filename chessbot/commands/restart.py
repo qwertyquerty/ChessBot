@@ -6,7 +6,7 @@ class CommandRestart(Command):
     level = LEVEL_OWNER
 
     @classmethod
-    async def run(self,ctx):
+    async def run(cls,ctx):
 
         await ctx.ch.send("Attempting to restart... Saving...")
 

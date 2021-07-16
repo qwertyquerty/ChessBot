@@ -7,7 +7,7 @@ class CommandBlacklist(Command):
     level = LEVEL_ADMIN
 
     @classmethod
-    async def run(self,ctx):
+    async def run(cls,ctx):
         db.User.from_mem(ctx.args[0]).blacklist()
         await ctx.ch.send("They have been cast into the pit of DOOM!")
 
@@ -19,7 +19,7 @@ class CommandUnblacklist(Command):
     level = LEVEL_ADMIN
 
     @classmethod
-    async def run(self,ctx):
+    async def run(cls,ctx):
         db.User.from_mem(ctx.args[0]).unblacklist()
         await ctx.ch.send("They have been resurrected from the pit of DOOM!")
 
@@ -32,7 +32,7 @@ class CommandReset(Command):
     level = LEVEL_ADMIN
     
     @classmethod
-    async def run(self,ctx):
+    async def run(cls,ctx):
         [g.delete() for g in db.User.from_mem(ctx.args[0]).get_games()]
         rating_sync()
         await ctx.ch.send("User has been reset!")

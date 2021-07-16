@@ -8,7 +8,7 @@ class CommandSuggestion(Command):
     flags = FLAG_MUST_NOT_BE_BLACKLISTED
 
     @classmethod
-    async def run(self,ctx):
+    async def run(cls,ctx):
         if len(ctx.raw_args) > 0:
             await ctx.ch.send("Suggestion sent!")
             em = discord.Embed()

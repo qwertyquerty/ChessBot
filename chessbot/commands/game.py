@@ -7,7 +7,7 @@ class CommandGames(Command):
     parameters = [ParamUser(required=False), ParamInt("page", required=False), ParamChoice("sort", required=False, options=["moves", "rated", "wins"])]
 
     @classmethod
-    async def run(self, ctx):
+    async def run(cls, ctx):
         mention = ctx.args[0] if ctx.args[0] else ctx.mem
         page = ctx.args[1] - 1 if ctx.args[1] else 0
         sort = ctx.args[2] if ctx.args[2] else "recent"
@@ -53,7 +53,7 @@ class CommandGame(Command):
     parameters = [ParamUnion((ParamGameID(), ParamUser()), required=False)]
 
     @classmethod
-    async def run(self,ctx):
+    async def run(cls,ctx):
         game = None
 
         if isinstance(ctx.args[0], discord.abc.User):
@@ -85,7 +85,7 @@ class CommandFen(Command):
     parameters = [ParamUnion((ParamGameID(), ParamUser()), required=False)]
 
     @classmethod
-    async def run(self,ctx):
+    async def run(cls,ctx):
         game = None
 
         if isinstance(ctx.args[0], discord.abc.User):
@@ -118,7 +118,7 @@ class CommandRecord(Command):
     parameters = [ParamUser("user"), ParamUser("user 2", required=False)]
 
     @classmethod
-    async def run(self,ctx):
+    async def run(cls,ctx):
         if ctx.args[1]:
             user_1 = db.User.from_user_id(ctx.args[0].id)
             user_2 = db.User.from_user_id(ctx.args[1].id)

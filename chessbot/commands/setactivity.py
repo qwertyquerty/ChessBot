@@ -6,7 +6,7 @@ class C_Setstatus(Command):
     level = LEVEL_OWNER
 
     @classmethod
-    async def run(self,ctx):
+    async def run(cls,ctx):
         config.MOTD = ctx.content.replace("{prefix}setactivity".format(prefix=ctx.prefix),"").strip(" ")
         await ctx.bot.change_presence(activity=discord.Game(name=config.MOTD),status=discord.Status.online)
         await ctx.ch.send('Activity set!')

@@ -8,7 +8,7 @@ class CommandResign(Command):
     flags = FLAG_MUST_BE_IN_GAME
 
     @classmethod
-    async def run(self,ctx):
+    async def run(cls,ctx):
         await reward_game(ctx.game.players[not ctx.game.players.index(ctx.mem.id)], ctx.mem.id, OUTCOME_RESIGN, ctx.game,ctx.ch,ctx.bot)
 
 
@@ -19,7 +19,7 @@ class CommandExit(Command):
     flags = FLAG_MUST_BE_IN_GAME
 
     @classmethod
-    async def run(self,ctx):
+    async def run(cls,ctx):
         await reward_game(ctx.game.players[not ctx.game.players.index(ctx.mem.id)], ctx.mem.id, OUTCOME_EXIT, ctx.game,ctx.ch,ctx.bot)
 
 
@@ -30,7 +30,7 @@ class CommandDraw(Command):
     flags = FLAG_MUST_BE_IN_GAME
 
     @classmethod
-    async def run(self,ctx):
+    async def run(cls,ctx):
 
         if ctx.game.board.can_claim_draw():
             await ctx.ch.send("{user} has claimed a draw!".format(user=ctx.mem.mention))

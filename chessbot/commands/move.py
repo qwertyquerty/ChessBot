@@ -9,7 +9,7 @@ class CommandMove(Command):
 	flags = FLAG_MUST_BE_IN_GAME
 
 	@classmethod
-	async def run(self,ctx):
+	async def run(cls,ctx):
 		if ctx.mem.id == ctx.game.players[ctx.game.board.turn]:
 			move = None
 

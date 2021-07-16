@@ -8,7 +8,7 @@ class CommandProfile(Command):
 	parameters = [ParamUser(required=False)]
 
 	@classmethod
-	async def run(self,ctx):
+	async def run(cls,ctx):
 		mention = ctx.args[0] if ctx.args[0] else ctx.mem
 
 		user = db.User.from_mem(mention)
@@ -46,7 +46,7 @@ class CommandBio(Command):
 	help_index = 240
 
 	@classmethod
-	async def run(self,ctx):
+	async def run(cls,ctx):
 		if len(ctx.raw_args) > 0:
 			bio = ' '.join(ctx.raw_args[0:])
 			if len(bio)<=250:

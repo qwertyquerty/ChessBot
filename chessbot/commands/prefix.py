@@ -8,7 +8,7 @@ class CommandPrefix(Command):
 	flags = FLAG_MUST_HAVE_PERM_MANAGE_SERVER
 
 	@classmethod
-	async def run(self,ctx):
+	async def run(cls,ctx):
 		if len(ctx.args[0]) < 3:
 			del ctx.bot.prefix_cache[ctx.guild.id]
 			ctx.dbguild.set("prefix", ctx.args[0])

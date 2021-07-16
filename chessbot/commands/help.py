@@ -8,7 +8,7 @@ class CommandHelp(Command):
 	help_index = 440
 
 	@classmethod
-	async def run(self,ctx):
+	async def run(cls,ctx):
 
 		available_commands = [command for command in Command.__subclasses__() if command.level == LEVEL_EVERYONE]
 
@@ -30,7 +30,7 @@ class CommandHelp(Command):
 			if ctx.user.level >= command.level:
 				em.add_field(name = "{}{}".format(ctx.prefix, command.usage_string()), value = command.help_string, inline=False)
 
-		em.set_footer(text="{}{}".format(ctx.prefix, self.usage_string()))
+		em.set_footer(text="{}{}".format(ctx.prefix, cls.usage_string()))
 
 		await ctx.ch.send(embed=em)
 
@@ -41,7 +41,7 @@ class CommandAbout(Command):
 	help_index = 420
 
 	@classmethod
-	async def run(self,ctx):
+	async def run(cls,ctx):
 		em = discord.Embed()
 		em.title="About Chess"
 		em.set_thumbnail(url=ctx.bot.user.avatar_url)
@@ -67,5 +67,5 @@ class CommandVariants(Command):
     help_index = 410
 
     @classmethod
-    async def run(self,ctx):
+    async def run(cls,ctx):
         await ctx.ch.send("__**List of Variants:**__\n{}".format("\n".join(VARIANT_NAMES)))

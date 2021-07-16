@@ -8,7 +8,7 @@ class CommandTournament(Command):
 	level = LEVEL_OWNER
 
 	@classmethod
-	async def run(self,ctx):
+	async def run(cls,ctx):
 		cbguild = ctx.bot.get_guild(CHESSBOTSERVER)
 
 		p1mem = ctx.guild.get_member(ctx.args[0].id)
@@ -42,7 +42,7 @@ class CommandArchive(Command):
 	level = LEVEL_OWNER
 
 	@classmethod
-	async def run(self,ctx):
+	async def run(cls,ctx):
 		cbguild = ctx.bot.get_guild(CHESSBOTSERVER)
 
 		archived_cat = cbguild.get_channel(715616342283255818)
@@ -58,7 +58,7 @@ class CommandMegaAd(Command):
 	level = LEVEL_OWNER
 
 	@classmethod
-	async def run(self,ctx):
+	async def run(cls,ctx):
 
 		await ctx.ch.send("I'm doin it:")
 

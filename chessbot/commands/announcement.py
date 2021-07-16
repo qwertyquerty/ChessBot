@@ -7,7 +7,7 @@ class CommandUnsubscribe(Command):
 	flags = FLAG_MUST_HAVE_PERM_MANAGE_SERVER
 
 	@classmethod
-	async def run(self,ctx):
+	async def run(cls,ctx):
 		ctx.dbguild.set("subscribed", False)
 		
 		await ctx.ch.send("You have unsubscribed your guild from ChessBot notifications! You can resubscribe with {}subcribe".format(ctx.prefix))
@@ -19,7 +19,7 @@ class CommandSubscribe(Command):
 	flags = FLAG_MUST_HAVE_PERM_MANAGE_SERVER
 
 	@classmethod
-	async def run(self,ctx):
+	async def run(cls,ctx):
 		ctx.dbguild.set("subscribed", True)
 		
 		await ctx.ch.send("You have subscribed your guild from ChessBot notifications!")

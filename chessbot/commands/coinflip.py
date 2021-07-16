@@ -7,5 +7,5 @@ class CommandCoinflip(Command):
 	aliases = ["cf"]
 
 	@classmethod
-	async def run(self,ctx):
+	async def run(cls,ctx):
 		await ctx.ch.send(random.choice(["Heads", "Tails"]))

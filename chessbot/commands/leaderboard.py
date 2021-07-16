@@ -8,7 +8,7 @@ class CommandLeaderboard(Command):
 	parameters = [ParamInt("page", required=False), ParamChoice("sort", required=False, options=["lowest", "highest"])]
 
 	@classmethod
-	async def run(self,ctx):
+	async def run(cls,ctx):
 		page = ctx.args[0] - 1 if ctx.args[0] else 0
 		sort = ctx.args[1] if ctx.args[1] else "highest"
 
