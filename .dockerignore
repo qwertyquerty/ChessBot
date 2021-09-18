@@ -1,0 +1,13 @@
+.git
+.gitignore
+*.service
+README.md
+.editorconfig
+**/__pycache__
+.pyc
+venv
+Pipfile*
+.vscode
+.swp
+*.tar
+*nginx.conf
