@@ -117,7 +117,7 @@ class Game(DBObject):
 
 	@classmethod
 	def from_user_id(cls,userid):
-		d = db.games.find_one({"$and":[{"outcome": OUTCOME_UNFINISHED}, {"$or": [{"1":userid}, {"2":userid}]}]}
+		d = db.games.find_one({"$and":[{"outcome": OUTCOME_UNFINISHED}, {"$or": [{"1":userid}, {"2":userid}]}]})
 		return cls(d)
 
 	@classmethod
