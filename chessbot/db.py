@@ -23,6 +23,7 @@ users.create_index("id",unique=True)
 users.create_index("rating")
 guilds.create_index("id",unique=True)
 games.create_index("timestamp")
+games.create_index("outcome")
 
 class DBObject():
 
