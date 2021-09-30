@@ -20,7 +20,17 @@ glicko_env = Glicko2(GLICKO_MU, GLICKO_PHI, GLICKO_SIGMA, GLICKO_TAU)
 
 class Ctx():
     def __init__(self):
-        pass
+        self._game = None
+
+    @property
+    def game(self):
+        if self._game == None:
+            print("Game not cached, caching...")
+            self._game = db.Game.from_user_id(self.mem.id)
+        else:
+            print("Using cached version of game")
+
+        return self._game
 
 async def send_dbl_stats(bot):
     if bot.pid == 0:

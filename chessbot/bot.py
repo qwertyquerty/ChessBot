@@ -96,9 +96,6 @@ class ChessBot(discord.AutoShardedClient):
 
 						if ctx.guild.name != ctx.dbguild.name: ctx.dbguild.set("name", ctx.guild.name)
 
-						### Fetch the game because it's usually needed (probably bad practice here whatever tho)
-						ctx.game = db.Game.from_user_id(ctx.mem.id)
-
 						if self.apm:
 							self.apm.begin_transaction("command")
 							elasticapm.set_transaction_name("command.{}".format(cmd.name), override=False)
