@@ -60,25 +60,33 @@ def codeblock(s, language=None):
 
 def rating_sync():
     users = {}
-    games = db.date_ordered_games()
+    games = db.games.find(
+        {
+            "$and": [
+                {"ranked": True},
+                {"valid": True},
+                {"outcome": {"$ne": OUTCOME_EXIT}},
+                {"outcome": {"$ne": OUTCOME_UNFINISHED}}
+            ]
+        }
+    ).sort("timestamp",1)
 
     for game in games:
-        if game["ranked"] and game["valid"] and game["outcome"] != OUTCOME_EXIT and game["outcome"] != OUTCOME_UNFINISHED:
-            if not game["1"] in users:
-                users[game["1"]] = glicko_env.create_rating()
+        if not game["1"] in users:
+            users[game["1"]] = glicko_env.create_rating()
 
-            if not game["2"] in users:
-                users[game["2"]] = glicko_env.create_rating()
+        if not game["2"] in users:
+            users[game["2"]] = glicko_env.create_rating()
 
-            if game["outcome"] == OUTCOME_DRAW:
-                new_rating = glicko_env.rate_1vs1(users[game["1"]], users[game["2"]], drawn=True)
-                users[game["1"]] = new_rating[0]
-                users[game["2"]] = new_rating[1]
+        if game["outcome"] == OUTCOME_DRAW:
+            new_rating = glicko_env.rate_1vs1(users[game["1"]], users[game["2"]], drawn=True)
+            users[game["1"]] = new_rating[0]
+            users[game["2"]] = new_rating[1]
 
-            elif game["outcome"] == OUTCOME_RESIGN or game["outcome"] == OUTCOME_CHECKMATE:
-                new_rating = glicko_env.rate_1vs1(users[game["winner"]], users[game["loser"]])
-                users[game["winner"]] = new_rating[0]
-                users[game["loser"]] = new_rating[1]
+        elif game["outcome"] == OUTCOME_RESIGN or game["outcome"] == OUTCOME_CHECKMATE:
+            new_rating = glicko_env.rate_1vs1(users[game["winner"]], users[game["loser"]])
+            users[game["winner"]] = new_rating[0]
+            users[game["loser"]] = new_rating[1]
 
     default_rating = glicko_env.create_rating()
     db.users.update_many({}, {"$set": {"rating": default_rating.mu, "rating_deviation": default_rating.phi, "rating_volatility": default_rating.sigma}})
