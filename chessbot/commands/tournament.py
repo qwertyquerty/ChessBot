@@ -74,7 +74,6 @@ class CommandMegaAd(Command):
 				try:
 					await guild.owner.send(announcement.replace("[prefix]", dbguild.prefix))
 					notifs += 1
-					break
 				except:
 					pass
 
