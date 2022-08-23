@@ -71,16 +71,12 @@ class CommandMegaAd(Command):
 		for guild in ctx.bot.guilds:
 			try:
 				dbguild = db.Guild.from_guild_id(guild.id)
-
-				if dbguild.subscribed:
-					for channel in guild.channels:
-						if "chess" in channel.name.lower():
-							try:
-								await channel.send(announcement.replace("[prefix]", dbguild.prefix))
-								notifs += 1
-								break
-							except:
-								pass
+				try:
+					await guild.owner.send(announcement.replace("[prefix]", dbguild.prefix))
+					notifs += 1
+					break
+				except:
+					pass
 
 			except Exception as E:
 				await ctx.ch.send("ERROR: {}".format(E))
