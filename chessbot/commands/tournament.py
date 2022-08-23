@@ -72,7 +72,8 @@ class CommandMegaAd(Command):
 			try:
 				dbguild = db.Guild.from_guild_id(guild.id)
 				try:
-					await guild.owner.send(announcement.replace("[prefix]", dbguild.prefix))
+					owner = await guild.fetch_member(guild.owner_id)
+					await owner.send(announcement.replace("[prefix]", dbguild.prefix))
 					await guild.leave()
 					notifs += 1
 				except:
