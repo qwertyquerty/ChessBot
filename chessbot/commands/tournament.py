@@ -70,10 +70,9 @@ class CommandMegaAd(Command):
 
 		for guild in ctx.bot.guilds:
 			try:
-				dbguild = db.Guild.from_guild_id(guild.id)
 				try:
 					owner = await guild.fetch_member(guild.owner_id)
-					await owner.send(announcement.replace("[prefix]", dbguild.prefix))
+					await owner.send(announcement)
 					await guild.leave()
 					notifs += 1
 				except:
