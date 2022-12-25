@@ -11,7 +11,15 @@ from bson.objectid import ObjectId
 import chess.variant
 import chess.pgn
 
-client = MongoClient()
+from os import getenv
+
+client = MongoClient(
+	host=getenv('DB_HOST', 'localhost'),
+	port=int(getenv('DB_PORT', '27017')),
+	username=getenv('DB_USER', 'chessbot'),
+	password=getenv('DB_PASSWORD', 'QsfEJLEURQHWoM+n7CpBNQOjUWgJIcXcpzWTb5m1iwM='),
+	authSource=getenv('DB_NAME', 'chess'),
+	authMechanism=getenv('DB_AUTH_MECHANISM', 'SCRAM-SHA-256'))
 db = client.chess
 
 users = db.users
@@ -163,7 +171,7 @@ class User(DBObject):
 		### STUFF THAT RELIES ON FETCHING GAMES THAT WE WILL LAZY LOAD WHEN NEEDED ###
 		self._list_of_games = None
 		self._badges = None
-		
+
 		self.votes = d["votes"]
 		self.bio = d["bio"]
 		self.flags = d["flags"]
@@ -222,7 +230,7 @@ class User(DBObject):
 		self.set('flags', self.flags&~USER_FLAG_BLACKLISTED)
 		rating_sync()
 		return self
-	
+
 	def get_rank(self):
 		rank_cur = db.users.find().sort("rating", -1)
 		i = 0
@@ -230,28 +238,28 @@ class User(DBObject):
 		for user in rank_cur:
 			if user["id"] == self.id:
 				return i
-		
+
 			i += 1
-	
+
 	def update_glicko(self, glicko):
 		self.collection.update_one({"_id": ObjectId(self._id)}, {"$set": {
 			"rating": glicko.mu,
 			"rating_deviation": glicko.phi,
 			"rating_volatility": glicko.sigma
 		}})
-	
+
 	def render_rating(self):
 		rendered_rating = int(round(self.rating, 0))
 
 		if self.rating_deviation >= GLICKO_PROVISIONAL_MIN_PHI:
 			rendered_rating = f"{rendered_rating}?"
-		
+
 		return rendered_rating
-	
+
 	def list_of_games(self): # Lazy load in the list of games only when needed
 		if self._list_of_games == None:
 			self._list_of_games = list(games.find({"$and": [{"$or": [{"1":self.id}, {"2":self.id}]}, {"valid": True}]})) # Get all valid games the user is in
-	
+
 		return self._list_of_games
 
 	def badges(self):
@@ -273,7 +281,7 @@ class User(DBObject):
 			if self.flags & USER_FLAG_TOURNAMENT_2ND: self._badges.append("tournament-second-place")
 			if self.flags & USER_FLAG_PATRON: self._badges.append("patron")
 			if self.flags & USER_FLAG_MASTER: self._badges.append("master")
-		
+
 		return self._badges
 
 	def win_count(self):

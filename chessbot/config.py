@@ -1,13 +1,13 @@
-
 import chess.svg
+from os import getenv
 
-WEBHOOK_PORT = 7003
+WEBHOOK_PORT = int(getenv('WEBHOOK_PORT', '7003'))
 
-BOT_INVITE_LINK = "https://discord.com/oauth2/authorize?client_id=366770566331629579&scope=bot&permissions=52288"
-GITHUB_LINK = "https://github.com/qwertyquerty/ChessBot"
+BOT_INVITE_LINK = getenv('BOT_INVITE_LINK', '')
+GITHUB_LINK = getenv('GITHUB_LINK', "https://github.com/qwertyquerty/ChessBot")
 
-BOTURL = "https://discordbots.org/bot/366770566331629579"
-MOTD = ""
+BOTURL = getenv('BOTURL', "https://discordbots.org/bot/366770566331629579")
+MOTD = getenv('MOTD', '')
 
 COLOR_WHITE = True
 COLOR_BLACK = False
@@ -73,7 +73,7 @@ DBLURL = "https://top.gg/api/bots/366770566331629579/stats"
 BOTVOTEURL = "https://top.gg/bot/366770566331629579/vote"
 SERVERVOTEURL = "https://top.gg/servers/430504476458221570/vote"
 
-PREFIX = "|"
+PREFIX = getenv('PREFIX', "|")
 
 CHESSBOTSERVER = 430504476458221570
 
